@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tecnosup — Documento de Sociedade & Escalabilidade</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #0f0f0f;
+      color: #e0e0e0;
+      line-height: 1.6;
+    }
+
+    /* CAPA */
+    .cover {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 50%, #0f0f0f 100%);
+      text-align: center;
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .cover::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,168,255,0.08) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .cover-logo {
+      font-size: 13px;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: #00a8ff;
+      margin-bottom: 24px;
+      font-weight: 600;
+    }
+    .cover h1 {
+      font-size: clamp(28px, 5vw, 52px);
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 16px;
+      line-height: 1.1;
+    }
+    .cover h1 span { color: #00a8ff; }
+    .cover-sub {
+      font-size: 16px;
+      color: #888;
+      max-width: 500px;
+      margin-bottom: 48px;
+    }
+    .cover-meta {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .cover-meta-item { text-align: center; }
+    .cover-meta-item .label { font-size: 11px; color: #555; text-transform: uppercase; letter-spacing: 2px; }
+    .cover-meta-item .value { font-size: 15px; color: #ccc; font-weight: 600; margin-top: 4px; }
+
+    /* LAYOUT GERAL */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 24px;
+    }
+
+    /* SEÇÕES */
+    .section {
+      margin-bottom: 80px;
+    }
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #00a8ff;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .section-title {
+      font-size: clamp(22px, 3vw, 32px);
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .section-desc {
+      color: #888;
+      font-size: 15px;
+      margin-bottom: 32px;
+      max-width: 600px;
+    }
+
+    /* DIVIDER */
+    .divider {
+      border: none;
+      border-top: 1px solid #1e1e1e;
+      margin: 60px 0;
+    }
+
+    /* CARDS GRID */
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+
+    .card {
+      background: #141414;
+      border: 1px solid #1e1e1e;
+      border-radius: 16px;
+      padding: 24px;
+    }
+    .card-accent { border-left: 3px solid #00a8ff; }
+    .card-warn  { border-left: 3px solid #f59e0b; }
+    .card-green { border-left: 3px solid #10b981; }
+    .card-red   { border-left: 3px solid #ef4444; }
+
+    .card-icon {
+      font-size: 28px;
+      margin-bottom: 12px;
+      display: block;
+    }
+    .card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .card p {
+      font-size: 13px;
+      color: #777;
+      line-height: 1.6;
+    }
+    .card .tag {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-top: 10px;
+      font-weight: 600;
+    }
+    .tag-free  { background: rgba(16,185,129,0.15); color: #10b981; }
+    .tag-pay   { background: rgba(245,158,11,0.15); color: #f59e0b; }
+    .tag-risk  { background: rgba(239,68,68,0.15);  color: #ef4444; }
+
+    /* TECH CAPACITY TABLE */
+    .tech-block {
+      background: #141414;
+      border: 1px solid #1e1e1e;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .tech-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 20px 24px;
+      border-bottom: 1px solid #1e1e1e;
+      background: #181818;
+    }
+    .tech-header .emoji { font-size: 24px; }
+    .tech-header .name { font-size: 17px; font-weight: 700; color: #fff; }
+    .tech-header .plan-badge {
+      margin-left: auto;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .badge-free  { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+    .badge-freemium { background: rgba(0,168,255,0.12); color: #00a8ff; border: 1px solid rgba(0,168,255,0.25); }
+
+    .tech-body { padding: 20px 24px; }
+    .tech-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 10px 0;
+      border-bottom: 1px solid #1a1a1a;
+      gap: 12px;
+    }
+    .tech-row:last-child { border-bottom: none; }
+    .tech-row .metric { font-size: 13px; color: #666; min-width: 160px; }
+    .tech-row .value-block { text-align: right; }
+    .tech-row .val-free { font-size: 14px; color: #10b981; font-weight: 600; }
+    .tech-row .val-limit { font-size: 12px; color: #555; margin-top: 2px; }
+
+    /* LIMIT BAR */
+    .limit-bar-wrapper { margin-top: 16px; }
+    .limit-bar-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #555;
+      margin-bottom: 6px;
+    }
+    .limit-bar-track {
+      background: #1e1e1e;
+      border-radius: 100px;
+      height: 6px;
+      overflow: hidden;
+    }
+    .limit-bar-fill {
+      height: 100%;
+      border-radius: 100px;
+      background: linear-gradient(90deg, #10b981, #00a8ff);
+    }
+
+    /* PRICING TABLE */
+    .pricing-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .pricing-table th {
+      text-align: left;
+      padding: 12px 16px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #444;
+      border-bottom: 1px solid #1e1e1e;
+    }
+    .pricing-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid #141414;
+      vertical-align: top;
+    }
+    .pricing-table tr:last-child td { border-bottom: none; }
+    .pricing-table .td-name { color: #fff; font-weight: 600; }
+    .pricing-table .td-free { color: #10b981; }
+    .pricing-table .td-cost { color: #f59e0b; font-weight: 600; }
+    .pricing-table .td-note { color: #555; font-size: 12px; }
+    .pricing-table tr:hover td { background: #161616; }
+
+    /* SCENARIO BLOCK */
+    .scenario {
+      background: #141414;
+      border: 1px solid #1e1e1e;
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 20px;
+    }
+    .scenario-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .scenario-num {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 15px;
+    }
+    .num-green { background: rgba(16,185,129,0.15); color: #10b981; }
+    .num-blue  { background: rgba(0,168,255,0.12); color: #00a8ff; }
+    .num-amber { background: rgba(245,158,11,0.15); color: #f59e0b; }
+
+    .scenario h3 { font-size: 17px; font-weight: 700; color: #fff; }
+    .scenario .subtitle { font-size: 13px; color: #555; margin-top: 2px; }
+
+    .kpi-row { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; }
+    .kpi {
+      flex: 1; min-width: 120px;
+      background: #1a1a1a;
+      border-radius: 10px;
+      padding: 14px 16px;
+    }
+    .kpi .kpi-label { font-size: 11px; color: #555; text-transform: uppercase; letter-spacing: 1px; }
+    .kpi .kpi-value { font-size: 20px; font-weight: 800; color: #fff; margin-top: 4px; }
+    .kpi .kpi-sub { font-size: 11px; color: #444; margin-top: 2px; }
+
+    .cost-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid #1a1a1a;
+      font-size: 13px;
+    }
+    .cost-row:last-child { border-bottom: none; }
+    .cost-row .item { color: #777; }
+    .cost-row .amount { font-weight: 600; }
+    .cost-row .amount.zero { color: #10b981; }
+    .cost-row .amount.paid { color: #f59e0b; }
+
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0 0;
+      margin-top: 10px;
+      border-top: 1px solid #222;
+    }
+    .total-row .label { font-size: 13px; color: #666; }
+    .total-row .amount { font-size: 22px; font-weight: 800; }
+    .total-row .amount.zero { color: #10b981; }
+    .total-row .amount.paid { color: #f59e0b; }
+
+    /* CONTRATO */
+    .contract-item {
+      display: flex;
+      gap: 16px;
+      padding: 20px 0;
+      border-bottom: 1px solid #1a1a1a;
+      align-items: flex-start;
+    }
+    .contract-item:last-child { border-bottom: none; }
+    .contract-num {
+      width: 28px; height: 28px; min-width: 28px;
+      background: #1a1a1a;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; color: #00a8ff;
+    }
+    .contract-item h4 { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .contract-item p { font-size: 13px; color: #666; }
+
+    /* RECOMENDAÇÃO FINAL */
+    .rec-box {
+      background: linear-gradient(135deg, #0d1f2d 0%, #0f1d0f 100%);
+      border: 1px solid #1e3a2f;
+      border-radius: 16px;
+      padding: 32px;
+    }
+    .rec-box h3 { font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 8px; }
+    .rec-box p { color: #777; font-size: 14px; margin-bottom: 24px; }
+    .rec-list { list-style: none; }
+    .rec-list li {
+      display: flex;
+      gap: 12px;
+      padding: 10px 0;
+      font-size: 14px;
+      color: #aaa;
+      border-bottom: 1px solid #1a1a1a;
+      align-items: flex-start;
+    }
+    .rec-list li:last-child { border-bottom: none; }
+    .rec-list .check { color: #10b981; font-weight: 700; margin-top: 1px; }
+
+    /* ALERTA */
+    .alert {
+      border-radius: 12px;
+      padding: 16px 20px;
+      font-size: 13px;
+      margin-bottom: 16px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .alert-warn { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.2); color: #c99a30; }
+    .alert-info { background: rgba(0,168,255,0.07); border: 1px solid rgba(0,168,255,0.18); color: #4da8d4; }
+    .alert-icon { font-size: 16px; margin-top: 1px; }
+
+    /* FOOTER */
+    .footer {
+      text-align: center;
+      padding: 40px 24px;
+      color: #333;
+      font-size: 12px;
+      border-top: 1px solid #1a1a1a;
+    }
+
+    @media print {
+      body { background: #fff; color: #000; }
+      .cover { background: #fff; min-height: auto; padding: 60px 40px; }
+      .cover::before { display: none; }
+      .cover h1, .card h3, .section-title { color: #000; }
+      .tech-header { background: #f5f5f5; }
+      .card, .tech-block, .scenario, .rec-box { border-color: #ddd; background: #fafafa; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- CAPA -->
+<div class="cover">
+  <div class="cover-logo">Tecnosup — Documento Interno</div>
+  <h1>Escalabilidade, Infra<br/>& <span>Modelo de Negócio</span></h1>
+  <p class="cover-sub">Análise completa das tecnologias, capacidade gratuita, quando começa a custar e como oferecer o produto de forma sustentável.</p>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <div class="label">Data</div>
+      <div class="value">Maio 2026</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="label">Fundadores</div>
+      <div class="value">Cardoso & Vitor</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="label">Versão</div>
+      <div class="value">v1.0</div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- VISÃO GERAL DO PRODUTO -->
+  <div class="section">
+    <div class="section-label">01 — Produto</div>
+    <div class="section-title">O que vendemos</div>
+    <p class="section-desc">Sistema web completo para pequenos negócios. Começando por barbearias, expansível para qualquer segmento.</p>
+
+    <div class="grid-2">
+      <div class="card card-accent">
+        <span class="card-icon">💻</span>
+        <h3>O que entregamos no Setup</h3>
+        <p>Landing page personalizada · Sistema de agendamento online · Painel admin completo · Domínio .com.br (no nome do cliente) · Deploy Vercel · Firebase + Cloudinary nas contas do cliente · Suporte por 1 ano</p>
+        <span class="tag tag-free">Setup único</span>
+      </div>
+      <div class="card card-accent">
+        <span class="card-icon">🔁</span>
+        <h3>Receita Recorrente</h3>
+        <p>Após o 1º ano de suporte incluso, o cliente paga mensalidade para continuar com suporte técnico, atualizações e manutenção do sistema.</p>
+        <span class="tag tag-pay">R$129/mês após 1 ano</span>
+      </div>
+      <div class="card card-green">
+        <span class="card-icon">📦</span>
+        <h3>Infra Isolada por Cliente</h3>
+        <p>Cada cliente tem Firebase, Cloudinary e Vercel nas próprias contas deles — nunca misturado. Custo mensal para a Tecnosup: R$0.</p>
+        <span class="tag tag-free">Custo zero por cliente</span>
+      </div>
+      <div class="card card-warn">
+        <span class="card-icon">🎯</span>
+        <h3>Precificação</h3>
+        <p>Setup: R$1.500 a R$2.000 (inclui domínio + infra + suporte 1 ano). Domínio: ~R$40/ano (Registro.br). Valor da hora de dev coberto no setup.</p>
+        <span class="tag tag-pay">Preço por projeto</span>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- CAPACIDADE DAS TECNOLOGIAS -->
+  <div class="section">
+    <div class="section-label">02 — Infraestrutura</div>
+    <div class="section-title">Capacidade de cada tecnologia</div>
+    <p class="section-desc">Quanto cada serviço aguenta de graça e quando começa a custar. Lembre-se: cada cliente usa as contas dele, então os limites são por cliente.</p>
+
+    <!-- Firebase -->
+    <div class="tech-block">
+      <div class="tech-header">
+        <span class="emoji">🔥</span>
+        <div>
+          <div class="name">Firebase (Firestore + Auth + Hosting)</div>
+          <div style="font-size:12px;color:#555;margin-top:2px;">Google — Plano Spark (gratuito)</div>
+        </div>
+        <span class="plan-badge badge-free">Gratuito</span>
+      </div>
+      <div class="tech-body">
+        <div class="tech-row">
+          <span class="metric">Leituras Firestore</span>
+          <div class="value-block">
+            <div class="val-free">50.000 / dia</div>
+            <div class="val-limit">≈ 1,5M por mês — grátis</div>
+          </div>
+        </div>
+        <div class="tech-row">
+          <span class="metric">Escritas Firestore</span>
+          <div class="value-block">
+            <div class="val-free">20.000 / dia</div>
+            <div class="val-limit">≈ 600K por mês — grátis</div>
+          </div>
+        </div>
+        <div class="tech-row">
+          <span class="metric">Armazenamento Firestore</span>
+          <div class="value-block">
+            <div class="val-free">1 GB</div>
+            <div class="val-limit">Suficiente para anos de agendamentos</div>
+          </div>
+        </div>
+        <div class="tech-row">
+          <span class="metric">Autenticações (Auth)</span>
+          <div class="value-block">
+            <div class="val-free">10.000 / mês</div>
+            <div class="val-limit">Para admin + clientes — mais que suficiente</div>
+          </div>
+        </div>
+        <div class="tech-row">
+          <span class="metric">Egress de Rede</span>
+          <div class="value-block">
+            <div class="val-free">10 GB / mês</div>
+            <div class="val-limit">Grátis no Spark</div>
+          </div>
+        </div>
+
+        <div class="limit-bar-wrapper">
+          <div class="limit-bar-label">
+            <span>Uso estimado de uma barbearia (mês normal)</span>
+            <span style="color:#10b981;">~3% do limite</span>
+          </div>
+          <div class="limit-bar-track">
+            <div class="limit-bar-fill" style="width:3%"></div>
+          </div>
+        </div>
+
+        <div class="alert alert-info" style="margin-top:16px;">
+          <span class="alert-icon">ℹ️</span>
+          <span><strong>Quando migrar para Blaze (pago):</strong> Apenas quando quiser usar Cloud Functions. Para agendamentos simples, o Spark aguenta confortavelmente. Se exceder, basta ativar o Blaze — paga só o excedente. Estimativa: menos de R$5/mês por cliente no Blaze.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vercel -->
+    <div class="tech-block">
+      <div class="tech-header">
+        <span class="emoji">▲</span>
+        <div>
+          <div class="name">Vercel (Deploy & Hosting)</div>
+          <div style="font-size:12px;color:#555;margin-top:2px;">Vercel — Hobby (gratuito) vs Pro ($20/mês)</div>
+        </div>
+        <span class="plan-badge badge-freemium">Atenção</span>
+      </div>
+      <div class="tech-body">
+
+        <div class="alert alert-warn" style="margin-bottom:16px;">
+          <span class="alert-icon">⚠️</span>
+          <span><strong>Regra importante da Vercel:</strong> O plano Hobby (gratuito) <strong>proíbe uso comercial</strong>. Para sites de clientes pagantes, é necessário o plano Pro ($20/mês por conta). Solução: criar o projeto na conta do cliente — o cliente está no Hobby para o próprio site, o que é permitido pois ele é o dono do negócio.</span>
+        </div>
+
+        <div class="tech-row">
+          <span class="metric">Bandwidth (Hobby)</span>
+          <div class="value-block">
+            <div class="val-free">100 GB / mês</div>
+            <div class="val-limit">Muito acima do consumo de uma barbearia</div>
+          </div>
+        </div>
+        <div class="tech-row">
+          <span class="metric">Edge Requests (Hobby)</span>
+          <div class="value-block">
+            <div class="val-free">1M / mês</div>
+            <div class="val-limit">Suficiente para ~33K visitas/dia</div>
+          </div>
+        </div>
+        <div class="tech-row">
+          <span class="metric">Serverless Functions (Hobby)</span>
+          <div class="value-block">
+            <div class="val-free">1M invocações / mês</div>
+            <div class="val-limit">API routes — mais que suficiente</div>
+          </div>
+        </div>
+        <div class="tech-row">
+          <span class="metric">Pro Plan (se precisar)</span>
+          <div class="value-block">
+            <div class="val-free" style="color:#f59e0b;">$20 / mês</div>
+            <div class="val-limit">1 TB bandwidth + 10M edge requests</div>
+          </div>
+        </div>
+
+        <div class="limit-bar-wrapper">
+          <div class="limit-bar-label">
+            <span>Uso estimado de uma barbearia</span>
+            <span style="color:#10b981;">~0,5% do limite</span>
+          </div>
+          <div class="limit-bar-track">
+            <div class="limit-bar-fill" style="width:0.5%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cloudinary -->
+    <div class="tech-block">
+      <div class="tech-header">
+        <span class="emoji">🖼️</span>
+        <div>
+          <div class="name">Cloudinary (Imagens & Galeria)</div>
+          <div style="font-size:12px;color:#555;margin-top:2px;">Cloudinary — Free Plan</div>
+        </div>
+        <span class="plan-badge badge-free">Gratuito</span>
+      </div>
+      <div class="tech-body">
+        <div class="tech-row">
+          <span class="metric">Armazenamento</span>
+          <div class="value-block">
+            <div class="val-free">10 GB</div>
+            <div class="val-limit">~2.000 fotos em alta qualidade</div>
+          </div>
+        </div>
+        <div class="tech-row">
+          <span class="metric">Bandwidth</span>
+          <div class="value-block">
+            <div class="val-free">20 GB / mês</div>
+            <div class="val-limit">Grátis — renovado mensalmente</div>
+          </div>
+        </div>
+        <div class="tech-row">
+          <span class="metric">Transformações de imagem</span>
+          <div class="value-block">
+            <div class="val-free">20.000 / mês</div>
+            <div class="val-limit">Resize, crop, otimização automática</div>
+          </div>
+        </div>
+        <div class="tech-row">
+          <span class="metric">Plano pago (se precisar)</span>
+          <div class="value-block">
+            <div class="val-free" style="color:#f59e0b;">$89 / mês</div>
+            <div class="val-limit">Plano Plus: 100 GB storage + 100 GB bandwidth</div>
+          </div>
+        </div>
+
+        <div class="limit-bar-wrapper">
+          <div class="limit-bar-label">
+            <span>Uso estimado de uma barbearia (galeria + logo)</span>
+            <span style="color:#10b981;">~5% do armazenamento</span>
+          </div>
+          <div class="limit-bar-track">
+            <div class="limit-bar-fill" style="width:5%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Registro.br -->
+    <div class="tech-block">
+      <div class="tech-header">
+        <span class="emoji">🌐</span>
+        <div>
+          <div class="name">Domínio .com.br (Registro.br)</div>
+          <div style="font-size:12px;color:#555;margin-top:2px;">Registro.br — FAPESP</div>
+        </div>
+        <span class="plan-badge badge-freemium">R$40/ano</span>
+      </div>
+      <div class="tech-body">
+        <div class="tech-row">
+          <span class="metric">Registro anual</span>
+          <div class="value-block">
+            <div class="val-free">R$40 / ano</div>
+            <div class="val-limit">Preço oficial — sem variação</div>
+          </div>
+        </div>
+        <div class="tech-row">
+          <span class="metric">Renovação</span>
+          <div class="value-block">
+            <div class="val-free">R$40 / ano</div>
+            <div class="val-limit">Mesmo valor — sem surpresa</div>
+          </div>
+        </div>
+        <div class="tech-row">
+          <span class="metric">Propriedade</span>
+          <div class="value-block">
+            <div class="val-free">No nome do cliente</div>
+            <div class="val-limit">CNPJ ou CPF do cliente</div>
+          </div>
+        </div>
+        <div class="alert alert-info" style="margin-top:16px;">
+          <span class="alert-icon">ℹ️</span>
+          <span>O custo do domínio é cobrado do cliente no setup (já incluso nos R$1.500–R$2.000). A renovação anual é responsabilidade do cliente após entrega.</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- CENÁRIOS DE CUSTO -->
+  <div class="section">
+    <div class="section-label">03 — Financeiro</div>
+    <div class="section-title">Cenários de custo operacional</div>
+    <p class="section-desc">Quanto a Tecnosup paga por mês dependendo do número de clientes ativos.</p>
+
+    <div class="scenario">
+      <div class="scenario-header">
+        <div class="scenario-num num-green">1</div>
+        <div>
+          <h3>Fase Inicial — até 10 clientes</h3>
+          <div class="subtitle">Infra 100% gratuita. Cada cliente nas próprias contas.</div>
+        </div>
+      </div>
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-label">Clientes</div><div class="kpi-value">1–10</div><div class="kpi-sub">projetos ativos</div></div>
+        <div class="kpi"><div class="kpi-label">Custo mensal Tecnosup</div><div class="kpi-value" style="color:#10b981;">R$0</div><div class="kpi-sub">infraestrutura</div></div>
+        <div class="kpi"><div class="kpi-label">Receita recorrente</div><div class="kpi-value">R$0</div><div class="kpi-sub">ainda no 1º ano</div></div>
+        <div class="kpi"><div class="kpi-label">Receita setup</div><div class="kpi-value">R$15–20K</div><div class="kpi-sub">10 clientes × R$1.500</div></div>
+      </div>
+      <div class="cost-row"><span class="item">Firebase (por cliente)</span><span class="amount zero">R$0 — Spark gratuito</span></div>
+      <div class="cost-row"><span class="item">Vercel (conta do cliente)</span><span class="amount zero">R$0 — Hobby na conta deles</span></div>
+      <div class="cost-row"><span class="item">Cloudinary (conta do cliente)</span><span class="amount zero">R$0 — Free plan</span></div>
+      <div class="cost-row"><span class="item">Domínio (pago no setup)</span><span class="amount zero">R$0 — já cobrado</span></div>
+      <div class="total-row"><span class="label">Custo mensal total Tecnosup</span><span class="amount zero">R$0 / mês</span></div>
+    </div>
+
+    <div class="scenario">
+      <div class="scenario-header">
+        <div class="scenario-num num-blue">2</div>
+        <div>
+          <h3>Crescimento — 10 a 30 clientes</h3>
+          <div class="subtitle">Receita recorrente começa. Ainda custo zero de infra.</div>
+        </div>
+      </div>
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-label">Clientes</div><div class="kpi-value">10–30</div><div class="kpi-sub">projetos ativos</div></div>
+        <div class="kpi"><div class="kpi-label">Custo mensal Tecnosup</div><div class="kpi-value" style="color:#10b981;">R$0</div><div class="kpi-sub">infraestrutura</div></div>
+        <div class="kpi"><div class="kpi-label">Receita recorrente</div><div class="kpi-value" style="color:#10b981;">R$1.290+</div><div class="kpi-sub">10+ clientes × R$129</div></div>
+        <div class="kpi"><div class="kpi-label">Margem</div><div class="kpi-value" style="color:#10b981;">~100%</div><div class="kpi-sub">custo infra zero</div></div>
+      </div>
+      <div class="alert alert-info">
+        <span class="alert-icon">💡</span>
+        <span>Nessa fase considerar <strong>GitHub Team ($4/usuário/mês)</strong> para organização privada e CI/CD melhor. Opcional mas profissionaliza o processo.</span>
+      </div>
+    </div>
+
+    <div class="scenario">
+      <div class="scenario-header">
+        <div class="scenario-num num-amber">3</div>
+        <div>
+          <h3>Escala — 30+ clientes</h3>
+          <div class="subtitle">Possível necessidade de ferramentas pagas para produtividade.</div>
+        </div>
+      </div>
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-label">Clientes</div><div class="kpi-value">30+</div><div class="kpi-sub">projetos ativos</div></div>
+        <div class="kpi"><div class="kpi-label">Custo mensal infra</div><div class="kpi-value" style="color:#f59e0b;">~R$0*</div><div class="kpi-sub">*ainda zero se mantiver isolado</div></div>
+        <div class="kpi"><div class="kpi-label">Receita recorrente</div><div class="kpi-value" style="color:#10b981;">R$3.870+</div><div class="kpi-sub">30 × R$129</div></div>
+        <div class="kpi"><div class="kpi-label">Ferramentas opcionais</div><div class="kpi-value" style="color:#f59e0b;">~R$300</div><div class="kpi-sub">produtividade/mês</div></div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- ALTERNATIVAS PAGAS -->
+  <div class="section">
+    <div class="section-label">04 — Alternativas</div>
+    <div class="section-title">Stacks alternativas — vale a pena?</div>
+    <p class="section-desc">Comparativo de alternativas à stack atual. Avaliando custo, complexidade e fit para o modelo da Tecnosup.</p>
+
+    <table class="pricing-table" style="background:#141414;border-radius:16px;overflow:hidden;border:1px solid #1e1e1e;">
+      <thead>
+        <tr style="background:#181818;">
+          <th>Tecnologia</th>
+          <th>Gratuito</th>
+          <th>Pago</th>
+          <th>Veredito</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="td-name">🔥 Firebase (atual)</td>
+          <td class="td-free">Spark: 50K reads/dia, 1GB, Auth 10K/mês</td>
+          <td class="td-cost">Blaze: paga só o excedente (~R$5/mês se precisar)</td>
+          <td style="color:#10b981;font-size:13px;font-weight:600;">✅ Melhor escolha para o modelo atual</td>
+        </tr>
+        <tr>
+          <td class="td-name">🟩 Supabase</td>
+          <td class="td-free">500MB Postgres, 1GB storage, 50K auth users, 2 projetos</td>
+          <td class="td-cost">Pro: $25/mês por organização</td>
+          <td class="td-note">Boa alternativa no futuro. SQL mais familiar. Projeto pausa após 1 semana inativo no free.</td>
+        </tr>
+        <tr>
+          <td class="td-name">▲ Vercel (atual)</td>
+          <td class="td-free">100GB bandwidth, 1M edge requests</td>
+          <td class="td-cost">Pro: $20/mês (conta do dev, não do cliente)</td>
+          <td style="color:#10b981;font-size:13px;font-weight:600;">✅ OK na conta do cliente (Hobby)</td>
+        </tr>
+        <tr>
+          <td class="td-name">🚂 Railway</td>
+          <td class="td-free">$5 crédito/mês grátis</td>
+          <td class="td-cost">Paga por uso: ~$5–20/mês</td>
+          <td class="td-note">Bom para backends customizados. Desnecessário agora.</td>
+        </tr>
+        <tr>
+          <td class="td-name">🖼️ Cloudinary (atual)</td>
+          <td class="td-free">10GB storage, 20GB bandwidth, 20K transforms</td>
+          <td class="td-cost">Plus: $89/mês</td>
+          <td style="color:#10b981;font-size:13px;font-weight:600;">✅ Free aguenta anos por cliente</td>
+        </tr>
+        <tr>
+          <td class="td-name">📦 Uploadthing</td>
+          <td class="td-free">2GB storage, 10GB bandwidth</td>
+          <td class="td-cost">Pro: $10/mês</td>
+          <td class="td-note">Mais simples de integrar com Next.js. Menor capacidade no free.</td>
+        </tr>
+        <tr>
+          <td class="td-name">🌐 Registro.br (atual)</td>
+          <td style="color:#555;font-size:13px;">—</td>
+          <td class="td-cost">R$40/ano</td>
+          <td style="color:#10b981;font-size:13px;font-weight:600;">✅ Mais barato e confiável do Brasil</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="alert alert-warn" style="margin-top:20px;">
+      <span class="alert-icon">⚠️</span>
+      <span><strong>PlanetScale removeu o plano gratuito em 2024.</strong> Não usar para novos projetos. Firebase + Supabase são as únicas opções sólidas com free tier real em 2026.</span>
+    </div>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- CONTRATO -->
+  <div class="section">
+    <div class="section-label">05 — Contrato</div>
+    <div class="section-title">O que o contrato precisa cobrir</div>
+    <p class="section-desc">Documento simples (PDF 1–2 páginas) que protege ambos os lados e deixa tudo claro antes do pagamento.</p>
+
+    <div class="card" style="margin-bottom:0;">
+      <div class="contract-item">
+        <div class="contract-num">1</div>
+        <div>
+          <h4>Escopo do que está incluso</h4>
+          <p>Landing page · Agendamento online · Painel admin · Domínio .com.br · Deploy Vercel · Firebase + Cloudinary nas contas do cliente · Suporte técnico por 12 meses (bugs e manutenção).</p>
+        </div>
+      </div>
+      <div class="contract-item">
+        <div class="contract-num">2</div>
+        <div>
+          <h4>O que NÃO está incluso</h4>
+          <p>Novos módulos ou funcionalidades além do escopo acordado. Redesign completo. Integração com sistemas externos não mencionados. Custo de ferramentas de terceiros após o 1º ano (domínio, Firebase Blaze se precisar).</p>
+        </div>
+      </div>
+      <div class="contract-item">
+        <div class="contract-num">3</div>
+        <div>
+          <h4>Prazo de entrega</h4>
+          <p>Estimativa: 7 a 14 dias úteis após recebimento do conteúdo (logo, textos, fotos). Atrasos no envio do conteúdo pelo cliente não contam no prazo da Tecnosup.</p>
+        </div>
+      </div>
+      <div class="contract-item">
+        <div class="contract-num">4</div>
+        <div>
+          <h4>Forma de pagamento</h4>
+          <p>50% no início do desenvolvimento (sinal), 50% na entrega. Pix, transferência ou boleto.</p>
+        </div>
+      </div>
+      <div class="contract-item">
+        <div class="contract-num">5</div>
+        <div>
+          <h4>Mensalidade após 1 ano</h4>
+          <p>R$129/mês — cobre suporte técnico, manutenções preventivas e disponibilidade do sistema. O cliente pode cancelar a mensalidade; o sistema continua funcionando, mas sem suporte da Tecnosup.</p>
+        </div>
+      </div>
+      <div class="contract-item">
+        <div class="contract-num">6</div>
+        <div>
+          <h4>Propriedade dos dados e contas</h4>
+          <p>Firebase, Cloudinary, Vercel e domínio são registrados no nome e CPF/CNPJ do cliente. A Tecnosup não retém acesso após encerramento do contrato. Os dados pertencem 100% ao cliente.</p>
+        </div>
+      </div>
+      <div class="contract-item">
+        <div class="contract-num">7</div>
+        <div>
+          <h4>Entrega de acessos</h4>
+          <p>Ao final do projeto, todos os acessos (Firebase console, Cloudinary, Vercel, domínio, painel admin) são entregues por escrito ao cliente.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- ACESSO E GESTÃO -->
+  <div class="section">
+    <div class="section-label">06 — Gestão</div>
+    <div class="section-title">Como a Tecnosup acessa os projetos</div>
+    <p class="section-desc">Cada projeto fica na conta do cliente, mas a Tecnosup precisa de acesso para suporte, análise e manutenção.</p>
+
+    <div class="alert alert-info" style="margin-bottom:24px;">
+      <span class="alert-icon">💡</span>
+      <span><strong>Modelo adotado: acesso como colaborador.</strong> O cliente adiciona o e-mail da Tecnosup como membro em cada serviço. Simples, sem custo extra e funciona bem até ~10 clientes.</span>
+    </div>
+
+    <div class="grid-2" style="margin-bottom:24px;">
+      <div class="card card-accent">
+        <span class="card-icon">🔥</span>
+        <h3>Firebase Console</h3>
+        <p>Cliente adiciona o e-mail da Tecnosup como <strong>Editor</strong> no projeto do Google Cloud. Acesso ao Firestore, Auth, logs e uso em tempo real.</p>
+        <span class="tag tag-free">Gratuito — sem limite de membros</span>
+      </div>
+      <div class="card card-accent">
+        <span class="card-icon">▲</span>
+        <h3>Vercel</h3>
+        <p>Cliente adiciona o e-mail da Tecnosup como membro do projeto. Acesso a logs de deploy, analytics, variáveis de ambiente e redeploy.</span>
+        <span class="tag tag-free">Gratuito no Hobby</span>
+      </div>
+      <div class="card card-accent">
+        <span class="card-icon">🖼️</span>
+        <h3>Cloudinary</h3>
+        <p>Cliente adiciona o e-mail da Tecnosup como <strong>Admin</strong> na conta. Acesso à galeria, uso de storage e bandwidth.</p>
+        <span class="tag tag-free">Gratuito — multi-usuário no free</span>
+      </div>
+      <div class="card card-warn">
+        <span class="card-icon">🌐</span>
+        <h3>Domínio (Registro.br)</h3>
+        <p>Domínio fica no CPF/CNPJ do cliente. A Tecnosup não precisa de acesso ao Registro.br — DNS é configurado uma vez e não muda.</p>
+        <span class="tag tag-pay">Acesso não necessário no dia a dia</span>
+      </div>
+    </div>
+
+    <div class="tech-block">
+      <div class="tech-header">
+        <span class="emoji">📋</span>
+        <div>
+          <div class="name">Checklist de acesso — por cliente</div>
+          <div style="font-size:12px;color:#555;margin-top:2px;">Solicitar ao cliente durante o onboarding</div>
+        </div>
+      </div>
+      <div class="tech-body">
+        <div class="tech-row">
+          <span class="metric">Firebase Console</span>
+          <div class="value-block">
+            <div class="val-free">Adicionar como Editor</div>
+            <div class="val-limit">console.firebase.google.com → Configurações do projeto → Usuários e permissões</div>
+          </div>
+        </div>
+        <div class="tech-row">
+          <span class="metric">Vercel</span>
+          <div class="value-block">
+            <div class="val-free">Adicionar como membro</div>
+            <div class="val-limit">vercel.com → Settings → Members → Convidar e-mail da Tecnosup</div>
+          </div>
+        </div>
+        <div class="tech-row">
+          <span class="metric">Cloudinary</span>
+          <div class="value-block">
+            <div class="val-free">Adicionar como Admin</div>
+            <div class="val-limit">cloudinary.com → Settings → Users → Add user</div>
+          </div>
+        </div>
+        <div class="tech-row">
+          <span class="metric">Painel admin do sistema</span>
+          <div class="value-block">
+            <div class="val-free">Criar usuário admin Tecnosup</div>
+            <div class="val-limit">POST /api/admin/set-claim com e-mail da Tecnosup no Firebase do cliente</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert alert-warn" style="margin-top:20px;">
+      <span class="alert-icon">⚠️</span>
+      <span><strong>Quando evoluir para painel centralizado:</strong> A partir de ~5 clientes ativos, vale construir um dashboard interno da Tecnosup que consome as APIs de cada projeto via Firebase Admin SDK — visualizando agendamentos, uptime e uso de todos os clientes em um só lugar. Por enquanto, acesso como colaborador é suficiente.</span>
+    </div>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- RECOMENDAÇÃO FINAL -->
+  <div class="section">
+    <div class="section-label">07 — Decisão</div>
+    <div class="section-title">Conclusão & próximos passos</div>
+    <p class="section-desc">O que fazer agora para crescer de forma organizada.</p>
+
+    <div class="rec-box">
+      <h3>A stack atual está correta. Não mudar.</h3>
+      <p>Next.js + Firebase + Cloudinary + Vercel é a combinação ideal para o modelo da Tecnosup: custo zero por cliente, infra isolada, escala automática, sem servidor para gerenciar.</p>
+      <ul class="rec-list">
+        <li><span class="check">✓</span>Fechar o Ortega Barber — primeiro cliente pago, valida o modelo inteiro</li>
+        <li><span class="check">✓</span>Criar o contrato em PDF com os 7 pontos listados acima</li>
+        <li><span class="check">✓</span>Separar o Ortega em template limpo e reutilizável (repositório template-barbearia)</li>
+        <li><span class="check">✓</span>Prospectar 2–3 barbearias usando o Ortega como caso de sucesso</li>
+        <li><span class="check">✓</span>Manter infra nas contas dos clientes — custo operacional da Tecnosup permanece R$0</li>
+        <li><span class="check">✓</span>Só avaliar migração para Supabase quando precisar de SQL real ou banco relacional complexo</li>
+        <li><span class="check">✓</span>Repassar custo do domínio (R$40/ano) sempre ao cliente desde o setup</li>
+      </ul>
+    </div>
+
+    <div class="grid-3" style="margin-top:20px;">
+      <div class="card card-green">
+        <span class="card-icon">💰</span>
+        <h3>Margem no setup</h3>
+        <p>R$1.500 de receita, ~R$40 de custo (domínio). Margem bruta de ~97%.</p>
+      </div>
+      <div class="card card-accent">
+        <span class="card-icon">📈</span>
+        <h3>Recorrência no longo prazo</h3>
+        <p>Com 20 clientes após 1 ano: R$2.580/mês recorrente com custo de infra zero.</p>
+      </div>
+      <div class="card card-warn">
+        <span class="card-icon">⚡</span>
+        <h3>Diferencial de mercado</h3>
+        <p>Infra no nome do cliente é raro e gera confiança. Usar isso como argumento de venda.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  Tecnosup — Documento interno confidencial · Cardoso & Vitor · Maio 2026 · v1.0<br/>
+  Para imprimir como PDF: Ctrl+P → Salvar como PDF (desmarcar cabeçalhos e rodapés do navegador)
+</div>
+
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc --noEmit)",
+      "Bash(npx tsc *)",
+      "Bash(npx vercel *)",
+      "Bash(npx next *)",
+      "Bash(npm run dev)",
+      "Bash(npm run build)",
+      "Bash(npm list *)",
+      "Bash(npm install *)",
+      "Bash(curl *)",
+      "Bash(git show *)",
+      "Bash(git remote *)",
+      "Bash(git config *)"
+    ],
+    "deny": []
+  }
+}

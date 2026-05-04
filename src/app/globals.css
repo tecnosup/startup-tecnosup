@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --cyan: #0eb3ff;
+  --purple: #7000ff;
+  --bg: #030407;
+  --bg-card: #0b1121;
+  --bg-muted: #0e1520;
+  --text: #e0e0e0;
+  --border: #1f3566;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-inter), Inter, sans-serif;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Grid background */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(14, 179, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(14, 179, 255, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Glow orbs */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 15% 20%, rgba(14, 179, 255, 0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 40% at 85% 80%, rgba(112, 0, 255, 0.07) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 2px; }
+
+/* Font helpers */
+.font-orbitron { font-family: var(--font-orbitron), Orbitron, sans-serif; }
+
+/* Glow text */
+.glow-text {
+  text-shadow: 0 0 30px rgba(14, 179, 255, 0.5);
+}
+
+/* Scan lines subtle */
+.scan-lines::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(14, 179, 255, 0.02) 3px,
+    rgba(14, 179, 255, 0.02) 4px
+  );
+  pointer-events: none;
+}
+
+/* Terminal cursor blink */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.cursor-blink { animation: blink 1s step-end infinite; }
+
+/* Reveal classes — controlled by GSAP ScrollTrigger in ScrollReveal.tsx */
+.reveal,
+.reveal-left,
+.reveal-right {
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.reveal-stagger > * {
+  opacity: 0;
+  will-change: transform, opacity;
+}
