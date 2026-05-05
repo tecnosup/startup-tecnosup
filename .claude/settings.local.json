@@ -1,7 +1,13 @@
 {
   "permissions": {
     "allow": [
-      "PowerShell(gh auth status)"
+      "PowerShell(gh auth status)",
+      "WebSearch",
+      "Read(//c/Users/cardo/tecnosup-v2-ref/**)",
+      "Read(//c/Users/cardo/.claude/projects/**)",
+      "Bash(awk '{print $2}')",
+      "Read(//tmp/**)",
+      "Bash(git add *)"
     ]
   }
 }

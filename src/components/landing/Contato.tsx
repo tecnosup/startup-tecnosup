@@ -4,17 +4,17 @@ import { MessageCircle, Instagram } from "lucide-react";
 const contatos = [
   {
     nome: "Cardoso (Abraão)",
-    cargo: "Co-fundador · Sistemas Web",
-    foco: "Sites, sistemas e e-commerce",
+    cargo: "Co-fundador · Tecnosup",
+    foco: "Suporte técnico, sistemas e e-commerce",
     whatsapp: "5512996065673",
-    msg: "Oi Cardoso, vi o site da Tecnosup e quero saber mais sobre os sistemas web!",
+    msg: "Oi Cardoso, vi o site da Tecnosup e quero saber mais!",
   },
   {
     nome: "Vitor",
-    cargo: "Co-fundador · Suporte Técnico",
-    foco: "Formatação, vírus, hardware",
+    cargo: "Co-fundador · Tecnosup",
+    foco: "Suporte técnico, sistemas e e-commerce",
     whatsapp: "5512991037897",
-    msg: "Oi Vitor, vi o site da Tecnosup e preciso de suporte técnico!",
+    msg: "Oi Vitor, vi o site da Tecnosup e quero saber mais!",
   },
 ];
 

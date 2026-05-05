@@ -1,5 +1,5 @@
 "use client";
-import { ExternalLink, Clock } from "lucide-react";
+import { ExternalLink, Clock, CheckCircle } from "lucide-react";
 
 const cases = [
   {
@@ -15,10 +15,10 @@ const cases = [
     badge: "02",
     cliente: "NYX Streetwear",
     segmento: "E-commerce · Moda",
-    status: "Em desenvolvimento",
+    status: "No ar",
     stack: ["Next.js", "Firebase", "Cloudinary"],
     desc: "Loja virtual com catálogo de produtos, identidade visual streetwear e gestão de pedidos.",
-    link: null,
+    link: "https://nyx-xxx.vercel.app/",
   },
 ];
 
@@ -63,8 +63,14 @@ export default function Cases() {
 
               <div className="p-6 md:p-8">
                 <div className="flex items-center gap-2 mb-4">
-                  <Clock size={12} style={{ color: "#ffbd2e" }} />
-                  <span className="text-xs font-orbitron" style={{ color: "#ffbd2e" }}>{c.status}</span>
+                  {c.status === "No ar" ? (
+                    <CheckCircle size={12} style={{ color: "#22c55e" }} />
+                  ) : (
+                    <Clock size={12} style={{ color: "#ffbd2e" }} />
+                  )}
+                  <span className="text-xs font-orbitron" style={{ color: c.status === "No ar" ? "#22c55e" : "#ffbd2e" }}>
+                    {c.status}
+                  </span>
                 </div>
 
                 <h3 className="font-orbitron text-xl md:text-2xl font-bold text-white mb-1">{c.cliente}</h3>
