@@ -5,13 +5,16 @@ import Planos from "@/components/landing/Planos";
 import SistemasWeb from "@/components/landing/SistemasWeb";
 import Cases from "@/components/landing/Cases";
 import TecnoApp from "@/components/landing/TecnoApp";
+import Redes from "@/components/landing/Redes";
 import Contato from "@/components/landing/Contato";
 import Footer from "@/components/landing/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
+import SmoothScroll from "@/components/SmoothScroll";
 
 export default function Home() {
   return (
     <>
+      <SmoothScroll />
       <ScrollReveal />
       <Navbar />
       <main>
@@ -29,7 +32,10 @@ export default function Home() {
         {/* Bloco 4: Produto próprio */}
         <TecnoApp />
 
-        {/* Bloco 5: Conversão final */}
+        {/* Bloco 5: Redes sociais */}
+        <Redes />
+
+        {/* Bloco 6: Conversão final */}
         <Contato />
       </main>
       <Footer />

@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import AuthGuard from "@/components/painel/AuthGuard";
 import Sidebar from "@/components/painel/Sidebar";
-import { subscribeClientes } from "@/lib/clientes";
+import { subscribeClientes, updateCliente, addHistorico } from "@/lib/clientes";
 import { subscribePagamentos, addPagamento, deletePagamento } from "@/lib/pagamentos";
 import { Cliente, Pagamento } from "@/lib/types";
 import { LucideIcon, Plus, Trash2, Loader2, DollarSign, TrendingUp, Calendar, Download } from "lucide-react";
@@ -83,6 +83,19 @@ export default function FinanceiroPage() {
         descricao: form.descricao.trim(),
         tipo: form.tipo,
       });
+
+      // vínculo automático: mensalidade paga → ativa cliente e avança renovação 1 mês
+      if (form.tipo === "mensalidade" && cliente) {
+        const novaRenovacao = new Date(form.data);
+        novaRenovacao.setMonth(novaRenovacao.getMonth() + 1);
+        const renovacaoStr = novaRenovacao.toISOString().split("T")[0];
+        await updateCliente(cliente.id, { status: "ativo", renovacao: renovacaoStr });
+        await addHistorico(cliente.id, {
+          acao: `Mensalidade paga (R$${Number(form.valor).toLocaleString("pt-BR")}) — renovação atualizada para ${renovacaoStr}`,
+          data: new Date().toISOString(),
+        });
+      }
+
       setForm((f) => ({ ...f, clienteId: "", valor: "", descricao: "" }));
     } catch {
       setErro("Erro ao registrar pagamento.");

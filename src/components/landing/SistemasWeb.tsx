@@ -33,21 +33,21 @@ export default function SistemasWeb() {
       <div className="max-w-7xl mx-auto">
 
         {/* Header */}
-        <div className="text-center mb-12 md:mb-16 reveal">
-          <p className="font-orbitron text-[10px] md:text-xs tracking-[0.3em] text-[#0eb3ff] mb-3">
+        <div className="text-center mb-12 md:mb-16">
+          <p className="reveal font-orbitron text-[10px] md:text-xs tracking-[0.3em] text-[#0eb3ff] mb-3">
             SISTEMAS WEB
           </p>
-          <h2 className="font-orbitron text-2xl md:text-4xl font-bold text-white mb-4">
+          <h2 className="reveal title-drift font-orbitron text-2xl md:text-4xl font-bold text-white mb-4">
             Sites que trabalham por você
           </h2>
-          <p className="text-[#aaa] max-w-2xl mx-auto text-sm md:text-base">
+          <p className="reveal text-[#aaa] max-w-2xl mx-auto text-sm md:text-base">
             Sistemas completos com agendamento online e painel admin. Toda a infraestrutura fica no seu nome — você é dono de tudo.
           </p>
         </div>
 
         {/* Features + Terminal */}
-        <div className="grid md:grid-cols-2 gap-8 md:gap-14 items-start mb-16 md:mb-20">
-          <div className="reveal-left">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-14 items-center mb-16 md:mb-20">
+          <div className="reveal-left scale-in">
             <h3 className="font-orbitron text-lg font-bold text-white mb-5">
               O que está incluso
             </h3>
@@ -83,7 +83,7 @@ export default function SistemasWeb() {
           </div>
 
           {/* Terminal */}
-          <div className="reveal-right">
+          <div className="reveal-right scale-in">
             <div className="rounded-xl overflow-hidden border"
               style={{ borderColor: "#1f3566", boxShadow: "0 30px 60px rgba(0,0,0,0.5), 0 0 30px rgba(14,179,255,0.08)" }}>
               <div className="flex items-center gap-2 px-4 py-3 border-b"
@@ -111,8 +111,8 @@ export default function SistemasWeb() {
         </div>
 
         {/* Steps */}
-        <div className="mb-10 reveal">
-          <h3 className="font-orbitron text-lg md:text-xl font-bold text-white text-center mb-10">
+        <div className="mb-10">
+          <h3 className="reveal title-drift font-orbitron text-lg md:text-xl font-bold text-white text-center mb-10">
             Como funciona
           </h3>
           <div className="reveal-stagger grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-10">
@@ -149,9 +149,9 @@ export default function SistemasWeb() {
         </div>
 
         {/* Pricing */}
-        <div className="grid md:grid-cols-2 gap-6 reveal-stagger">
+        <div className="grid md:grid-cols-2 gap-6 reveal-stagger items-stretch scale-in">
           {/* Setup */}
-          <div className="relative rounded-xl border p-6 md:p-8 overflow-hidden"
+          <div className="relative rounded-xl border p-6 md:p-8 overflow-hidden flex flex-col"
             style={{ background: "#0b1121", borderColor: "#0eb3ff44", boxShadow: "0 0 40px rgba(14,179,255,0.06)" }}>
             <div className="absolute top-0 left-0 right-0 h-0.5"
               style={{ background: "linear-gradient(90deg, #0eb3ff, #7000ff)" }} />
@@ -161,7 +161,7 @@ export default function SistemasWeb() {
               <span className="text-lg text-[#aaa] font-normal"> – 2.000</span>
             </p>
             <p className="text-sm text-[#aaa] mb-6">50% no início · 50% na entrega</p>
-            <div className="space-y-2 mb-6">
+            <div className="space-y-2 mb-6 flex-1">
               {inclusoSetup.map((item) => (
                 <div key={item} className="flex items-center gap-3">
                   <Check size={14} style={{ color: "#0eb3ff" }} />
@@ -171,7 +171,7 @@ export default function SistemasWeb() {
             </div>
             <a
               href="#contato"
-              className="block w-full text-center py-3.5 font-orbitron text-sm font-bold rounded-lg text-black transition-all duration-200 hover:scale-[1.02]"
+              className="block w-full text-center py-3.5 font-orbitron text-sm font-bold rounded-lg text-black transition-all duration-200 hover:scale-[1.02] mt-auto"
               style={{ background: "linear-gradient(135deg, #0eb3ff, #7000ff)", boxShadow: "0 0 24px rgba(14,179,255,0.3)" }}
             >
               QUERO MEU SITE AGORA →

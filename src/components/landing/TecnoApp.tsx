@@ -32,28 +32,28 @@ export default function TecnoApp() {
   return (
     <section id="tecnoapp" className="relative z-10 py-20 md:py-28 px-4 md:px-6">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-10 md:mb-16 reveal">
+        <div className="text-center mb-10 md:mb-16">
           <span
-            className="inline-block font-orbitron text-[10px] md:text-xs tracking-[0.3em] px-3 py-1 rounded-full border mb-4"
+            className="reveal inline-block font-orbitron text-[10px] md:text-xs tracking-[0.3em] px-3 py-1 rounded-full border mb-4"
             style={{ color: "#0eb3ff", borderColor: "#0eb3ff33", background: "rgba(14,179,255,0.08)" }}
           >
             EM DESENVOLVIMENTO ATIVO
           </span>
-          <h2 className="font-orbitron text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4">
+          <h2 className="reveal title-drift font-orbitron text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4">
             TecnoApp —{" "}
             <span style={{ color: "#0eb3ff" }}>otimização automática</span>
             <br />
             para Windows
           </h2>
-          <p className="text-[#aaa] max-w-xl mx-auto">
+          <p className="reveal text-[#aaa] max-w-xl mx-auto">
             Software exclusivo Tecnosup. Limpeza, otimização, reparos e Modo Gamer em um único
             painel. Produto desenvolvido internamente, em versão final.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-start">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
           {/* App mockup — hidden on mobile, too small to be useful */}
-          <div className="hidden md:block reveal-left">
+          <div className="hidden md:block reveal-left scale-in">
             <div
               className="rounded-lg overflow-hidden border"
               style={{
@@ -153,7 +153,7 @@ export default function TecnoApp() {
           </div>
 
           {/* Módulos */}
-          <div className="reveal-stagger space-y-4">
+          <div className="reveal-stagger reveal-right space-y-4">
             <p className="font-orbitron text-sm text-[#0eb3ff] mb-6">4 MÓDULOS INTEGRADOS</p>
             {modulos.map((m, i) => (
               <div

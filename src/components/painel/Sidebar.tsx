@@ -6,7 +6,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import {
   LayoutDashboard, Users, DollarSign, LogOut, Menu, X,
-  CheckSquare, Wrench, Calendar, FileText, LucideIcon,
+  CheckSquare, Wrench, Calendar, FileText, Activity, LucideIcon,
 } from "lucide-react";
 
 interface NavItem {
@@ -25,6 +25,7 @@ const grupos: NavGroup[] = [
     titulo: "SISTEMAS WEB",
     items: [
       { label: "Dashboard", href: "/painel", icon: LayoutDashboard },
+      { label: "Saúde", href: "/painel/saude", icon: Activity },
       { label: "Clientes", href: "/painel/clientes", icon: Users },
       { label: "Financeiro", href: "/painel/financeiro", icon: DollarSign },
       { label: "Proposta", href: "/painel/proposta", icon: FileText },

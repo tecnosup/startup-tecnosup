@@ -23,12 +23,12 @@ export default function Contato() {
     <section id="contato" className="relative z-10 py-20 md:py-28 px-4 md:px-6">
       <div className="max-w-4xl mx-auto">
 
-        <div className="text-center mb-12 reveal">
-          <p className="font-orbitron text-[10px] md:text-xs tracking-[0.3em] text-[#0eb3ff] mb-3">CONTATO</p>
-          <h2 className="font-orbitron text-2xl md:text-4xl font-bold text-white mb-4">
+        <div className="text-center mb-12">
+          <p className="reveal font-orbitron text-[10px] md:text-xs tracking-[0.3em] text-[#0eb3ff] mb-3">CONTATO</p>
+          <h2 className="reveal title-drift font-orbitron text-2xl md:text-4xl font-bold text-white mb-4">
             Bora conversar?
           </h2>
-          <p className="text-[#aaa] max-w-xl mx-auto text-sm md:text-base">
+          <p className="reveal text-[#aaa] max-w-xl mx-auto text-sm md:text-base">
             Sem enrolação. Manda mensagem, mostramos o sistema ao vivo e você decide.
           </p>
         </div>
@@ -40,7 +40,7 @@ export default function Contato() {
               href={`https://wa.me/${c.whatsapp}?text=${encodeURIComponent(c.msg)}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="reveal group relative flex flex-col p-6 rounded-xl border transition-all duration-300 hover:-translate-y-1"
+              className="scale-in group relative flex flex-col p-6 rounded-xl border transition-all duration-300 hover:-translate-y-1"
               style={{ background: "#0b1121", borderColor: "#1f3566" }}
               onMouseEnter={(e) => {
                 (e.currentTarget as HTMLAnchorElement).style.borderColor = "#25d36644";
@@ -80,7 +80,7 @@ export default function Contato() {
         </div>
 
         {/* Social */}
-        <div className="reveal flex justify-center">
+        <div className="reveal scale-in flex justify-center">
           <a
             href="https://instagram.com/tecnosup"
             target="_blank"

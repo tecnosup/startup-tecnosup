@@ -30,17 +30,17 @@ export default function Planos() {
     <section id="planos" className="relative z-10 py-20 md:py-28 px-4 md:px-6">
       <div className="max-w-3xl mx-auto">
 
-        <div className="text-center mb-12 reveal">
-          <p className="font-orbitron text-[10px] md:text-xs tracking-[0.3em] text-[#0eb3ff] mb-3">PREÇOS</p>
-          <h2 className="font-orbitron text-2xl md:text-4xl font-bold text-white mb-4">
+        <div className="text-center mb-12">
+          <p className="reveal font-orbitron text-[10px] md:text-xs tracking-[0.3em] text-[#0eb3ff] mb-3">PREÇOS</p>
+          <h2 className="reveal title-drift font-orbitron text-2xl md:text-4xl font-bold text-white mb-4">
             Monte seu orçamento
           </h2>
-          <p className="text-[#aaa] max-w-xl mx-auto text-sm md:text-base">
+          <p className="reveal text-[#aaa] max-w-xl mx-auto text-sm md:text-base">
             Preços fixos, sem surpresas. Selecione os serviços e veja o total na hora.
           </p>
         </div>
 
-        <div className="reveal-left rounded-xl border overflow-hidden" style={{ borderColor: "#1f3566" }}>
+        <div className="reveal-left scale-in rounded-xl border overflow-hidden" style={{ borderColor: "#1f3566" }}>
           {/* Header */}
           <div className="px-6 py-4 border-b flex items-center justify-between"
             style={{ background: "#0b1121", borderColor: "#1f3566" }}>
@@ -98,12 +98,12 @@ export default function Planos() {
           </div>
         </div>
 
-        <div className="mt-4 text-center reveal">
+        <div className="mt-4 text-center reveal scale-in">
           <a
             href="#contato"
             className="inline-flex items-center gap-2 px-7 py-3 font-orbitron text-xs font-bold rounded-lg border border-[#0eb3ff] text-[#0eb3ff] hover:bg-[#0eb3ff] hover:text-black transition-all duration-200"
           >
-            FALAR COM O VITOR →
+            SOLICITAR ORÇAMENTO →
           </a>
         </div>
 

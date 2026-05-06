@@ -3,10 +3,10 @@ import { useEffect, useState, useMemo } from "react";
 import AuthGuard from "@/components/painel/AuthGuard";
 import Sidebar from "@/components/painel/Sidebar";
 import {
-  subscribeOS, subscribeClientesAT, addOS, updateOS, deleteOS,
+  subscribeOS, subscribeClientesAT, addOS, updateOS, deleteOS, addClienteAT,
   OrdemServico, ClienteAT, OSStatus,
 } from "@/lib/assistencia";
-import { Plus, Pencil, Trash2, Loader2, ChevronDown, ChevronUp, Search } from "lucide-react";
+import { Plus, Pencil, Trash2, Loader2, ChevronDown, ChevronUp, Search, UserPlus, X } from "lucide-react";
 
 const statusConfig: Record<OSStatus, { label: string; color: string }> = {
   aguardando: { label: "Aguardando", color: "#ffbd2e" },
@@ -32,6 +32,30 @@ function OSModal({ os, clientes, onClose }: {
   );
   const [loading, setLoading] = useState(false);
   const [erro, setErro] = useState("");
+
+  // criação rápida de cliente AT inline
+  const [novoCliente, setNovoCliente] = useState(false);
+  const [ncNome, setNcNome] = useState("");
+  const [ncTelefone, setNcTelefone] = useState("");
+  const [ncLoading, setNcLoading] = useState(false);
+
+  async function handleCriarCliente() {
+    if (!ncNome.trim()) return;
+    setNcLoading(true);
+    try {
+      const id = await addClienteAT({
+        nome: ncNome.trim(),
+        telefone: ncTelefone.trim(),
+        email: "",
+        criadoEm: new Date().toISOString(),
+      });
+      setForm((f) => ({ ...f, clienteId: id, clienteNome: ncNome.trim() }));
+      setNovoCliente(false);
+      setNcNome("");
+      setNcTelefone("");
+    } catch { setErro("Erro ao criar cliente."); }
+    finally { setNcLoading(false); }
+  }
 
   function handleClienteChange(id: string) {
     const c = clientes.find((c) => c.id === id);
@@ -77,11 +101,39 @@ function OSModal({ os, clientes, onClose }: {
         <div className="px-6 py-5 space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <Field label="CLIENTE">
-              <select value={form.clienteId} onChange={(e) => handleClienteChange(e.target.value)}
-                className={inputCls} style={{ ...inputStyle, cursor: "pointer" }}>
-                <option value="">Selecionar...</option>
-                {clientes.map((c) => <option key={c.id} value={c.id}>{c.nome}</option>)}
-              </select>
+              <div className="space-y-2">
+                <div className="flex gap-2">
+                  <select value={form.clienteId} onChange={(e) => handleClienteChange(e.target.value)}
+                    className={inputCls} style={{ ...inputStyle, cursor: "pointer", flex: 1 }}>
+                    <option value="">Selecionar...</option>
+                    {clientes.map((c) => <option key={c.id} value={c.id}>{c.nome}</option>)}
+                  </select>
+                  <button type="button" onClick={() => setNovoCliente((v) => !v)}
+                    title="Criar novo cliente"
+                    className="px-2.5 rounded-lg transition-all hover:bg-[#0eb3ff11] shrink-0"
+                    style={{ border: `1px solid ${novoCliente ? "#0eb3ff55" : "#1f3566"}`, color: novoCliente ? "#0eb3ff" : "#555" }}>
+                    {novoCliente ? <X size={14} /> : <UserPlus size={14} />}
+                  </button>
+                </div>
+                {novoCliente && (
+                  <div className="rounded-lg p-3 space-y-2" style={{ background: "#030407", border: "1px solid #0eb3ff22" }}>
+                    <p className="text-[10px] font-orbitron tracking-widest text-[#0eb3ff]">NOVO CLIENTE AT</p>
+                    <input value={ncNome} onChange={(e) => setNcNome(e.target.value)}
+                      className={inputCls} style={inputStyle} placeholder="Nome *"
+                      onFocus={(e) => (e.currentTarget.style.borderColor = "#0eb3ff55")}
+                      onBlur={(e) => (e.currentTarget.style.borderColor = "#1f3566")} />
+                    <input value={ncTelefone} onChange={(e) => setNcTelefone(e.target.value)}
+                      className={inputCls} style={inputStyle} placeholder="WhatsApp (opcional)"
+                      onFocus={(e) => (e.currentTarget.style.borderColor = "#0eb3ff55")}
+                      onBlur={(e) => (e.currentTarget.style.borderColor = "#1f3566")} />
+                    <button onClick={handleCriarCliente} disabled={ncLoading || !ncNome.trim()}
+                      className="w-full py-1.5 rounded-lg font-orbitron text-[10px] font-bold text-black flex items-center justify-center gap-2 disabled:opacity-50 transition-all"
+                      style={{ background: "linear-gradient(135deg, #0eb3ff, #7000ff)" }}>
+                      {ncLoading ? <Loader2 size={12} className="animate-spin" /> : <><Plus size={12} /> CRIAR E SELECIONAR</>}
+                    </button>
+                  </div>
+                )}
+              </div>
             </Field>
             <Field label="STATUS">
               <select value={form.status} onChange={(e) => setForm((f) => ({ ...f, status: e.target.value as OSStatus }))}
