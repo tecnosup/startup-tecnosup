@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contrato de Prestação de Serviços — Tecnosup</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      font-size: 11pt;
+      line-height: 1.7;
+      color: #1a1a1a;
+      background: #fff;
+    }
+
+    .page {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 60px 70px;
+    }
+
+    /* CABEÇALHO */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding-bottom: 28px;
+      border-bottom: 3px solid #0EA5E9;
+      margin-bottom: 36px;
+    }
+
+    .header-left .brand {
+      font-size: 22pt;
+      font-weight: 700;
+      color: #0D1B2A;
+      letter-spacing: -0.5px;
+    }
+
+    .header-left .brand span {
+      color: #0EA5E9;
+    }
+
+    .header-left .tagline {
+      font-size: 9pt;
+      color: #666;
+      margin-top: 2px;
+    }
+
+    .header-right {
+      text-align: right;
+      font-size: 9pt;
+      color: #666;
+      line-height: 1.6;
+    }
+
+    .header-right .doc-title {
+      font-size: 10pt;
+      font-weight: 600;
+      color: #0D1B2A;
+      margin-bottom: 4px;
+    }
+
+    /* TÍTULO PRINCIPAL */
+    h1 {
+      font-size: 14pt;
+      font-weight: 700;
+      color: #0D1B2A;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 32px;
+    }
+
+    /* SEÇÃO DE PARTES */
+    .partes {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    .parte-box {
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      padding: 16px 20px;
+    }
+
+    .parte-box .parte-titulo {
+      font-size: 8pt;
+      font-weight: 700;
+      color: #0EA5E9;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .parte-box p {
+      font-size: 10pt;
+      line-height: 1.8;
+      color: #333;
+    }
+
+    .parte-box .campo {
+      display: block;
+      border-bottom: 1px solid #ccc;
+      margin: 4px 0 8px 0;
+      min-height: 18px;
+      font-size: 10pt;
+    }
+
+    .parte-box .campo-label {
+      font-size: 8.5pt;
+      color: #888;
+      display: block;
+    }
+
+    /* OBJETO */
+    .objeto {
+      background: #f0f9ff;
+      border-left: 4px solid #0EA5E9;
+      border-radius: 0 6px 6px 0;
+      padding: 14px 20px;
+      margin-bottom: 32px;
+      font-size: 10.5pt;
+      color: #0D1B2A;
+    }
+
+    /* DIVISOR */
+    hr {
+      border: none;
+      border-top: 1px solid #e8e8e8;
+      margin: 28px 0;
+    }
+
+    /* CLÁUSULAS */
+    .clausula {
+      margin-bottom: 28px;
+    }
+
+    h2 {
+      font-size: 11pt;
+      font-weight: 700;
+      color: #0D1B2A;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid #0EA5E9;
+      padding-bottom: 6px;
+      margin-bottom: 14px;
+    }
+
+    h3 {
+      font-size: 10.5pt;
+      font-weight: 600;
+      color: #0D1B2A;
+      margin: 14px 0 6px 0;
+    }
+
+    p {
+      font-size: 10.5pt;
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    ul {
+      padding-left: 20px;
+      margin-bottom: 10px;
+    }
+
+    ul li {
+      font-size: 10.5pt;
+      color: #333;
+      margin-bottom: 4px;
+    }
+
+    /* DESTAQUE NEGATIVO */
+    .nao-incluido {
+      background: #fff8f8;
+      border-left: 3px solid #e53e3e;
+      padding: 12px 16px;
+      border-radius: 0 4px 4px 0;
+      margin: 8px 0;
+    }
+
+    .nao-incluido ul { margin-bottom: 0; }
+
+    /* DESTAQUE POSITIVO */
+    .incluido {
+      background: #f0fff4;
+      border-left: 3px solid #38a169;
+      padding: 12px 16px;
+      border-radius: 0 4px 4px 0;
+      margin: 8px 0;
+    }
+
+    .incluido ul { margin-bottom: 0; }
+
+    /* TABELA */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0 14px 0;
+      font-size: 10.5pt;
+    }
+
+    thead tr {
+      background: #0D1B2A;
+      color: #fff;
+    }
+
+    thead th {
+      padding: 9px 12px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 9.5pt;
+    }
+
+    tbody tr:nth-child(even) { background: #f7f9fc; }
+
+    tbody td {
+      padding: 9px 12px;
+      color: #333;
+      border-bottom: 1px solid #e8e8e8;
+    }
+
+    /* VALOR DESTAQUE */
+    .valor-destaque {
+      background: #f4f6f8;
+      color: #0D1B2A;
+      border: 1.5px solid #ccd3db;
+      border-radius: 6px;
+      padding: 16px 24px;
+      margin: 12px 0;
+      text-align: center;
+    }
+
+    .valor-destaque .label {
+      font-size: 9pt;
+      color: #0EA5E9;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+
+    .valor-destaque .valor {
+      font-size: 16pt;
+      font-weight: 700;
+    }
+
+    /* ALERTA */
+    .alerta {
+      background: #fffbf0;
+      border-left: 3px solid #f6a000;
+      padding: 12px 16px;
+      border-radius: 0 4px 4px 0;
+      margin: 8px 0;
+      font-size: 10.5pt;
+      color: #333;
+    }
+
+    /* ASSINATURAS */
+    .assinaturas {
+      margin-top: 40px;
+      background: #fff;
+      padding: 24px 0;
+    }
+
+    .assinaturas h2 {
+      margin-bottom: 24px;
+    }
+
+    .assinatura-local {
+      text-align: center;
+      font-size: 10.5pt;
+      color: #555;
+      margin-bottom: 36px;
+    }
+
+    .assinatura-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      margin-top: 20px;
+    }
+
+    .assinatura-box {
+      text-align: center;
+    }
+
+    .assinatura-linha {
+      border-top: 1.5px solid #333;
+      margin-bottom: 8px;
+      margin-top: 48px;
+    }
+
+    .assinatura-nome {
+      font-size: 10pt;
+      font-weight: 600;
+      color: #0D1B2A;
+    }
+
+    .assinatura-cargo {
+      font-size: 9pt;
+      color: #666;
+    }
+
+    .assinatura-box-contratante {
+      margin-top: 32px;
+    }
+
+    .campo-assinatura {
+      margin-bottom: 14px;
+    }
+
+    .campo-assinatura .label {
+      font-size: 9pt;
+      color: #888;
+      margin-bottom: 2px;
+    }
+
+    .campo-assinatura .linha {
+      border-bottom: 1px solid #aaa;
+      height: 22px;
+    }
+
+    /* RODAPÉ */
+    .rodape {
+      margin-top: 48px;
+      padding-top: 16px;
+      border-top: 1px solid #e8e8e8;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 8.5pt;
+      color: #aaa;
+    }
+
+    /* PRINT */
+    @media print {
+      body { font-size: 10.5pt; }
+      .page { padding: 40px 50px; max-width: 100%; }
+      h2 { page-break-after: avoid; }
+      .clausula { page-break-inside: avoid; }
+      .assinaturas { page-break-before: always; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- CABEÇALHO -->
+  <div class="header">
+    <div class="header-left">
+      <div class="brand">TECNO<span>SUP</span></div>
+      <div class="tagline">Suporte Técnico &amp; Soluções Digitais — Cruzeiro/SP</div>
+    </div>
+    <div class="header-right">
+      <div class="doc-title">Contrato de Prestação de Serviços</div>
+      <div>Desenvolvimento de Sistema Web</div>
+      <div>Cruzeiro — SP · 2026</div>
+    </div>
+  </div>
+
+  <!-- TÍTULO -->
+  <h1>Contrato de Prestação de Serviços<br>de Desenvolvimento de Sistema Web</h1>
+
+  <!-- PARTES -->
+  <div class="partes">
+    <div class="parte-box">
+      <div class="parte-titulo">Contratada</div>
+      <p><strong>Tecnosup — Suporte Técnico e Soluções Digitais</strong></p>
+      <p>Abraão Lincom de Almeida Cardoso<br>
+      Vitor Felipe Faria Pascoal de Oliveira<br>
+      Cruzeiro — SP<br>
+      (12) 99103-7897 · (12) 99606-5673</p>
+    </div>
+    <div class="parte-box">
+      <div class="parte-titulo">Contratante</div>
+      <span class="campo-label">Nome / Razão Social</span>
+      <span class="campo"></span>
+      <span class="campo-label">CPF / CNPJ</span>
+      <span class="campo"></span>
+      <span class="campo-label">Telefone</span>
+      <span class="campo"></span>
+      <span class="campo-label">E-mail</span>
+      <span class="campo"></span>
+    </div>
+  </div>
+
+  <!-- OBJETO -->
+  <div class="objeto">
+    <strong>Objeto:</strong> Desenvolvimento, implantação e suporte de sistema web personalizado para a empresa contratante, conforme escopo detalhado na Cláusula 1 deste documento.
+  </div>
+
+  <!-- CLÁUSULA 1 -->
+  <div class="clausula">
+    <h2>Cláusula 1 — Escopo do Serviço</h2>
+
+    <h3>1.1 O que está incluído</h3>
+    <p>A Tecnosup se compromete a desenvolver e entregar um sistema web completo com os seguintes módulos:</p>
+
+    <div class="incluido">
+      <ul>
+        <li><strong>Site público (Landing Page)</strong> — apresentação do negócio, seções de serviços, produtos, depoimentos e agendamento. Responsivo para celular e desktop.</li>
+        <li><strong>Fluxo de agendamento online</strong> — cliente agenda em até 3 etapas, com suporte a cupons de desconto e acompanhamento de status.</li>
+        <li><strong>Página de status</strong> — cliente consulta agendamentos pelo telefone, com atualização em tempo real.</li>
+        <li><strong>Painel administrativo</strong> — dashboard com KPIs, gestão de agendamentos, módulo financeiro, cadastro de serviços e produtos, descontos, cupons, configurações e log de auditoria.</li>
+        <li><strong>Infraestrutura</strong> — Firebase (banco de dados e autenticação), Cloudflare R2 (armazenamento de imagens), Vercel (hospedagem com HTTPS) e domínio personalizado. Tudo configurado no nome do contratante.</li>
+        <li><strong>Notificações via WhatsApp</strong> — envio automático de mensagens ao contratante via WhatsApp (Z-API) para confirmações de agendamento e reagendamentos realizados pelo painel administrativo.</li>
+      </ul>
+    </div>
+
+    <h3>1.2 O que NÃO está incluído</h3>
+    <div class="nao-incluido">
+      <ul>
+        <li>Integração com sistemas de pagamento online (Stripe, PagSeguro, Mercado Pago etc.)</li>
+        <li>Aplicativo nativo para iOS ou Android</li>
+        <li>Múltiplos usuários administradores</li>
+        <li>Relatórios exportáveis em PDF ou Excel</li>
+        <li>Notificações automáticas de WhatsApp para os clientes finais (apenas para o responsável pelo negócio)</li>
+        <li>Integração com sistemas externos (ERPs, CRMs, plataformas de delivery)</li>
+        <li>Criação de conteúdo (textos, fotos, vídeos) para o sistema</li>
+      </ul>
+    </div>
+
+    <h3>1.3 Personalizações incluídas</h3>
+    <ul>
+      <li>Identidade visual (cores e tipografia) conforme referência do contratante</li>
+      <li>Cadastro inicial de até 10 serviços e 10 produtos</li>
+      <li>Configuração do número de WhatsApp e textos da página inicial</li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <!-- CLÁUSULA 2 -->
+  <div class="clausula">
+    <h2>Cláusula 2 — Infraestrutura e Propriedade</h2>
+
+    <h3>2.1 Infraestrutura no nome do contratante</h3>
+    <p>Toda a infraestrutura será configurada nas contas do próprio contratante: Firebase, Cloudflare R2, Vercel e domínio. A configuração será realizada em conjunto pela Tecnosup e pelo contratante, presencialmente ou por videoconferência.</p>
+
+    <h3>2.2 Responsabilidade pelas contas</h3>
+    <p>Após a entrega, o contratante é responsável pela manutenção das credenciais de acesso às plataformas. A Tecnosup não se responsabiliza por perda de acesso causada pelo contratante.</p>
+
+    <h3>2.3 Autoria e posse</h3>
+    <p>A autoria intelectual do sistema permanece com a Tecnosup. A posse e o uso são do contratante. A Tecnosup mantém acesso técnico exclusivamente para correção de bugs e atualizações contratadas, não podendo utilizar, ceder ou comercializar os dados do contratante ou de seus clientes.</p>
+  </div>
+
+  <hr>
+
+  <!-- CLÁUSULA 3 -->
+  <div class="clausula">
+    <h2>Cláusula 3 — Dados e Privacidade</h2>
+
+    <h3>3.1 Titularidade dos dados</h3>
+    <p>Todos os dados inseridos no sistema — incluindo dados dos clientes finais (nome, telefone, histórico de agendamentos) — pertencem exclusivamente ao contratante.</p>
+
+    <h3>3.2 Acesso da Tecnosup</h3>
+    <p>A Tecnosup não acessa, armazena, compartilha ou comercializa dados dos clientes do contratante. O acesso técnico é restrito à manutenção do sistema e realizado somente mediante necessidade comprovada.</p>
+
+    <h3>3.3 Responsabilidade pelo uso dos dados</h3>
+    <p>O contratante é responsável pelo uso dos dados coletados, devendo respeitar a Lei Geral de Proteção de Dados (LGPD — Lei nº 13.709/2018).</p>
+  </div>
+
+  <hr>
+
+  <!-- CLÁUSULA 4 -->
+  <div class="clausula">
+    <h2>Cláusula 4 — Prazo de Entrega</h2>
+
+    <h3>4.1 Prazo</h3>
+    <p>O sistema será entregue em até <strong>10 (dez) dias úteis</strong> contados a partir da data de: assinatura deste contrato, recebimento do pagamento da 1ª parcela e recebimento de todos os materiais listados na Cláusula 4.2.</p>
+
+    <h3>4.2 Materiais de responsabilidade do contratante</h3>
+    <p>O contratante deverá fornecer em até <strong>3 (três) dias úteis</strong> após a assinatura:</p>
+    <ul>
+      <li>Logotipo em boa resolução (PNG ou SVG)</li>
+      <li>Fotos da barbearia e dos profissionais (se houver)</li>
+      <li>Lista de serviços com nome, descrição, preço e duração</li>
+      <li>Lista de produtos com nome, descrição e preço (se aplicável)</li>
+      <li>Número de WhatsApp para contato</li>
+      <li>Referências de cores ou identidade visual desejada</li>
+      <li>Acesso às contas de infraestrutura após criação conjunta</li>
+    </ul>
+
+    <h3>4.3 Atraso por responsabilidade do contratante</h3>
+    <p>O prazo será suspenso enquanto o contratante não entregar os materiais da Cláusula 4.2. A Tecnosup não poderá ser responsabilizada por atrasos decorrentes da ausência desses materiais.</p>
+  </div>
+
+  <hr>
+
+  <!-- CLÁUSULA 5 -->
+  <div class="clausula">
+    <h2>Cláusula 5 — Valores e Forma de Pagamento</h2>
+
+    <h3>5.1 Valor do setup</h3>
+    <div class="valor-destaque">
+      <div class="label">Valor Total</div>
+      <div class="valor">R$ _________________ (___________________________________ reais)</div>
+    </div>
+
+    <h3>5.2 Forma de pagamento</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Parcela</th>
+          <th>Valor</th>
+          <th>Momento</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1ª parcela — 50%</td>
+          <td>R$ _________________</td>
+          <td>Na assinatura deste contrato</td>
+        </tr>
+        <tr>
+          <td>2ª parcela — 50%</td>
+          <td>R$ _________________</td>
+          <td>Na entrega e aprovação do sistema</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>5.3 Formas de pagamento aceitas</h3>
+    <p>Pix, transferência bancária, dinheiro ou cartão de crédito (sujeito à taxa da maquininha). Os dados bancários e demais informações serão informados pela Tecnosup no momento da assinatura.</p>
+
+    <h3>5.4 Atraso no pagamento</h3>
+    <p>O atraso no pagamento da 2ª parcela por mais de <strong>5 (cinco) dias úteis</strong> após a entrega poderá suspender o suporte técnico até a regularização.</p>
+  </div>
+
+  <hr>
+
+  <!-- CLÁUSULA 6 -->
+  <div class="clausula">
+    <h2>Cláusula 6 — Plano de Manutenção e Suporte</h2>
+
+    <h3>6.1 Período incluído no setup</h3>
+    <p>O valor do setup inclui <strong>12 (doze) meses</strong> de suporte técnico contados da data de entrega.</p>
+
+    <h3>6.2 O que está incluído no suporte</h3>
+    <div class="incluido">
+      <ul>
+        <li>Correção de bugs e falhas de funcionamento do sistema</li>
+        <li>Suporte para dúvidas sobre o uso do painel administrativo</li>
+        <li>Atualizações de segurança que a Tecnosup julgar necessárias</li>
+      </ul>
+    </div>
+
+    <h3>6.3 O que NÃO está incluído no suporte</h3>
+    <div class="nao-incluido">
+      <ul>
+        <li>Desenvolvimento de novas funcionalidades</li>
+        <li>Alterações no escopo original do sistema</li>
+        <li>Criação ou edição de conteúdo (textos, imagens, produtos, serviços)</li>
+        <li>Suporte a problemas causados por alterações feitas pelo contratante nas contas de infraestrutura</li>
+      </ul>
+    </div>
+
+    <h3>6.4 Canais de suporte</h3>
+    <p>Suporte via WhatsApp em horário comercial (segunda a sexta, 9h–18h), com prazo de resposta de até <strong>24 horas úteis</strong>.</p>
+  </div>
+
+  <hr>
+
+  <!-- CLÁUSULA 7 -->
+  <div class="clausula">
+    <h2>Cláusula 7 — Plano de Continuidade (Pós 12 Meses)</h2>
+
+    <h3>7.1 Mensalidade</h3>
+    <div class="valor-destaque">
+      <div class="label">Mensalidade após 12 meses</div>
+      <div class="valor">R$ 49,90 / mês</div>
+    </div>
+
+    <h3>7.2 Reajuste</h3>
+    <p>A mensalidade poderá ser reajustada anualmente, limitado à variação do IPCA do período, mediante comunicação prévia de <strong>30 (trinta) dias</strong>.</p>
+
+    <h3>7.3 Inadimplência da mensalidade</h3>
+    <div class="alerta">
+      Em caso de inadimplência superior a <strong>30 dias</strong>:<br>
+      · O domínio personalizado (.com.br) não será renovado e será substituído pelo endereço gratuito da hospedagem<br>
+      · O suporte técnico será suspenso<br>
+      · O sistema permanecerá funcional, pois a infraestrutura está nas contas do próprio contratante
+    </div>
+
+    <h3>7.4 Reativação</h3>
+    <p>A reativação do domínio e do suporte poderá ser solicitada mediante pagamento dos valores em aberto, sujeito à disponibilidade do domínio no momento da reativação.</p>
+  </div>
+
+  <hr>
+
+  <!-- CLÁUSULA 8 -->
+  <div class="clausula">
+    <h2>Cláusula 8 — Cancelamento</h2>
+
+    <h3>8.1 Cancelamento antes da entrega</h3>
+    <p>Caso o contratante deseje cancelar após a assinatura e o pagamento da 1ª parcela, o valor pago não será devolvido. O adiantamento de 50% remunera o trabalho de desenvolvimento já iniciado e os custos de configuração de infraestrutura.</p>
+
+    <h3>8.2 Cancelamento após a entrega</h3>
+    <p>Após a entrega e aprovação do sistema, não há vínculo de permanência mínima. O contratante pode encerrar o plano de manutenção a qualquer momento, assumindo a gestão independente da infraestrutura.</p>
+
+    <h3>8.3 Cancelamento pela Tecnosup</h3>
+    <p>A Tecnosup poderá cancelar este contrato em caso de inadimplência superior a 60 dias ou uso do sistema para fins ilegais.</p>
+  </div>
+
+  <hr>
+
+  <!-- CLÁUSULA 9 -->
+  <div class="clausula">
+    <h2>Cláusula 9 — Disposições Gerais</h2>
+
+    <h3>9.1 Alterações de escopo</h3>
+    <p>Qualquer funcionalidade não prevista na Cláusula 1 solicitada após a assinatura será tratada como novo serviço, com orçamento separado e aprovação prévia por escrito.</p>
+
+    <h3>9.2 Confidencialidade</h3>
+    <p>As partes se comprometem a manter em sigilo as informações técnicas, comerciais e operacionais trocadas durante a vigência deste contrato.</p>
+
+    <h3>9.3 Independência das cláusulas</h3>
+    <p>A eventual invalidade de qualquer cláusula não afeta a validade das demais.</p>
+
+    <h3>9.4 Foro</h3>
+    <p>Fica eleito o foro da Comarca de <strong>Cruzeiro — SP</strong> para dirimir quaisquer dúvidas ou litígios decorrentes deste contrato, com renúncia expressa a qualquer outro foro.</p>
+  </div>
+
+  <hr>
+
+  <!-- APROVAÇÃO -->
+  <div class="clausula">
+    <h2>Aprovação do Sistema</h2>
+    <p>Após a entrega, o contratante terá <strong>3 (três) dias úteis</strong> para aprovar o sistema ou solicitar ajustes dentro do escopo contratado. Decorrido esse prazo sem manifestação, o sistema será considerado aprovado e a 2ª parcela será devida.</p>
+  </div>
+
+  <!-- ASSINATURAS -->
+  <div class="assinaturas">
+    <h2>Assinaturas</h2>
+    <p>Este contrato é celebrado em 2 (duas) vias de igual teor e forma.</p>
+
+    <div class="assinatura-local" style="margin-top: 16px;">
+      Cruzeiro — SP, _______ de __________________________ de 2026.
+    </div>
+
+    <div class="assinatura-grid">
+      <div class="assinatura-box">
+        <div class="assinatura-linha"></div>
+        <div class="assinatura-nome">Abraão Lincom de Almeida Cardoso</div>
+        <div class="assinatura-cargo">Tecnosup — Contratada</div>
+      </div>
+      <div class="assinatura-box">
+        <div class="assinatura-linha"></div>
+        <div class="assinatura-nome">Vitor Felipe Faria Pascoal de Oliveira</div>
+        <div class="assinatura-cargo">Tecnosup — Contratada</div>
+      </div>
+    </div>
+
+    <div class="assinatura-box-contratante" style="margin-top: 40px;">
+      <div style="font-weight: 600; font-size: 10pt; color: #0D1B2A; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;">Contratante</div>
+      <div class="campo-assinatura">
+        <div class="label">Assinatura</div>
+        <div class="linha" style="margin-top: 32px;"></div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 12px;">
+        <div class="campo-assinatura">
+          <div class="label">Nome completo</div>
+          <div class="linha"></div>
+        </div>
+        <div class="campo-assinatura">
+          <div class="label">CPF</div>
+          <div class="linha"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RODAPÉ -->
+  <div class="rodape">
+    <span>Tecnosup — Suporte Técnico &amp; Soluções Digitais · Cruzeiro/SP</span>
+    <span>Documento confidencial · 2026</span>
+  </div>
+
+</div>
+</body>
+</html>

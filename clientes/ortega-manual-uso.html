@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manual de Uso — Ortega Barber</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      font-size: 11pt;
+      line-height: 1.7;
+      color: #1a1a1a;
+      background: #fff;
+    }
+
+    .page {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 60px 70px;
+    }
+
+    /* CABEÇALHO */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding-bottom: 28px;
+      border-bottom: 3px solid #b8944a;
+      margin-bottom: 36px;
+    }
+
+    .header-left .brand {
+      font-size: 22pt;
+      font-weight: 700;
+      color: #0D1B2A;
+      letter-spacing: -0.5px;
+    }
+
+    .header-left .brand span { color: #b8944a; }
+
+    .header-left .tagline {
+      font-size: 9pt;
+      color: #666;
+      margin-top: 2px;
+    }
+
+    .header-right {
+      text-align: right;
+      font-size: 9pt;
+      color: #666;
+      line-height: 1.6;
+    }
+
+    .header-right .doc-title {
+      font-size: 10pt;
+      font-weight: 600;
+      color: #0D1B2A;
+      margin-bottom: 4px;
+    }
+
+    h1 {
+      font-size: 14pt;
+      font-weight: 700;
+      color: #0D1B2A;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .subtitulo-manual {
+      text-align: center;
+      color: #666;
+      font-size: 10pt;
+      margin-bottom: 36px;
+    }
+
+    /* ÍNDICE */
+    .indice {
+      background: #f7f9fc;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin-bottom: 36px;
+    }
+
+    .indice h2 {
+      font-size: 10pt;
+      font-weight: 700;
+      color: #b8944a;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+      border: none;
+      padding: 0;
+    }
+
+    .indice ol {
+      padding-left: 18px;
+    }
+
+    .indice ol li {
+      font-size: 10pt;
+      color: #333;
+      margin-bottom: 4px;
+    }
+
+    .indice ol li a {
+      color: #0EA5E9;
+      text-decoration: none;
+    }
+
+    /* SEÇÕES */
+    .secao {
+      margin-bottom: 40px;
+    }
+
+    h2 {
+      font-size: 12pt;
+      font-weight: 700;
+      color: #0D1B2A;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid #b8944a;
+      padding-bottom: 6px;
+      margin-bottom: 16px;
+    }
+
+    h3 {
+      font-size: 10.5pt;
+      font-weight: 600;
+      color: #0D1B2A;
+      margin: 16px 0 6px 0;
+    }
+
+    p {
+      font-size: 10.5pt;
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    ul, ol {
+      padding-left: 20px;
+      margin-bottom: 12px;
+    }
+
+    ul li, ol li {
+      font-size: 10.5pt;
+      color: #333;
+      margin-bottom: 5px;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid #e8e8e8;
+      margin: 32px 0;
+    }
+
+    /* CAIXA DE DESTAQUE */
+    .destaque {
+      background: #f0f9ff;
+      border-left: 4px solid #0EA5E9;
+      border-radius: 0 6px 6px 0;
+      padding: 14px 18px;
+      margin: 12px 0;
+      font-size: 10.5pt;
+      color: #0D1B2A;
+    }
+
+    .alerta {
+      background: #fffbf0;
+      border-left: 4px solid #f6a000;
+      border-radius: 0 6px 6px 0;
+      padding: 14px 18px;
+      margin: 12px 0;
+      font-size: 10.5pt;
+      color: #333;
+    }
+
+    .dica {
+      background: #f0fff4;
+      border-left: 4px solid #38a169;
+      border-radius: 0 6px 6px 0;
+      padding: 14px 18px;
+      margin: 12px 0;
+      font-size: 10.5pt;
+      color: #333;
+    }
+
+    /* BADGE */
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 9pt;
+      font-weight: 600;
+    }
+
+    .badge-verde { background: #c6f6d5; color: #276749; }
+    .badge-amarelo { background: #fefcbf; color: #744210; }
+    .badge-azul { background: #bee3f8; color: #2a4a6e; }
+    .badge-cinza { background: #e2e8f0; color: #4a5568; }
+    .badge-vermelho { background: #fed7d7; color: #822727; }
+    .badge-roxo { background: #e9d8fd; color: #553c9a; }
+
+    /* TABELA */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0 16px 0;
+      font-size: 10pt;
+    }
+
+    thead tr { background: #0D1B2A; color: #fff; }
+
+    thead th {
+      padding: 9px 12px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 9.5pt;
+    }
+
+    tbody tr:nth-child(even) { background: #f7f9fc; }
+
+    tbody td {
+      padding: 9px 12px;
+      color: #333;
+      border-bottom: 1px solid #e8e8e8;
+      vertical-align: top;
+    }
+
+    /* PASSO A PASSO */
+    .passos {
+      counter-reset: passo;
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .passos li {
+      counter-increment: passo;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 10px;
+      font-size: 10.5pt;
+      color: #333;
+    }
+
+    .passos li::before {
+      content: counter(passo);
+      background: #b8944a;
+      color: #fff;
+      font-weight: 700;
+      font-size: 9pt;
+      min-width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* MÓDULO CARD */
+    .modulo-card {
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: 16px;
+    }
+
+    .modulo-card .modulo-titulo {
+      font-size: 11pt;
+      font-weight: 700;
+      color: #0D1B2A;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .modulo-card .modulo-desc {
+      font-size: 10pt;
+      color: #555;
+    }
+
+    /* RODAPÉ */
+    .rodape {
+      margin-top: 48px;
+      padding-top: 16px;
+      border-top: 1px solid #e8e8e8;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 8.5pt;
+      color: #aaa;
+    }
+
+    @media print {
+      body { font-size: 10.5pt; }
+      .page { padding: 40px 50px; max-width: 100%; }
+      h2 { page-break-after: avoid; }
+      .secao { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- CABEÇALHO -->
+  <div class="header">
+    <div class="header-left">
+      <div class="brand">TECNO<span>SUP</span></div>
+      <div class="tagline">Suporte Técnico &amp; Soluções Digitais — Cruzeiro/SP</div>
+    </div>
+    <div class="header-right">
+      <div class="doc-title">Manual de Uso do Sistema</div>
+      <div>Ortega Barber</div>
+      <div>Cruzeiro — SP · 2026</div>
+    </div>
+  </div>
+
+  <!-- TÍTULO -->
+  <h1>Manual de Uso — Painel Administrativo</h1>
+  <p class="subtitulo-manual">Guia completo para operar o sistema da Ortega Barber</p>
+
+  <!-- ÍNDICE -->
+  <div class="indice">
+    <h2>Índice</h2>
+    <ol>
+      <li>Acessando o painel</li>
+      <li>Visão geral — Dashboard</li>
+      <li>Agendamentos</li>
+      <li>Financeiro</li>
+      <li>Serviços</li>
+      <li>Produtos</li>
+      <li>Descontos</li>
+      <li>Cupons</li>
+      <li>Configurações</li>
+      <li>Auditoria</li>
+      <li>Boas práticas e segurança</li>
+      <li>Suporte Tecnosup</li>
+    </ol>
+  </div>
+
+  <hr>
+
+  <!-- 1. ACESSO -->
+  <div class="secao" id="acesso">
+    <h2>1. Acessando o Painel</h2>
+
+    <h3>Endereço de acesso</h3>
+    <p>Para acessar o painel administrativo, abra o navegador e acesse o endereço do seu site seguido de <strong>/admin</strong>.</p>
+    <div class="destaque">
+      <strong>Exemplo:</strong> seusite.com.br<strong>/admin</strong>
+    </div>
+
+    <h3>Fazendo login</h3>
+    <ol class="passos">
+      <li>Na tela de login, digite seu <strong>e-mail</strong> e <strong>senha</strong> cadastrados.</li>
+      <li>Clique em <strong>ENTRAR</strong>.</li>
+      <li>Você será redirecionado automaticamente para o Dashboard.</li>
+    </ol>
+
+    <div class="alerta">
+      <strong>Esqueceu a senha?</strong> Entre em contato com a Tecnosup via WhatsApp para redefinição. Não tente criar uma nova conta — o acesso é único.
+    </div>
+
+    <h3>Saindo do painel</h3>
+    <p>Para sair, clique em <strong>Sair</strong> no menu lateral (ícone de saída). Sempre saia ao usar computadores compartilhados ou celulares de terceiros.</p>
+  </div>
+
+  <hr>
+
+  <!-- 2. DASHBOARD -->
+  <div class="secao" id="dashboard">
+    <h2>2. Visão Geral — Dashboard</h2>
+
+    <p>A primeira tela após o login é o <strong>Dashboard</strong>. Ela mostra um resumo completo do seu negócio no dia.</p>
+
+    <h3>Indicadores (KPIs)</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Indicador</th>
+          <th>O que significa</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Faturamento este mês</strong></td>
+          <td>Total em R$ recebido no mês atual com base nos caixas fechados</td>
+        </tr>
+        <tr>
+          <td><strong>Agendamentos hoje</strong></td>
+          <td>Quantidade de agendamentos pendentes ou confirmados para hoje</td>
+        </tr>
+        <tr>
+          <td><strong>Lucro estimado</strong></td>
+          <td>Faturamento do mês menos os gastos fixos cadastrados</td>
+        </tr>
+        <tr>
+          <td><strong>Ticket médio</strong></td>
+          <td>Preço médio por serviço realizado no mês</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Alertas automáticos</h3>
+    <p>O sistema exibe alertas no topo da tela em situações específicas:</p>
+    <ul>
+      <li><span class="badge badge-amarelo">Laranja</span> — há agendamentos novos não confirmados</li>
+      <li><span class="badge badge-vermelho">Vermelho</span> — atendimento em menos de 30 min, ou conta a pagar em atraso</li>
+      <li><span class="badge badge-amarelo">Amarelo</span> — conta vencendo em até 3 dias</li>
+      <li><span class="badge badge-azul">Azul</span> — informações gerais</li>
+    </ul>
+
+    <h3>Gráficos e calendário</h3>
+    <ul>
+      <li><strong>Faturamento dos últimos 30 dias</strong> — gráfico de linha com o acúmulo de receita; mostra o melhor dia do período.</li>
+      <li><strong>Agendamentos recentes</strong> — lista dos últimos 12 agendamentos com status, cliente e serviço.</li>
+      <li><strong>Calendário</strong> — visão mensal com o número de agendamentos por dia. Clique nas setas para navegar entre meses.</li>
+      <li><strong>Serviços mais realizados</strong> — ranking dos 5 serviços mais feitos no mês.</li>
+    </ul>
+
+    <div class="dica">
+      <strong>Dica:</strong> O Dashboard é a tela ideal para abrir o sistema de manhã e checar rapidamente o que tem agendado no dia.
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 3. AGENDAMENTOS -->
+  <div class="secao" id="agendamentos">
+    <h2>3. Agendamentos</h2>
+
+    <p>Módulo central do sistema. Aqui você vê, gerencia e registra todos os agendamentos do dia.</p>
+
+    <h3>Navegando entre os dias</h3>
+    <p>Use as setas <strong>&lt;</strong> e <strong>&gt;</strong> ao lado da data para avançar ou voltar dias. O botão <strong>Hoje</strong> retorna para a data atual.</p>
+
+    <h3>Modos de visualização</h3>
+    <ul>
+      <li><strong>Lista</strong> — todos os agendamentos do dia em ordem cronológica</li>
+      <li><strong>Grade</strong> — horários do dia em formato de agenda, slot a slot</li>
+    </ul>
+
+    <h3>Status dos agendamentos</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Status</th>
+          <th>Significado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge badge-amarelo">Pendente</span></td>
+          <td>Agendamento feito pelo cliente, ainda não confirmado</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-azul">Confirmado</span></td>
+          <td>Agendamento confirmado, cliente comparecerá</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-verde">Concluído</span></td>
+          <td>Atendimento realizado e incluído no caixa</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-vermelho">Cancelado</span></td>
+          <td>Agendamento cancelado</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-cinza">Não compareceu</span></td>
+          <td>Cliente não apareceu no horário</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Ações disponíveis por agendamento</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Ação</th>
+          <th>O que faz</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>✓ <strong>Concluir</strong></td>
+          <td>Marca o atendimento como realizado e adiciona ao caixa do dia</td>
+        </tr>
+        <tr>
+          <td>⏱ <strong>Não compareceu</strong></td>
+          <td>Registra que o cliente faltou; não entra no caixa</td>
+        </tr>
+        <tr>
+          <td>📅 <strong>Reagendar</strong></td>
+          <td>Escolhe nova data e horário; envia notificação via WhatsApp ao responsável</td>
+        </tr>
+        <tr>
+          <td>✏️ <strong>Editar</strong></td>
+          <td>Altera o serviço e o preço do agendamento</td>
+        </tr>
+        <tr>
+          <td>🗑️ <strong>Excluir</strong></td>
+          <td>Remove o agendamento permanentemente</td>
+        </tr>
+        <tr>
+          <td>↻ <strong>Desfazer</strong></td>
+          <td>Reverte um agendamento concluído de volta para "confirmado" (caso precise corrigir)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Agendar presencialmente (walk-in)</h3>
+    <ol class="passos">
+      <li>Na visualização <strong>Grade</strong>, clique no botão <strong>+ Agendar</strong> no horário desejado.</li>
+      <li>Preencha o nome do cliente, WhatsApp (opcional), serviço e preço.</li>
+      <li>Clique em <strong>Confirmar</strong>.</li>
+    </ol>
+
+    <h3>Reagendar um cliente</h3>
+    <ol class="passos">
+      <li>Clique no ícone de calendário 📅 no agendamento.</li>
+      <li>Escolha a <strong>nova data</strong> e o <strong>novo horário</strong> disponível.</li>
+      <li>Clique em <strong>Reagendar e notificar</strong>. O sistema envia automaticamente uma mensagem WhatsApp com o novo horário.</li>
+    </ol>
+
+    <h3>Fechar o caixa do dia</h3>
+    <p>Ao final do expediente, feche o caixa para registrar o faturamento do dia no módulo Financeiro.</p>
+    <ol class="passos">
+      <li>Role até o final da página de Agendamentos.</li>
+      <li>Clique em <strong>Fechar caixa</strong>.</li>
+      <li>Confirme a operação. O total dos atendimentos concluídos é salvo automaticamente.</li>
+    </ol>
+
+    <div class="alerta">
+      <strong>Atenção:</strong> O botão Fechar caixa só aparece quando há pelo menos um atendimento concluído no dia. Após fechar, não é possível adicionar mais atendimentos ao caixa daquele dia.
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 4. FINANCEIRO -->
+  <div class="secao" id="financeiro">
+    <h2>4. Financeiro</h2>
+
+    <p>O módulo financeiro tem duas abas: <strong>Financeiro</strong> (receitas) e <strong>Gastos</strong> (despesas fixas).</p>
+
+    <h3>Aba Financeiro — Receitas</h3>
+    <p>Mostra o histórico de caixas fechados e gráficos de faturamento. Use os botões de período para filtrar:</p>
+    <ul>
+      <li><strong>Últimos 7 dias</strong></li>
+      <li><strong>Últimos 30 dias</strong></li>
+      <li><strong>Este mês</strong></li>
+      <li><strong>Mês anterior</strong></li>
+    </ul>
+
+    <h3>Aba Gastos — Despesas fixas</h3>
+    <p>Cadastre aqui os gastos mensais recorrentes do seu negócio (aluguel, internet, fornecedores etc.) para que o sistema calcule o <strong>lucro estimado</strong> corretamente.</p>
+
+    <h3>Cadastrar um gasto fixo</h3>
+    <ol class="passos">
+      <li>Clique em <strong>+ Novo gasto</strong>.</li>
+      <li>Preencha a <strong>descrição</strong> (ex: "Aluguel do espaço").</li>
+      <li>Escolha a <strong>categoria</strong>: Aluguel, Fornecedores, Salários, Utilidades, Manutenção ou Outros.</li>
+      <li>Informe o <strong>valor</strong> e a <strong>frequência</strong> (Mensal, Quinzenal, Semanal ou Diária).</li>
+      <li>Opcionalmente, informe o <strong>dia de vencimento</strong>.</li>
+      <li>Clique em <strong>Salvar</strong>.</li>
+    </ol>
+
+    <div class="dica">
+      <strong>Dica:</strong> Mantenha os gastos atualizados para que o lucro estimado no Dashboard reflita a realidade do seu negócio.
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 5. SERVIÇOS -->
+  <div class="secao" id="servicos">
+    <h2>5. Serviços</h2>
+
+    <p>Gerencie os serviços oferecidos pela barbearia. Os serviços publicados aparecem no site público e ficam disponíveis para seleção no agendamento.</p>
+
+    <h3>Cadastrar um novo serviço</h3>
+    <ol class="passos">
+      <li>Clique em <strong>+ Novo serviço</strong>.</li>
+      <li>Preencha o <strong>título</strong> (ex: "Corte Degradê").</li>
+      <li>Adicione uma <strong>descrição</strong> curta (opcional, aparece no site).</li>
+      <li>Informe o <strong>preço</strong> (ex: "45" ou "A partir de R$ 120").</li>
+      <li>Informe a <strong>duração</strong> (ex: "45 min").</li>
+      <li>Escolha o <strong>status</strong>: <span class="badge badge-verde">Publicado</span> para aparecer no site ou <span class="badge badge-cinza">Rascunho</span> para salvar sem publicar.</li>
+      <li>Defina a <strong>ordem</strong> de exibição (0 aparece primeiro).</li>
+      <li>Clique em <strong>Salvar serviço</strong>.</li>
+    </ol>
+
+    <h3>Editar ou excluir um serviço</h3>
+    <p>Na lista de serviços, clique em <strong>Editar</strong> para alterar qualquer informação, ou em <strong>Deletar</strong> para remover permanentemente.</p>
+
+    <div class="alerta">
+      <strong>Atenção:</strong> Excluir um serviço é permanente. Se quiser apenas ocultá-lo do site, troque o status para <strong>Rascunho</strong> em vez de deletar.
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 6. PRODUTOS -->
+  <div class="secao" id="produtos">
+    <h2>6. Produtos</h2>
+
+    <p>Gerencie os produtos à venda na barbearia (pomadas, shampoos, etc.). Funciona de forma idêntica ao módulo de Serviços.</p>
+
+    <h3>Cadastrar um novo produto</h3>
+    <ol class="passos">
+      <li>Clique em <strong>+ Novo produto</strong>.</li>
+      <li>Preencha o <strong>nome</strong>, <strong>descrição</strong> e <strong>preço</strong>.</li>
+      <li>Adicione uma <strong>imagem</strong> do produto (opcional, aparece no site).</li>
+      <li>Defina o <strong>status</strong> (Publicado ou Rascunho) e a <strong>ordem</strong> de exibição.</li>
+      <li>Clique em <strong>Salvar produto</strong>.</li>
+    </ol>
+  </div>
+
+  <hr>
+
+  <!-- 7. DESCONTOS -->
+  <div class="secao" id="descontos">
+    <h2>7. Descontos</h2>
+
+    <p>Crie descontos automáticos aplicados sobre serviços ou produtos específicos no site público. O desconto aparece diretamente na página de agendamento durante o período configurado.</p>
+
+    <h3>Criar um desconto</h3>
+    <ol class="passos">
+      <li>Clique em <strong>+ Novo desconto</strong>.</li>
+      <li>Escolha o <strong>tipo</strong>: Serviço ou Produto.</li>
+      <li>Selecione o <strong>serviço ou produto</strong> que receberá o desconto.</li>
+      <li>Informe o <strong>percentual</strong> de desconto (ex: 20 para 20%).</li>
+      <li>Defina a <strong>data de início</strong> e a <strong>data de fim</strong>.</li>
+      <li>Clique em <strong>Salvar desconto</strong>.</li>
+    </ol>
+
+    <h3>Status dos descontos</h3>
+    <ul>
+      <li><span class="badge badge-verde">Ativo</span> — desconto válido e aplicado agora</li>
+      <li><span class="badge badge-azul">Agendado</span> — desconto configurado, ainda não iniciou</li>
+      <li><span class="badge badge-cinza">Expirado</span> — período encerrado automaticamente</li>
+      <li><span class="badge badge-cinza">Inativo</span> — desativado manualmente</li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <!-- 8. CUPONS -->
+  <div class="secao" id="cupons">
+    <h2>8. Cupons</h2>
+
+    <p>Crie códigos promocionais que os clientes inserem durante o agendamento para obter desconto.</p>
+
+    <h3>Criar um cupom</h3>
+    <ol class="passos">
+      <li>Clique em <strong>+ Novo cupom</strong>.</li>
+      <li>Defina o <strong>código</strong> do cupom (ex: ORTEGA10 — sempre em maiúsculo).</li>
+      <li>Adicione uma <strong>descrição</strong> (ex: "Desconto de lançamento").</li>
+      <li>Escolha o <strong>tipo</strong>: Percentual (%) ou Fixo (R$).</li>
+      <li>Informe o <strong>valor</strong> do desconto.</li>
+      <li>Defina um <strong>limite de usos</strong> (deixe em branco para ilimitado).</li>
+      <li>Clique em <strong>Salvar</strong>.</li>
+    </ol>
+
+    <h3>Ativar ou desativar um cupom</h3>
+    <p>Na lista de cupons, use o <strong>botão de toggle</strong> (verde = ativo, cinza = inativo) para ativar ou pausar um cupom sem precisar excluí-lo.</p>
+
+    <div class="dica">
+      <strong>Dica:</strong> Use cupons com limite de usos para promoções de lançamento ou datas especiais. Exemplo: "OUTUBRO10" com limite de 20 usos.
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 9. CONFIGURAÇÕES -->
+  <div class="secao" id="configuracoes">
+    <h2>9. Configurações</h2>
+
+    <p>Personalize os textos e informações que aparecem no seu site público.</p>
+
+    <h3>Campos disponíveis</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Campo</th>
+          <th>Onde aparece</th>
+          <th>Exemplo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Título do hero</strong></td>
+          <td>Título principal do site</td>
+          <td>"Ortega Barber Shop"</td>
+        </tr>
+        <tr>
+          <td><strong>Subtítulo do hero</strong></td>
+          <td>Frase abaixo do título</td>
+          <td>"Estilo que define seu jeito"</td>
+        </tr>
+        <tr>
+          <td><strong>WhatsApp</strong></td>
+          <td>Botão de contato no site</td>
+          <td>5512999999999</td>
+        </tr>
+        <tr>
+          <td><strong>E-mail de contato</strong></td>
+          <td>Rodapé e seção de contato</td>
+          <td>ortega@email.com</td>
+        </tr>
+        <tr>
+          <td><strong>Texto "sobre nós"</strong></td>
+          <td>Seção de apresentação do site</td>
+          <td>"Somos uma barbearia..."</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="alerta">
+      <strong>Atenção:</strong> O WhatsApp deve ser informado com DDI e DDD, sem espaços ou símbolos. Exemplo correto: <strong>5512996065673</strong>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 10. AUDITORIA -->
+  <div class="secao" id="auditoria">
+    <h2>10. Auditoria</h2>
+
+    <p>O módulo de Auditoria registra automaticamente todas as ações realizadas no painel: criação, edição e exclusão de serviços, produtos e configurações.</p>
+
+    <h3>O que cada registro mostra</h3>
+    <ul>
+      <li><strong>Ação</strong> — o que foi feito (criar, editar, excluir)</li>
+      <li><strong>Responsável</strong> — e-mail de quem executou a ação</li>
+      <li><strong>Item afetado</strong> — qual serviço, produto ou configuração foi alterado</li>
+      <li><strong>Data e hora</strong> — quando aconteceu</li>
+    </ul>
+
+    <h3>Desfazer uma alteração</h3>
+    <p>Para ações de edição e exclusão, o botão <strong>Reverter</strong> permite restaurar o estado anterior do item. Útil caso algo seja editado ou excluído por engano.</p>
+
+    <div class="dica">
+      <strong>Dica:</strong> Consulte a Auditoria sempre que notar algo diferente no sistema — ela mostra exatamente quem alterou o quê e quando.
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 11. BOAS PRÁTICAS -->
+  <div class="secao" id="boas-praticas">
+    <h2>11. Boas Práticas e Segurança</h2>
+
+    <ul>
+      <li><strong>Não compartilhe sua senha</strong> com nenhuma outra pessoa. O acesso ao painel é pessoal e intransferível.</li>
+      <li><strong>Sempre saia (clique em "Sair")</strong> ao terminar de usar o painel, especialmente em celulares compartilhados ou computadores de terceiros.</li>
+      <li><strong>Use uma senha forte</strong>: misture letras maiúsculas, minúsculas, números e símbolos. Nunca use datas de aniversário ou sequências óbvias.</li>
+      <li><strong>Feche o caixa todo dia</strong> ao final do expediente para manter o histórico financeiro correto.</li>
+      <li><strong>Não altere as configurações de infraestrutura</strong> (Firebase, Cloudflare R2, Vercel) sem orientação da Tecnosup. Alterações incorretas podem derrubar o sistema.</li>
+      <li><strong>Em caso de acesso suspeito</strong>, entre em contato imediatamente com a Tecnosup para redefinir a senha e verificar os logs de auditoria.</li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <!-- 12. SUPORTE -->
+  <div class="secao" id="suporte">
+    <h2>12. Suporte Tecnosup</h2>
+
+    <p>Para dúvidas, bugs ou solicitações de alteração, entre em contato com a Tecnosup:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Canal</th>
+          <th>Contato</th>
+          <th>Horário</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>WhatsApp — Abraão</td>
+          <td>(12) 99606-5673</td>
+          <td>Seg–Sex, 9h–18h</td>
+        </tr>
+        <tr>
+          <td>WhatsApp — Vitor</td>
+          <td>(12) 99103-7897</td>
+          <td>Seg–Sex, 9h–18h</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="destaque">
+      Prazo de resposta: até <strong>24 horas úteis</strong>. Para emergências (sistema fora do ar), mencione "URGENTE" na mensagem.
+    </div>
+
+    <h3>O que está incluído no suporte</h3>
+    <ul>
+      <li>Correção de bugs e falhas de funcionamento</li>
+      <li>Dúvidas sobre o uso do painel</li>
+      <li>Atualizações de segurança</li>
+    </ul>
+
+    <h3>O que não está incluído no suporte gratuito</h3>
+    <ul>
+      <li>Desenvolvimento de novas funcionalidades</li>
+      <li>Criação ou edição de conteúdo (textos, fotos, serviços, produtos)</li>
+      <li>Problemas causados por alterações feitas nas contas de infraestrutura</li>
+    </ul>
+  </div>
+
+  <!-- RODAPÉ -->
+  <div class="rodape">
+    <span>Tecnosup — Suporte Técnico &amp; Soluções Digitais · Cruzeiro/SP</span>
+    <span>Manual de uso confidencial · 2026</span>
+  </div>
+
+</div>
+</body>
+</html>
