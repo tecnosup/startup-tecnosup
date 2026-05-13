@@ -5,8 +5,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import {
-  LayoutDashboard, Users, DollarSign, LogOut, Menu, X,
-  CheckSquare, Wrench, Calendar, FileText, Activity, LucideIcon,
+  LayoutDashboard, Users, DollarSign, LogOut, Menhu, X,
+  CheckSquare, Wrench, Calendar, FileText, Activity, UserPlus, LucideIcon,
 } from "lucide-react";
 
 interface NavItem {
@@ -29,7 +29,7 @@ const grupos: NavGroup[] = [
       { label: "Clientes", href: "/painel/clientes", icon: Users },
       { label: "Financeiro", href: "/painel/financeiro", icon: DollarSign },
       { label: "Proposta", href: "/painel/proposta", icon: FileText },
-      { label: "Tarefas", href: "/painel/tarefas", icon: CheckSquare },
+      { label: "Tarefas", href: "/painel/tarefas", icon: CheckSquare },      { label: "Leads", href: "/painel/leads", icon: UserPlus },
     ],
   },
   {
