@@ -5,8 +5,9 @@ import { usePathname, useRouter } from "next/navigation";
 import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import {
-  LayoutDashboard, Users, DollarSign, LogOut, Menhu, X,
-  CheckSquare, Wrench, Calendar, FileText, Activity, UserPlus, LucideIcon,
+  LayoutDashboard, Users, DollarSign, LogOut, Menu, X,
+  CheckSquare, Wrench, Calendar, FileText, Activity, TrendingUp, LucideIcon,
+  Sparkles, Globe, UserPlus,
 } from "lucide-react";
 
 interface NavItem {
@@ -28,8 +29,12 @@ const grupos: NavGroup[] = [
       { label: "Saúde", href: "/painel/saude", icon: Activity },
       { label: "Clientes", href: "/painel/clientes", icon: Users },
       { label: "Financeiro", href: "/painel/financeiro", icon: DollarSign },
-      { label: "Proposta", href: "/painel/proposta", icon: FileText },
-      { label: "Tarefas", href: "/painel/tarefas", icon: CheckSquare },      { label: "Leads", href: "/painel/leads", icon: UserPlus },
+      { label: "Contrato", href: "/painel/proposta", icon: FileText },
+      { label: "Vendas", href: "/painel/vendas", icon: TrendingUp },
+      { label: "Tarefas", href: "/painel/tarefas", icon: CheckSquare },
+      { label: "Leads", href: "/painel/leads", icon: UserPlus },
+      { label: "Criativos", href: "/painel/criativos", icon: Sparkles },
+      { label: "Projetos", href: "/painel/projetos", icon: Globe },
     ],
   },
   {

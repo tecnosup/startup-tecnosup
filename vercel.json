@@ -1,8 +1,12 @@
 {
-    "crons": [
-          {
-                  "path": "/api/cron/prospectar?secret=CRON_SECRET_PLACEHOLDER",
-                  "schedule": "0 9 * * 1-5"
-          }
-    ]
+  "crons": [
+    {
+      "path": "/api/cron/prospectar",
+      "schedule": "0 9 * * 1-5"
+    },
+    {
+      "path": "/api/cron/relatorio",
+      "schedule": "0 8 * * 1"
+    }
+  ]
 }
