@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR" className={`${orbitron.variable} ${inter.variable}`}>
-      <body className="bg-[#030407] text-[#e0e0e0] font-inter antialiased">{children}</body>
+      <body className="bg-[#030407] text-[#e0e0e0] font-inter antialiased overflow-x-hidden">{children}</body>
     </html>
   );
 }
