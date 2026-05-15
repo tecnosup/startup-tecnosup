@@ -80,18 +80,6 @@ export default function Contato() {
         </div>
 
         {/* Social */}
-        <div className="reveal scale-in flex justify-center">
-          <a
-            href="https://instagram.com/tecnosup"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 text-sm text-[#aaa] hover:text-[#0eb3ff] transition-colors"
-          >
-            <Instagram size={18} />
-            @tecnosup
-          </a>
-        </div>
-
       </div>
     </section>
   );
