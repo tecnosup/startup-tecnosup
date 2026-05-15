@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server'
 
+export const dynamic = 'force-dynamic';
+
 const PROJETOS = [
   { nome: 'Ortega Barber', url: 'https://ortega.vercel.app', cliente: 'Igor Ortega' },
   { nome: 'NYX.', url: 'https://nyx-bice.vercel.app', cliente: 'Giovana' },

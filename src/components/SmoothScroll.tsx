@@ -12,7 +12,6 @@ export default function SmoothScroll() {
       duration: 1.4,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      smoothTouch: false,
     });
 
     // Sync Lenis com GSAP ticker pra ScrollTrigger funcionar junto

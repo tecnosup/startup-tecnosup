@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { callGemini } from "@/lib/gemini";
 
+export const dynamic = 'force-dynamic';
+
 function calcularScore(lead: {
       temSite: boolean;
       usaWhatsappParaAgendar: boolean;
