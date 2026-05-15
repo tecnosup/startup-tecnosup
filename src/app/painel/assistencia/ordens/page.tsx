@@ -6,7 +6,16 @@ import {
   subscribeOS, subscribeClientesAT, addOS, updateOS, deleteOS, addClienteAT,
   OrdemServico, ClienteAT, OSStatus,
 } from "@/lib/assistencia";
-import { Plus, Pencil, Trash2, Loader2, ChevronDown, ChevronUp, Search, UserPlus, X } from "lucide-react";
+import { Plus, Pencil, Trash2, Loader2, ChevronDown, ChevronUp, Search, UserPlus, X, Printer } from "lucide-react";
+
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <label className="block text-[10px] font-orbitron tracking-widest text-[#555] mb-1.5">{label}</label>
+      {children}
+    </div>
+  );
+}
 
 const statusConfig: Record<OSStatus, { label: string; color: string }> = {
   aguardando: { label: "Aguardando", color: "#ffbd2e" },
@@ -77,12 +86,6 @@ function OSModal({ os, clientes, onClose }: {
 
   const inputCls = "w-full px-3 py-2 rounded-lg text-sm outline-none text-[#e0e0e0]";
   const inputStyle = { background: "#030407", border: "1px solid #1f3566" };
-  const Field = ({ label, children }: { label: string; children: React.ReactNode }) => (
-    <div>
-      <label className="block text-[10px] font-orbitron tracking-widest text-[#555] mb-1.5">{label}</label>
-      {children}
-    </div>
-  );
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto py-8 px-4"
@@ -195,6 +198,121 @@ function OSModal({ os, clientes, onClose }: {
       </div>
     </div>
   );
+}
+
+function gerarOSHTML(o: OrdemServico): string {
+  const dataEntrada = new Date(o.dataEntrada + "T12:00:00").toLocaleDateString("pt-BR");
+  const dataSaida = o.dataSaida ? new Date(o.dataSaida + "T12:00:00").toLocaleDateString("pt-BR") : "—";
+  const emitidoEm = new Date().toLocaleDateString("pt-BR");
+  const s = statusConfig[o.status];
+  const numOS = o.id.slice(-6).toUpperCase();
+
+  return `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>OS #${numOS} — ${o.clienteNome}</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', sans-serif; background: #fff; color: #1a1a1a; padding: 48px; max-width: 720px; margin: 0 auto; }
+  .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 36px; padding-bottom: 20px; border-bottom: 2px solid #0eb3ff; }
+  .brand h1 { font-family: monospace; font-size: 22px; font-weight: 900; letter-spacing: 0.2em; color: #0eb3ff; }
+  .brand p { font-size: 11px; color: #aaa; letter-spacing: 0.1em; margin-top: 2px; }
+  .meta { text-align: right; font-size: 12px; color: #777; }
+  .meta strong { display: block; font-size: 15px; color: #1a1a1a; font-weight: 800; }
+  .meta .num { font-size: 20px; font-weight: 900; color: #0eb3ff; letter-spacing: 0.1em; margin-bottom: 4px; }
+  .status-badge { display: inline-block; padding: 3px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; background: ${s.color}18; color: ${s.color}; border: 1px solid ${s.color}44; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .box { border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 16px; }
+  .box-title { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; color: #aaa; text-transform: uppercase; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #f0f0f0; }
+  .field { margin-bottom: 10px; }
+  .field-label { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; color: #aaa; text-transform: uppercase; margin-bottom: 3px; }
+  .field-value { font-size: 14px; color: #1a1a1a; }
+  .valor-box { background: #f0faff; border: 1px solid #0eb3ff33; border-radius: 8px; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+  .valor-label { font-size: 11px; font-weight: 700; letter-spacing: 0.15em; color: #aaa; text-transform: uppercase; }
+  .valor-num { font-size: 28px; font-weight: 900; color: #0eb3ff; }
+  .assinatura { margin-top: 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+  .assinatura-campo { border-top: 1px solid #ccc; padding-top: 8px; font-size: 12px; color: #777; }
+  .footer { margin-top: 36px; padding-top: 16px; border-top: 1px solid #eee; display: flex; justify-content: space-between; font-size: 11px; color: #aaa; }
+  @media print { body { padding: 32px; } }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="brand">
+    <h1>TECNOSUP</h1>
+    <p>ASSISTÊNCIA TÉCNICA</p>
+  </div>
+  <div class="meta">
+    <p class="num">OS #${numOS}</p>
+    <strong>ORDEM DE SERVIÇO</strong>
+    Emitida em ${emitidoEm}
+  </div>
+</div>
+
+<div class="grid2">
+  <div class="box">
+    <p class="box-title">Cliente</p>
+    <div class="field">
+      <p class="field-label">Nome</p>
+      <p class="field-value">${o.clienteNome}</p>
+    </div>
+  </div>
+  <div class="box">
+    <p class="box-title">Status</p>
+    <div class="field">
+      <span class="status-badge">${s.label}</span>
+    </div>
+    <div class="field" style="margin-top:10px;">
+      <p class="field-label">Entrada</p>
+      <p class="field-value">${dataEntrada}</p>
+    </div>
+    ${o.dataSaida ? `<div class="field">
+      <p class="field-label">Saída</p>
+      <p class="field-value">${dataSaida}</p>
+    </div>` : ""}
+  </div>
+</div>
+
+<div class="box">
+  <p class="box-title">Equipamento</p>
+  <p class="field-value" style="font-size:15px;font-weight:600;">${o.equipamento}</p>
+</div>
+
+<div class="box">
+  <p class="box-title">Problema relatado</p>
+  <p class="field-value">${o.problema || "—"}</p>
+</div>
+
+${o.diagnostico ? `<div class="box">
+  <p class="box-title">Diagnóstico / Serviço realizado</p>
+  <p class="field-value">${o.diagnostico}</p>
+</div>` : ""}
+
+${o.valor > 0 ? `<div class="valor-box">
+  <span class="valor-label">Valor do serviço</span>
+  <span class="valor-num">R$${o.valor.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}</span>
+</div>` : ""}
+
+<div class="assinatura">
+  <div class="assinatura-campo">Assinatura do cliente<br><br>${o.clienteNome}</div>
+  <div class="assinatura-campo">Técnico responsável<br><br>Tecnosup</div>
+</div>
+
+<div class="footer">
+  <span>Tecnosup — Cruzeiro, SP</span>
+  <span>OS #${numOS}</span>
+</div>
+</body>
+</html>`;
+}
+
+function abrirOS(o: OrdemServico) {
+  const html = gerarOSHTML(o);
+  const blob = new Blob([html], { type: "text/html;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  window.open(url, "_blank");
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
 }
 
 export default function OrdensPage() {
@@ -312,6 +430,11 @@ export default function OrdensPage() {
                           style={{ color: s.color, background: `${s.color}15`, border: `1px solid ${s.color}33` }}>
                           {s.label}
                         </span>
+                        <button onClick={() => abrirOS(o)}
+                          title="Imprimir OS"
+                          className="p-1.5 text-[#555] hover:text-[#0eb3ff] transition-colors">
+                          <Printer size={13} />
+                        </button>
                         <button onClick={() => setModal({ open: true, os: o })}
                           className="p-1.5 text-[#555] hover:text-[#0eb3ff] transition-colors">
                           <Pencil size={13} />

@@ -8,7 +8,7 @@ import { Cliente, ChecklistItem } from "@/lib/types";
 import {
   LucideIcon, ExternalLink, ChevronDown, ChevronUp,
   MessageCircle, Globe, Database, Cloud, CheckCircle, Clock, AlertCircle,
-  Plus, Pencil, Trash2, Loader2, Search, StickyNote, History,
+  Plus, Pencil, Trash2, Loader2, Search, StickyNote, History, ShieldCheck,
 } from "lucide-react";
 
 const statusConfig: Record<string, { label: string; color: string; icon: LucideIcon }> = {
@@ -22,11 +22,131 @@ function isInadimplente(cliente: Cliente): boolean {
   return new Date(cliente.renovacao) < new Date();
 }
 
+const DEPLOY_GRUPOS = [
+  {
+    titulo: "INFRAESTRUTURA",
+    cor: "#0eb3ff",
+    items: [
+      "Firebase migrado para conta do cliente (novo Project ID)",
+      "Cloudinary / R2 criado na conta do cliente",
+      "Vercel migrado para conta do cliente",
+      "Domínio apontando para Vercel (DNS configurado)",
+      "Todas as variáveis de ambiente configuradas na Vercel do cliente",
+      "Credenciais registradas no Bitwarden (pasta do cliente)",
+    ],
+  },
+  {
+    titulo: "SEGURANÇA",
+    cor: "#7000ff",
+    items: [
+      "ADMIN_CLAIM_SECRET gerado com 32+ caracteres (openssl rand -base64 32)",
+      "Rate limiting ativo em todas as rotas públicas de POST",
+      "AuthGuard protegendo todas as rotas /admin/*",
+      "Cookies de sessão com httpOnly, secure e sameSite: lax",
+      "Nenhum console.log com dados sensíveis no código",
+      ".env.local não commitado (verificar .gitignore)",
+    ],
+  },
+  {
+    titulo: "BACKUP",
+    cor: "#ffbd2e",
+    items: [
+      "Conta de faturamento vinculada ao projeto GCP do cliente",
+      "Bucket GCS criado com política de retenção de 90 dias",
+      "Cloud Scheduler configurado para export do Firestore (seg 03h)",
+      "Cloud Run Job configurado para sync R2 → GCS (seg 03h30)",
+      "Teste manual de backup executado e verificado",
+    ],
+  },
+  {
+    titulo: "TREINAMENTO E ENTREGA",
+    cor: "#22c55e",
+    items: [
+      "Manual de uso entregue ao cliente",
+      "Treinamento presencial ou por vídeo realizado",
+      "Cliente orientado sobre senha forte e 2FA no e-mail do Firebase",
+      "Cliente orientado a avisar a Tecnosup em caso de suspeita de acesso indevido",
+      "Sistema aprovado pelo cliente (assinatura ou confirmação por escrito)",
+    ],
+  },
+];
+
+function DeployChecklist({ clienteNome }: { clienteNome: string }) {
+  const storageKey = `deploy-checklist-${clienteNome}`;
+  const [checks, setChecks] = useState<Record<string, boolean>>(() => {
+    if (typeof window === "undefined") return {};
+    try { return JSON.parse(localStorage.getItem(storageKey) ?? "{}"); } catch { return {}; }
+  });
+
+  function toggle(item: string) {
+    setChecks((prev) => {
+      const next = { ...prev, [item]: !prev[item] };
+      localStorage.setItem(storageKey, JSON.stringify(next));
+      return next;
+    });
+  }
+
+  const total = DEPLOY_GRUPOS.reduce((s, g) => s + g.items.length, 0);
+  const feitos = Object.values(checks).filter(Boolean).length;
+  const pct = total > 0 ? Math.round((feitos / total) * 100) : 0;
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-3">
+        <p className="font-orbitron text-[10px] tracking-widest text-[#555]">CHECKLIST DE ENTREGA</p>
+        <span className="text-xs font-mono" style={{ color: pct === 100 ? "#22c55e" : "#ffbd2e" }}>
+          {feitos}/{total} — {pct}%
+        </span>
+      </div>
+      <div className="h-1 rounded-full mb-5" style={{ background: "#1f3566" }}>
+        <div className="h-1 rounded-full transition-all"
+          style={{ width: `${pct}%`, background: pct === 100 ? "#22c55e" : "linear-gradient(90deg, #0eb3ff, #7000ff)" }} />
+      </div>
+      <div className="space-y-5">
+        {DEPLOY_GRUPOS.map((grupo) => {
+          const feitosGrupo = grupo.items.filter((i) => checks[i]).length;
+          return (
+            <div key={grupo.titulo}>
+              <div className="flex items-center justify-between mb-2">
+                <p className="font-orbitron text-[10px] tracking-widest" style={{ color: grupo.cor }}>{grupo.titulo}</p>
+                <span className="text-[10px] font-mono" style={{ color: feitosGrupo === grupo.items.length ? "#22c55e" : "#555" }}>
+                  {feitosGrupo}/{grupo.items.length}
+                </span>
+              </div>
+              <div className="space-y-1.5">
+                {grupo.items.map((item) => (
+                  <button key={item} onClick={() => toggle(item)}
+                    className="flex items-start gap-3 text-sm w-full text-left hover:opacity-80 transition-opacity">
+                    <div className="shrink-0 w-4 h-4 rounded flex items-center justify-center mt-0.5 transition-all"
+                      style={{ background: checks[item] ? `${grupo.cor}22` : "transparent", border: `1px solid ${checks[item] ? grupo.cor : "#1f3566"}` }}>
+                      {checks[item] && <div className="w-2 h-2 rounded-sm" style={{ background: grupo.cor }} />}
+                    </div>
+                    <span style={{ color: checks[item] ? "#555" : "#e0e0e0", textDecoration: checks[item] ? "line-through" : "none" }}>
+                      {item}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      {pct === 100 && (
+        <div className="mt-5 rounded-lg px-4 py-3 text-xs font-orbitron text-center"
+          style={{ background: "#22c55e15", border: "1px solid #22c55e33", color: "#22c55e" }}>
+          ✓ ENTREGA COMPLETA — {clienteNome}
+        </div>
+      )}
+      <p className="text-[10px] text-[#444] mt-3">Progresso salvo localmente neste dispositivo.</p>
+    </div>
+  );
+}
+
 function ClienteCard({ cliente, onEdit, onDelete }: {
   cliente: Cliente; onEdit: () => void; onDelete: () => void;
 }) {
   const [open, setOpen] = useState(false);
-  const [tab, setTab] = useState<"info" | "notas" | "historico">("info");
+  const [tab, setTab] = useState<"info" | "deploy" | "notas" | "historico">("info");
   const [checklist, setChecklist] = useState<ChecklistItem[]>(cliente.checklist);
   const [notas, setNotas] = useState(cliente.notas ?? "");
   const [savingChecklist, setSavingChecklist] = useState(false);
@@ -112,6 +232,7 @@ function ClienteCard({ cliente, onEdit, onDelete }: {
           <div className="flex border-b" style={{ borderColor: "#1f3566" }}>
             {([
               { key: "info", label: "Info", icon: Globe },
+              { key: "deploy", label: "Deploy", icon: ShieldCheck },
               { key: "notas", label: "Notas", icon: StickyNote },
               { key: "historico", label: "Histórico", icon: History },
             ] as const).map(({ key, label, icon: Icon }) => (
@@ -202,6 +323,9 @@ function ClienteCard({ cliente, onEdit, onDelete }: {
                 </div>
               </div>
             )}
+
+            {/* Tab: Deploy */}
+            {tab === "deploy" && <DeployChecklist clienteNome={cliente.nome} />}
 
             {/* Tab: Notas */}
             {tab === "notas" && (

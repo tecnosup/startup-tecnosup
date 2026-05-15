@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { callGemini, parseGeminiJson } from '@/lib/gemini'
 
 export async function POST(req: NextRequest) {
   const { tema, tipo, tom } = await req.json()
@@ -7,15 +8,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Campos obrigatórios: tema, tipo, tom' }, { status: 400 })
   }
 
-  const geminiKey = process.env.GEMINI_API_KEY
-  const recraftKey = process.env.RECRAFT_API_KEY
-
-  if (!geminiKey || !recraftKey) {
-    return NextResponse.json({ error: 'GEMINI_API_KEY ou RECRAFT_API_KEY não configuradas' }, { status: 500 })
+  if (!process.env.GEMINI_API_KEY) {
+    return NextResponse.json({ error: 'GEMINI_API_KEY não configurada' }, { status: 500 })
   }
 
-  // Gerar copy e prompt de imagem via Gemini
-  const promptGemini = `
+  const prompt = `
 Você é um especialista em marketing digital para pequenos negócios locais no Brasil.
 A Tecnosup é uma agência digital de Cruzeiro-SP que desenvolve sites, sistemas de agendamento e e-commerces para barbearias e lojas de roupa.
 
@@ -32,43 +29,15 @@ Retorne APENAS um JSON válido com esta estrutura (sem markdown, sem explicaçõ
 }
 `
 
-  const geminiRes = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiKey}`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ contents: [{ parts: [{ text: promptGemini }] }] }),
-    }
-  )
-
-  const geminiData = await geminiRes.json()
-  const rawText = geminiData.candidates?.[0]?.content?.parts?.[0]?.text ?? ''
-
   let parsed: { caption: string; hashtags: string[]; promptImagem: string }
   try {
-    const clean = rawText.replace(/```json|```/g, '').trim()
-    parsed = JSON.parse(clean)
+    const raw = await callGemini(prompt)
+    parsed = parseGeminiJson(raw)
   } catch {
-    return NextResponse.json({ error: 'Gemini retornou formato inválido', raw: rawText }, { status: 500 })
+    return NextResponse.json({ error: 'Gemini retornou formato inválido' }, { status: 500 })
   }
 
-  // Gerar imagem via Recraft
-  const recraftRes = await fetch('https://external.api.recraft.ai/v1/images/generations', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${recraftKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      prompt: parsed.promptImagem,
-      style: 'realistic_image',
-      width: 1080,
-      height: 1080,
-    }),
-  })
-
-  const recraftData = await recraftRes.json()
-  const imagemUrl = recraftData.data?.[0]?.url ?? null
+  const imagemUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(parsed.promptImagem)}?width=1080&height=1080&nologo=true`
 
   return NextResponse.json({
     caption: parsed.caption,

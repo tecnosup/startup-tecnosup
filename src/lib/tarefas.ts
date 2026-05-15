@@ -4,11 +4,16 @@ import {
 } from "firebase/firestore";
 import { db } from "./firebase";
 
+export type Responsavel = "Cardoso" | "Vitor" | "Ambos";
+
 export interface Tarefa {
   id: string;
   texto: string;
   feito: boolean;
   prioridade: "alta" | "media" | "baixa";
+  responsavel: Responsavel;
+  clienteNome: string;
+  prazo: string | null;
   criadoEm: string;
 }
 

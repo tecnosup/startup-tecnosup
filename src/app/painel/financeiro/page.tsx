@@ -1,11 +1,12 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import AuthGuard from "@/components/painel/AuthGuard";
 import Sidebar from "@/components/painel/Sidebar";
 import { subscribeClientes, updateCliente, addHistorico } from "@/lib/clientes";
 import { subscribePagamentos, addPagamento, deletePagamento } from "@/lib/pagamentos";
 import { Cliente, Pagamento } from "@/lib/types";
-import { LucideIcon, Plus, Trash2, Loader2, DollarSign, TrendingUp, Calendar, Download } from "lucide-react";
+import { LucideIcon, Plus, Trash2, Loader2, DollarSign, TrendingUp, Calendar, Download, Receipt } from "lucide-react";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from "recharts";
 
 const TIPOS = ["mensalidade", "setup", "avulso"] as const;
 const tipoLabel: Record<string, string> = {
@@ -37,6 +38,137 @@ function StatCard({ icon: Icon, label, value, sub }: {
   );
 }
 
+function gerarReciboHTML(p: Pagamento): string {
+  const dataFormatada = new Date(p.data + "T12:00:00").toLocaleDateString("pt-BR", {
+    day: "2-digit", month: "long", year: "numeric",
+  });
+  const emitidoEm = new Date().toLocaleDateString("pt-BR", {
+    day: "2-digit", month: "long", year: "numeric",
+  });
+  const tipoFormatado = tipoLabel[p.tipo] ?? p.tipo;
+
+  return `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Recibo — ${p.clienteNome}</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', sans-serif; background: #fff; color: #1a1a1a; padding: 48px; max-width: 680px; margin: 0 auto; }
+  .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 40px; padding-bottom: 20px; border-bottom: 2px solid #0eb3ff; }
+  .brand h1 { font-family: monospace; font-size: 22px; font-weight: 900; letter-spacing: 0.2em; color: #0eb3ff; }
+  .brand p { font-size: 11px; color: #aaa; letter-spacing: 0.1em; margin-top: 2px; }
+  .meta { text-align: right; font-size: 12px; color: #777; }
+  .meta strong { display: block; font-size: 15px; color: #1a1a1a; font-weight: 800; letter-spacing: 0.05em; }
+  .title { font-size: 13px; font-weight: 700; letter-spacing: 0.15em; color: #aaa; text-transform: uppercase; margin-bottom: 28px; }
+  .box { border: 1px solid #e0e0e0; border-radius: 10px; padding: 28px; margin-bottom: 24px; }
+  .row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
+  .row:last-child { border-bottom: none; }
+  .row-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; color: #aaa; text-transform: uppercase; }
+  .row-value { font-size: 14px; color: #1a1a1a; font-weight: 500; }
+  .valor-destaque { font-size: 32px; font-weight: 900; color: #0eb3ff; text-align: center; padding: 20px; background: #f0faff; border-radius: 10px; border: 1px solid #0eb3ff33; margin-bottom: 24px; }
+  .valor-destaque small { display: block; font-size: 12px; color: #777; font-weight: 400; margin-top: 4px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .assinatura { margin-top: 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+  .assinatura-campo { border-top: 1px solid #ccc; padding-top: 8px; font-size: 12px; color: #777; }
+  .footer { margin-top: 36px; padding-top: 20px; border-top: 1px solid #eee; display: flex; justify-content: space-between; font-size: 11px; color: #aaa; }
+  @media print { body { padding: 32px; } }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="brand">
+    <h1>TECNOSUP</h1>
+    <p>TECNOLOGIA QUE RESOLVE DE VERDADE</p>
+  </div>
+  <div class="meta">
+    <strong>RECIBO DE PAGAMENTO</strong>
+    Emitido em ${emitidoEm}
+  </div>
+</div>
+
+<p class="title">Comprovante de recebimento</p>
+
+<div class="valor-destaque">
+  R$${p.valor.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+  <small>${tipoFormatado}${p.descricao ? " — " + p.descricao : ""}</small>
+</div>
+
+<div class="box">
+  <div class="row">
+    <span class="row-label">Cliente</span>
+    <span class="row-value">${p.clienteNome}</span>
+  </div>
+  <div class="row">
+    <span class="row-label">Tipo</span>
+    <span class="row-value">${tipoFormatado}</span>
+  </div>
+  ${p.descricao ? `<div class="row">
+    <span class="row-label">Referência</span>
+    <span class="row-value">${p.descricao}</span>
+  </div>` : ""}
+  <div class="row">
+    <span class="row-label">Data do pagamento</span>
+    <span class="row-value">${dataFormatada}</span>
+  </div>
+  <div class="row">
+    <span class="row-label">Valor</span>
+    <span class="row-value" style="font-weight:700;font-size:16px;">R$${p.valor.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}</span>
+  </div>
+</div>
+
+<div class="assinatura">
+  <div class="assinatura-campo">Assinatura do cliente<br><br>${p.clienteNome}</div>
+  <div class="assinatura-campo">Recebido por<br><br>Tecnosup</div>
+</div>
+
+<div class="footer">
+  <span>Tecnosup — Cruzeiro, SP</span>
+  <span>Documento sem valor fiscal</span>
+</div>
+</body>
+</html>`;
+}
+
+function abrirRecibo(p: Pagamento) {
+  const html = gerarReciboHTML(p);
+  const blob = new Blob([html], { type: "text/html;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  window.open(url, "_blank");
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
+}
+
+function buildChartData(pagamentos: Pagamento[]) {
+  const map: Record<string, { mes: string; mensalidade: number; setup: number; avulso: number }> = {};
+  for (const p of pagamentos) {
+    const mes = p.data.slice(0, 7);
+    if (!map[mes]) map[mes] = { mes, mensalidade: 0, setup: 0, avulso: 0 };
+    if (p.tipo === "mensalidade") map[mes].mensalidade += p.valor;
+    else if (p.tipo === "setup") map[mes].setup += p.valor;
+    else map[mes].avulso += p.valor;
+  }
+  return Object.values(map)
+    .sort((a, b) => a.mes.localeCompare(b.mes))
+    .slice(-6)
+    .map((d) => ({
+      ...d,
+      mes: new Date(d.mes + "-15").toLocaleDateString("pt-BR", { month: "short", year: "2-digit" }),
+    }));
+}
+
+const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: { name: string; value: number; color: string }[]; label?: string }) => {
+  if (!active || !payload?.length) return null;
+  return (
+    <div className="rounded-lg border p-3 text-xs" style={{ background: "#0b1121", borderColor: "#1f3566" }}>
+      <p className="font-orbitron text-[10px] text-[#555] mb-2">{label}</p>
+      {payload.map((e) => e.value > 0 && (
+        <p key={e.name} style={{ color: e.color }}>
+          {tipoLabel[e.name]}: R${e.value.toLocaleString("pt-BR")}
+        </p>
+      ))}
+    </div>
+  );
+};
+
 export default function FinanceiroPage() {
   const [pagamentos, setPagamentos] = useState<Pagamento[]>([]);
   const [clientes, setClientes] = useState<Cliente[]>([]);
@@ -66,6 +198,8 @@ export default function FinanceiroPage() {
     .filter((c) => c.status === "ativo")
     .reduce((s, c) => s + (c.plano ?? 0), 0);
 
+  const chartData = useMemo(() => buildChartData(pagamentos), [pagamentos]);
+
   async function handleAdd() {
     if (!form.clienteId || !form.valor || !form.data) {
       setErro("Preencha cliente, valor e data.");
@@ -84,7 +218,6 @@ export default function FinanceiroPage() {
         tipo: form.tipo,
       });
 
-      // vínculo automático: mensalidade paga → ativa cliente e avança renovação 1 mês
       if (form.tipo === "mensalidade" && cliente) {
         const novaRenovacao = new Date(form.data);
         novaRenovacao.setMonth(novaRenovacao.getMonth() + 1);
@@ -152,6 +285,27 @@ export default function FinanceiroPage() {
               value={receitaTotal > 0 ? `R$${receitaTotal.toLocaleString("pt-BR")}` : "—"}
               sub="histórico completo" />
           </div>
+
+          {/* Gráfico mensal */}
+          {chartData.length > 0 && (
+            <div className="rounded-xl border p-5 mb-6" style={{ background: "#0b1121", borderColor: "#1f3566" }}>
+              <p className="font-orbitron text-[10px] tracking-widest text-[#555] mb-5">RECEITA POR MÊS</p>
+              <ResponsiveContainer width="100%" height={200}>
+                <BarChart data={chartData} barSize={14} barGap={4}>
+                  <XAxis dataKey="mes" tick={{ fill: "#555", fontSize: 10, fontFamily: "monospace" }} axisLine={false} tickLine={false} />
+                  <YAxis tick={{ fill: "#555", fontSize: 10, fontFamily: "monospace" }} axisLine={false} tickLine={false}
+                    tickFormatter={(v) => `R$${v}`} width={56} />
+                  <Tooltip content={<CustomTooltip />} cursor={{ fill: "#ffffff08" }} />
+                  <Legend
+                    formatter={(value) => <span style={{ color: "#777", fontSize: 10, fontFamily: "monospace" }}>{tipoLabel[value]}</span>}
+                    iconSize={8} wrapperStyle={{ paddingTop: 12 }} />
+                  <Bar dataKey="mensalidade" fill="#0eb3ff" radius={[3, 3, 0, 0]} />
+                  <Bar dataKey="setup" fill="#7000ff" radius={[3, 3, 0, 0]} />
+                  <Bar dataKey="avulso" fill="#22c55e" radius={[3, 3, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          )}
 
           <div className="grid lg:grid-cols-3 gap-6">
             {/* Formulário */}
@@ -240,6 +394,11 @@ export default function FinanceiroPage() {
                           <p className="text-sm font-bold text-white">R${p.valor.toLocaleString("pt-BR")}</p>
                           <p className="text-xs text-[#555] font-mono">{p.data}</p>
                         </div>
+                        <button onClick={() => abrirRecibo(p)}
+                          title="Gerar recibo"
+                          className="text-[#444] hover:text-[#0eb3ff] transition-colors">
+                          <Receipt size={13} />
+                        </button>
                         <button onClick={() => deletePagamento(p.id)}
                           className="text-[#444] hover:text-red-400 transition-colors">
                           <Trash2 size={13} />
