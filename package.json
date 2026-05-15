@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "node -e \"const fs=require('fs');if(fs.existsSync('src/app/api'))fs.renameSync('src/app/api','src/app/_api_disabled')\" && next build && node -e \"const fs=require('fs');if(fs.existsSync('src/app/_api_disabled'))fs.renameSync('src/app/_api_disabled','src/app/api')\"",
     "start": "next start",
     "lint": "next lint"
   },
