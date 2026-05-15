@@ -4,7 +4,7 @@ import { ExternalLink, Clock, CheckCircle } from "lucide-react";
 const cases = [
   {
     badge: "01",
-    cliente: "NYX Streetwear",
+    cliente: "nyxwear",
     segmento: "E-commerce · Moda",
     status: "No ar",
     stack: ["Next.js", "Firebase", "Cloudinary"],
