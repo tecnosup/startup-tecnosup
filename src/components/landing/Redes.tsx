@@ -12,7 +12,7 @@ const redes = [
   {
     nome: "Instagram",
     desc: "Ofertas relâmpago de serviços, bastidores da bancada e dicas rápidas de hardware.",
-    href: "https://instagram.com/tecnosup",
+    href: "https://www.instagram.com/tecnosuporte/",
     Icon: Instagram,
     color: "#E1306C",
     neon: "rgba(225,48,108,0.6)",
@@ -21,7 +21,7 @@ const redes = [
   {
     nome: "Facebook",
     desc: "Comunidade, avaliações de clientes e novidades sobre a empresa.",
-    href: "https://facebook.com/tecnosup",
+    href: "https://www.facebook.com/tecnosup.crz",
     Icon: Facebook,
     color: "#1877F2",
     neon: "rgba(24,119,242,0.6)",
@@ -30,7 +30,7 @@ const redes = [
   {
     nome: "TikTok",
     desc: "Vídeos satisfatórios de limpeza, montagens aceleradas e humor tech.",
-    href: "https://tiktok.com/@tecnosup",
+    href: "https://www.tiktok.com/@tecnosup",
     Icon: TikTokIcon,
     color: "#69C9D0",
     neon: "rgba(105,201,208,0.6)",
@@ -39,7 +39,7 @@ const redes = [
   {
     nome: "YouTube",
     desc: "Tutoriais aprofundados, benchmarks de jogos e reviews de peças.",
-    href: "https://youtube.com/@tecnosup",
+    href: "https://www.youtube.com/@Tecnosup012",
     Icon: Youtube,
     color: "#FF0000",
     neon: "rgba(255,0,0,0.6)",
