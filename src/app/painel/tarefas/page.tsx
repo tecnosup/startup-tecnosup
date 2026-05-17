@@ -202,8 +202,8 @@ export default function TarefasPage() {
                   </p>
                   <div className="space-y-2">
                     {pendentes.map((t) => {
-                      const p = prioridadeConfig[t.prioridade];
-                      const rc = responsavelConfig[t.responsavel ?? "Cardoso"];
+                      const p = prioridadeConfig[t.prioridade] ?? prioridadeConfig.media;
+                      const rc = responsavelConfig[t.responsavel as Responsavel] ?? responsavelConfig.Cardoso;
                       const pl = prazoLabel(t.prazo ?? null);
                       const pc = prazoColor(t.prazo ?? null);
                       return (

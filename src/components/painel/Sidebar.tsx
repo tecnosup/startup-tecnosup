@@ -7,7 +7,7 @@ import { auth } from "@/lib/firebase";
 import {
   LayoutDashboard, Users, DollarSign, LogOut, Menu, X,
   CheckSquare, Wrench, Calendar, FileText, Activity, TrendingUp, LucideIcon,
-  Sparkles, Globe, UserPlus,
+  Sparkles, Globe, UserPlus, Zap,
 } from "lucide-react";
 
 interface NavItem {
@@ -26,6 +26,7 @@ const grupos: NavGroup[] = [
     titulo: "SISTEMAS WEB",
     items: [
       { label: "Dashboard", href: "/painel", icon: LayoutDashboard },
+      { label: "JARVIS", href: "/painel/jarvis", icon: Zap },
       { label: "Saúde", href: "/painel/saude", icon: Activity },
       { label: "Clientes", href: "/painel/clientes", icon: Users },
       { label: "Financeiro", href: "/painel/financeiro", icon: DollarSign },
@@ -58,10 +59,15 @@ function NavLinks({ pathname, onClose }: { pathname: string; onClose?: () => voi
           <div className="space-y-0.5">
             {grupo.items.map(({ label, href, icon: Icon }) => {
               const active = pathname === href || (href !== "/painel" && pathname.startsWith(href));
+              const isJarvis = href === "/painel/jarvis";
               return (
                 <Link key={href} href={href} onClick={onClose}
                   className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all"
-                  style={{
+                  style={isJarvis ? {
+                    background: active ? "rgba(14,179,255,0.12)" : "rgba(14,179,255,0.05)",
+                    color: active ? "#0eb3ff" : "#0eb3ff99",
+                    border: active ? "1px solid #0eb3ff44" : "1px solid #0eb3ff22",
+                  } : {
                     background: active ? "rgba(14,179,255,0.08)" : "transparent",
                     color: active ? "#0eb3ff" : "#777",
                     border: active ? "1px solid #0eb3ff22" : "1px solid transparent",

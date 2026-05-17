@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proposta — Barbearia Século XXI</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --black: #0A0A0A;
+      --dark: #111111;
+      --card: #1A1A1A;
+      --border: #2a2a2a;
+      --blue: #3B82F6;
+      --white: #FFFFFF;
+      --muted: #888888;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--black);
+      color: var(--white);
+      width: 210mm;
+      margin: 0 auto;
+    }
+
+    .page {
+      width: 210mm;
+      height: 297mm;
+      padding: 14mm 16mm;
+      background: var(--black);
+      position: relative;
+      page-break-after: always;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+
+    .page::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    .label {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      color: var(--blue);
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 32px;
+    }
+    .label::before {
+      content: '';
+      display: block;
+      width: 28px;
+      height: 1.5px;
+      background: var(--blue);
+    }
+
+    .page-num {
+      position: absolute;
+      bottom: 12mm;
+      right: 16mm;
+      font-size: 9px;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+    .page-footer {
+      position: absolute;
+      bottom: 12mm;
+      left: 16mm;
+      font-size: 9px;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    .hero-title {
+      font-size: 52px;
+      font-weight: 900;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+    .hero-title em { font-style: italic; color: var(--blue); }
+
+    .hero-sub {
+      font-size: 14px;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.7;
+      max-width: 480px;
+    }
+
+    .info-row { display: flex; gap: 16px; }
+    .info-box {
+      flex: 1;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 18px;
+    }
+    .info-box .info-label {
+      font-size: 8px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .info-box .info-value { font-size: 14px; font-weight: 700; }
+
+    .section-title {
+      font-size: 36px;
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+    .section-title em { font-style: italic; color: var(--blue); }
+
+    .cards { display: grid; gap: 10px; margin-top: 8px; }
+    .cards-2 { grid-template-columns: 1fr 1fr; }
+
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 18px 18px;
+      background: var(--card);
+    }
+    .card .card-num {
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--blue);
+      margin-bottom: 8px;
+      letter-spacing: 0.05em;
+    }
+    .card .card-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+    .card .card-desc { font-size: 11px; color: rgba(255,255,255,0.55); line-height: 1.6; }
+
+    .arrow-list { list-style: none; display: flex; flex-direction: column; gap: 14px; margin-top: 8px; }
+    .arrow-list li { display: flex; gap: 12px; font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.8); }
+    .arrow-list li::before { content: '→'; color: var(--blue); flex-shrink: 0; margin-top: 1px; }
+
+    .compare { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 12px; }
+    .compare thead tr { border-bottom: 1px solid var(--border); }
+    .compare thead th {
+      padding: 10px 14px;
+      text-align: left;
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .compare thead th:last-child { color: var(--blue); }
+    .compare tbody tr { border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .compare tbody td { padding: 11px 14px; color: rgba(255,255,255,0.75); vertical-align: top; }
+    .compare tbody td:first-child { font-weight: 600; color: var(--white); width: 32%; }
+    .compare tbody td:nth-child(2) { color: rgba(255,255,255,0.4); }
+    .compare tbody td:last-child { color: var(--blue); font-weight: 600; }
+
+    .price-block {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 28px 28px;
+      background: var(--card);
+      margin-top: 16px;
+    }
+    .price-main { font-size: 42px; font-weight: 900; letter-spacing: -0.02em; line-height: 1; margin-bottom: 4px; }
+    .price-main span { font-size: 16px; font-weight: 500; color: var(--muted); }
+    .price-detail { font-size: 12px; color: var(--muted); margin-bottom: 20px; }
+    .price-urgency {
+      background: rgba(59,130,246,0.1);
+      border: 1px solid rgba(59,130,246,0.3);
+      border-radius: 6px;
+      padding: 12px 14px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.8);
+      line-height: 1.6;
+    }
+
+    .steps { display: flex; flex-direction: column; gap: 0; margin-top: 12px; }
+    .step { display: flex; gap: 16px; align-items: flex-start; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .step:last-child { border-bottom: none; }
+    .step-num {
+      width: 28px; height: 28px;
+      border: 1px solid var(--blue);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; color: var(--blue);
+      flex-shrink: 0; margin-top: 1px;
+    }
+    .step-content .step-title { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+    .step-content .step-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+    .contact-block {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 22px 24px;
+      background: var(--card);
+      margin-top: 16px;
+    }
+    .contact-name { font-size: 16px; font-weight: 800; margin-bottom: 4px; }
+    .contact-role { font-size: 11px; color: var(--muted); margin-bottom: 14px; }
+    .contact-info { font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.9; }
+
+    .closing-big {
+      font-size: 44px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.0;
+      margin-bottom: 20px;
+    }
+    .closing-big em { color: var(--blue); font-style: italic; }
+
+    .closing-text {
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.8;
+      max-width: 420px;
+      margin-bottom: 32px;
+    }
+
+    @media print {
+      body { width: 210mm; }
+      .page { page-break-after: always; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- PÁGINA 1 — CAPA -->
+<div class="page">
+  <div class="label">Proposta Comercial</div>
+
+  <div class="hero-title">
+    Presença digital<br>
+    <em>que é sua.</em><br>
+    Do início ao fim.
+  </div>
+
+  <div class="hero-sub">
+    A Barbearia Século XXI tem forte presença no Instagram e uma clientela consolidada na Vila Paulo Romeu.
+    Essa proposta é sobre dar a esse negócio uma base digital própria — onde o cliente agenda, você controla e
+    a marca cresce sem depender de ninguém.
+  </div>
+
+  <div class="info-row">
+    <div class="info-box">
+      <div class="info-label">Cliente</div>
+      <div class="info-value">Barbearia Século XXI</div>
+    </div>
+    <div class="info-box">
+      <div class="info-label">Desenvolvimento</div>
+      <div class="info-value">Tecnosup</div>
+    </div>
+    <div class="info-box">
+      <div class="info-label">Data</div>
+      <div class="info-value">Maio 2026</div>
+    </div>
+  </div>
+
+  <div class="page-footer">PROPOSTA COMERCIAL</div>
+  <div class="page-num">01 / 05</div>
+</div>
+
+<!-- PÁGINA 2 — O PROBLEMA -->
+<div class="page">
+  <div class="label">O Cenário Atual</div>
+
+  <div class="section-title">
+    O AppBarber<br>
+    <em>trabalha pra ele.</em><br>
+    Não pra você.
+  </div>
+
+  <ul class="arrow-list">
+    <li>
+      <div>
+        <strong>Você financia a concorrência.</strong> Quando seu cliente abre o app, ele vê a sua barbearia e todas as outras da cidade na mesma tela. Você paga o sistema que pode te levar o cliente.
+      </div>
+    </li>
+    <li>
+      <div>
+        <strong>Sua presença digital está na plataforma deles.</strong> Você investe no Instagram e no atendimento — mas o agendamento acontece dentro do app deles, com a marca deles. O cliente é deles, não seu.
+      </div>
+    </li>
+    <li>
+      <div>
+        <strong>Só agenda. Nada mais.</strong> O AppBarber não mostra quanto você faturou hoje, quais foram seus gastos do mês, quanto cada barbeiro gerou ou quem são seus clientes mais fiéis.
+      </div>
+    </li>
+    <li>
+      <div>
+        <strong>Comprado por empresa italiana.</strong> Em dezembro de 2024, o AppBarber foi adquirido pela Zucchetti por R$ 25 milhões. Suporte cada vez mais distante, e reajuste de preço no horizonte.
+      </div>
+    </li>
+    <li>
+      <div>
+        <strong>Horário estendido merece um sistema à altura.</strong> Você atende até as 19h30 — mas seu sistema de gestão tem as mesmas limitações de uma barbearia que fecha às 17h.
+      </div>
+    </li>
+  </ul>
+
+  <div class="page-footer">O CENÁRIO ATUAL</div>
+  <div class="page-num">02 / 05</div>
+</div>
+
+<!-- PÁGINA 3 — A SOLUÇÃO -->
+<div class="page">
+  <div class="label">A Solução</div>
+
+  <div class="section-title">
+    Tudo o que você<br>
+    <em>precisa,</em><br>
+    com sua marca.
+  </div>
+
+  <div class="cards cards-2">
+    <div class="card">
+      <div class="card-num">01</div>
+      <div class="card-title">Site próprio da barbearia</div>
+      <div class="card-desc">Landing page com seu nome, sua identidade visual, seus serviços e preços. Cliente agenda pelo seu site — sem baixar app de ninguém.</div>
+    </div>
+    <div class="card">
+      <div class="card-num">02</div>
+      <div class="card-title">Agendamento online completo</div>
+      <div class="card-desc">Serviço, barbeiro, data e horário. Slots em tempo real, sem conflito. Confirmação automática com mensagem pronta no WhatsApp.</div>
+    </div>
+    <div class="card">
+      <div class="card-num">03</div>
+      <div class="card-title">Painel financeiro real</div>
+      <div class="card-desc">Faturamento do dia, gastos do mês, fechamento de caixa e gráficos de receita. Visão completa do negócio em uma tela.</div>
+    </div>
+    <div class="card">
+      <div class="card-num">04</div>
+      <div class="card-title">Comissão automática por barbeiro</div>
+      <div class="card-desc">Cada barbeiro tem seu portal com sua agenda e seus ganhos. O cálculo de comissão é automático — sem planilha, sem erro.</div>
+    </div>
+    <div class="card">
+      <div class="card-num">05</div>
+      <div class="card-title">Programa de assinatura</div>
+      <div class="card-desc">Crie planos mensais onde o cliente paga todo mês e garante seus cortes. Fidelização real com receita previsível.</div>
+    </div>
+    <div class="card">
+      <div class="card-num">06</div>
+      <div class="card-title">Cupons, estoque e auditoria</div>
+      <div class="card-desc">Cupons de desconto, controle de produtos, histórico de todas as ações. Gestão completa em um só lugar.</div>
+    </div>
+  </div>
+
+  <div class="page-footer">A SOLUÇÃO</div>
+  <div class="page-num">03 / 05</div>
+</div>
+
+<!-- PÁGINA 4 — COMPARATIVO + INVESTIMENTO -->
+<div class="page">
+  <div class="label">Comparativo e Investimento</div>
+
+  <div class="section-title">
+    Mais por<br>
+    <em>quase o mesmo</em><br>
+    preço.
+  </div>
+
+  <table class="compare">
+    <thead>
+      <tr>
+        <th>Funcionalidade</th>
+        <th>AppBarber</th>
+        <th>Tecnosup</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Site próprio com sua marca</td>
+        <td>Não — app genérico</td>
+        <td>Sim — seu domínio</td>
+      </tr>
+      <tr>
+        <td>Agendamento online</td>
+        <td>Sim</td>
+        <td>Sim</td>
+      </tr>
+      <tr>
+        <td>Financeiro e fechamento de caixa</td>
+        <td>Não</td>
+        <td>Sim</td>
+      </tr>
+      <tr>
+        <td>Comissão automática por barbeiro</td>
+        <td>Parcial</td>
+        <td>Sim</td>
+      </tr>
+      <tr>
+        <td>Assinatura da sua marca</td>
+        <td>Genérica — do AppBarber</td>
+        <td>Sim — sua barbearia</td>
+      </tr>
+      <tr>
+        <td>Cupons de desconto</td>
+        <td>Não</td>
+        <td>Sim</td>
+      </tr>
+      <tr>
+        <td>Controle de estoque</td>
+        <td>Não</td>
+        <td>Sim</td>
+      </tr>
+      <tr>
+        <td>Suporte local (Cruzeiro/SP)</td>
+        <td>Não — empresa italiana</td>
+        <td>Sim — presencial</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="price-block">
+    <div class="price-main">R$ 129,90 <span>/ mês</span></div>
+    <div class="price-detail">Parcelado em 12× no cartão de crédito — sistema completo, configuração e suporte inclusos.</div>
+    <div class="price-urgency">
+      <strong>Oferta para primeiros clientes.</strong> Este valor é válido para as barbearias que fecharem nesta primeira rodada. Após isso, o preço sobe. Se fizer sentido pra você, vale conversar logo.
+    </div>
+  </div>
+
+  <div class="page-footer">COMPARATIVO E INVESTIMENTO</div>
+  <div class="page-num">04 / 05</div>
+</div>
+
+<!-- PÁGINA 5 — PRÓXIMOS PASSOS + CONTATO -->
+<div class="page">
+  <div class="label">Próximos Passos</div>
+
+  <div class="closing-big">
+    O Século XXI<br>
+    não ganha<br>
+    <em>só um site.</em>
+  </div>
+
+  <div class="closing-text">
+    Ganha uma base própria para vender, organizar horários, controlar o financeiro
+    e fidelizar clientes — sem depender de nenhuma plataforma genérica.
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-content">
+        <div class="step-title">Reunião de alinhamento</div>
+        <div class="step-desc">30 minutos para apresentar o sistema ao vivo, tirar dúvidas e alinhar os detalhes da proposta.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-content">
+        <div class="step-title">Aprovação e contrato</div>
+        <div class="step-desc">Contrato simples, escopo claro e início imediato após assinatura.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-content">
+        <div class="step-title">Personalização e entrega</div>
+        <div class="step-desc">A gente configura tudo com a identidade do Século XXI — serviços, preços, imagens e domínio.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-content">
+        <div class="step-title">Sistema no ar e treinamento</div>
+        <div class="step-desc">Publicação, testes e treinamento para você usar o painel com confiança desde o primeiro dia.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-block">
+    <div class="contact-name">Tecnosup</div>
+    <div class="contact-role">Sistemas sob medida — Cruzeiro, SP</div>
+    <div class="contact-info">
+      Abraão — (12) · · · · · · · ·<br>
+      Vitor — (12) · · · · · · · ·<br>
+      tecnosup.com.br
+    </div>
+  </div>
+
+  <div class="page-footer">TECNOSUP • SISTEMAS SOB MEDIDA • 2026</div>
+  <div class="page-num">05 / 05</div>
+</div>
+
+</body>
+</html>

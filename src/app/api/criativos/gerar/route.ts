@@ -4,10 +4,13 @@ import { callGemini, parseGeminiJson } from '@/lib/gemini'
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
-  const { tema, tipo, tom } = await req.json()
+  const body = await req.json()
+  const tema = body.tema
+  const tipo = body.tipo ?? "portfólio de cliente"
+  const tom = body.tom ?? "profissional"
 
-  if (!tema || !tipo || !tom) {
-    return NextResponse.json({ error: 'Campos obrigatórios: tema, tipo, tom' }, { status: 400 })
+  if (!tema) {
+    return NextResponse.json({ error: 'Campo obrigatório: tema' }, { status: 400 })
   }
 
   if (!process.env.GEMINI_API_KEY) {
