@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tecnosup × 7BS — Como Trabalhamos</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* cursor personalizado */
+    *, *::before, *::after { cursor: none !important; }
+
+    :root {
+      --black: #080808;
+      --surface: #111111;
+      --card: #161616;
+      --border: #242424;
+      --blue: #3B82F6;
+      --blue-dim: rgba(59,130,246,0.12);
+      --blue-line: rgba(59,130,246,0.25);
+      --green: #22C55E;
+      --green-dim: rgba(34,197,94,0.1);
+      --amber: #F59E0B;
+      --amber-dim: rgba(245,158,11,0.1);
+      --white: #FFFFFF;
+      --muted: #666666;
+      --subtle: #333333;
+    }
+
+    html { scroll-behavior: auto; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--black);
+      color: var(--white);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── AURORA ── */
+    #wave-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    body > *:not(#wave-canvas):not(.cursor-dot):not(.cursor-ring) {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── NOISE TEXTURE ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      pointer-events: none;
+      opacity: 0.032;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 180px 180px;
+    }
+
+    /* ── CURSOR ── */
+    .cursor-dot {
+      position: fixed;
+      width: 6px; height: 6px;
+      background: #fff;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.08s, background 0.2s, width 0.2s, height 0.2s;
+      mix-blend-mode: difference;
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 36px; height: 36px;
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99998;
+      transform: translate(-50%, -50%);
+      transition: width 0.3s, height 0.3s, border-color 0.3s;
+      will-change: left, top;
+    }
+    .cursor-ring.hovering {
+      width: 56px; height: 56px;
+      border-color: var(--blue);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 60px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: 700px; height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(59,130,246,0.07) 0%, transparent 65%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .hero-inner { position: relative; z-index: 1; max-width: 680px; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--blue);
+      border: 1px solid var(--blue-line);
+      background: var(--blue-dim);
+      padding: 6px 14px;
+      border-radius: 100px;
+      margin-bottom: 32px;
+    }
+    .badge-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--blue);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .hero-title {
+      font-size: clamp(36px, 6vw, 66px);
+      font-weight: 900;
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+    }
+    .hero-title em {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-style: italic;
+      font-weight: 400;
+      color: var(--blue);
+      letter-spacing: -0.01em;
+    }
+
+    .hero-sub {
+      font-size: 16px;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.75;
+      max-width: 500px;
+      margin: 0 auto 48px;
+    }
+
+    .hero-meta {
+      display: flex;
+      gap: 32px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .hero-meta-item { text-align: center; }
+    .hero-meta-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+    .hero-meta-value { font-size: 15px; font-weight: 700; color: rgba(255,255,255,0.85); margin-top: 4px; }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      z-index: 1;
+    }
+    .scroll-arrow {
+      width: 1px; height: 36px;
+      background: linear-gradient(to bottom, transparent, var(--muted));
+    }
+
+    /* ── LAYOUT ── */
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ── SECTION HEADER ── */
+    .section-header {
+      text-align: center;
+      padding: 80px 0 56px;
+    }
+    .section-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-size: clamp(26px, 4vw, 38px);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .section-title em { color: var(--blue); font-style: normal; }
+    .section-desc {
+      font-size: 15px;
+      color: rgba(255,255,255,0.45);
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0;
+    }
+
+    /* ── TIMELINE ── */
+    .timeline {
+      padding: 0 0 80px;
+      position: relative;
+    }
+
+    .timeline-line {
+      position: absolute;
+      left: 50%;
+      top: 0; bottom: 0;
+      width: 1px;
+      background: var(--border);
+      transform: translateX(-50%);
+      transform-origin: top center;
+    }
+    .timeline-line-progress {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 1px;
+      height: 0%;
+      background: linear-gradient(to bottom, var(--blue), rgba(59,130,246,0.3));
+      transform: translateX(-50%);
+      transform-origin: top center;
+      transition: height 0.1s linear;
+      z-index: 1;
+      box-shadow: 0 0 8px rgba(59,130,246,0.4);
+    }
+
+    .phase {
+      display: grid;
+      grid-template-columns: 1fr 60px 1fr;
+      gap: 0;
+      margin-bottom: 0;
+      position: relative;
+    }
+
+    .phase-left { padding: 40px 40px 40px 0; display: flex; justify-content: flex-end; }
+    .phase-right { padding: 40px 0 40px 40px; }
+    .phase-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .phase-node {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 800;
+      border: 2px solid var(--border);
+      background: var(--black);
+      flex-shrink: 0;
+      transition: background 0.4s cubic-bezier(.16,1,.3,1),
+                  border-color 0.4s cubic-bezier(.16,1,.3,1),
+                  color 0.4s cubic-bezier(.16,1,.3,1),
+                  box-shadow 0.4s cubic-bezier(.16,1,.3,1),
+                  transform 0.3s cubic-bezier(.16,1,.3,1);
+    }
+    .phase-node.done {
+      background: var(--green-dim);
+      border-color: var(--green);
+      color: var(--green);
+    }
+    .phase-node.active {
+      background: var(--blue-dim);
+      border-color: var(--blue);
+      color: var(--blue);
+      box-shadow: 0 0 20px rgba(59,130,246,0.2);
+      position: relative;
+    }
+    .phase-node.active::before,
+    .phase-node.active::after {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 50%;
+      border: 1px solid rgba(59,130,246,0.6);
+      animation: sonar 2.4s ease-out infinite;
+    }
+    .phase-node.active::after { animation-delay: 1.2s; }
+    @keyframes sonar {
+      0%   { transform: scale(1);   opacity: 0.7; }
+      100% { transform: scale(2.4); opacity: 0; }
+    }
+    .phase-node.upcoming {
+      background: var(--surface);
+      border-color: var(--subtle);
+      color: var(--muted);
+      transition: background 0.5s, border-color 0.5s, color 0.5s, box-shadow 0.5s;
+    }
+    .phase-node.upcoming.lit {
+      background: var(--blue-dim);
+      border-color: var(--blue);
+      color: var(--blue);
+      box-shadow: 0 0 18px rgba(59,130,246,0.25);
+    }
+
+    .phase-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      background: var(--card);
+      width: 100%;
+      max-width: 360px;
+      transition: border-color 0.45s cubic-bezier(.16,1,.3,1),
+                  box-shadow 0.45s cubic-bezier(.16,1,.3,1),
+                  transform 0.45s cubic-bezier(.16,1,.3,1),
+                  background 0.45s cubic-bezier(.16,1,.3,1);
+    }
+    .phase-card:hover {
+      border-color: rgba(59,130,246,0.35);
+      box-shadow: 0 8px 32px rgba(59,130,246,0.07), 0 1px 0 rgba(59,130,246,0.15) inset;
+      transform: translateY(-3px);
+      background: #181818;
+    }
+    .phase-card.done { border-color: rgba(34,197,94,0.2); }
+    .phase-card.active { border-color: rgba(59,130,246,0.4); box-shadow: 0 0 30px rgba(59,130,246,0.08); }
+
+    .phase-tag {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 100px;
+      margin-bottom: 12px;
+    }
+    .phase-tag.done { background: var(--green-dim); color: var(--green); border: 1px solid rgba(34,197,94,0.25); }
+    .phase-tag.active { background: var(--blue-dim); color: var(--blue); border: 1px solid var(--blue-line); }
+    .phase-tag.upcoming { background: rgba(255,255,255,0.04); color: var(--muted); border: 1px solid var(--subtle); }
+
+    .phase-name {
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+    .phase-time {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .phase-time-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--muted); }
+
+    .phase-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .phase-list li {
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+      display: flex;
+      gap: 10px;
+      line-height: 1.5;
+    }
+    .phase-list li::before {
+      content: '→';
+      color: var(--blue);
+      flex-shrink: 0;
+      margin-top: 1px;
+      font-size: 12px;
+    }
+    .phase-card.done .phase-list li::before { content: '✓'; color: var(--green); }
+
+    .phase-highlight {
+      margin-top: 14px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .phase-highlight.blue { background: var(--blue-dim); color: rgba(59,130,246,0.9); border: 1px solid var(--blue-line); }
+    .phase-highlight.green { background: var(--green-dim); color: rgba(34,197,94,0.9); border: 1px solid rgba(34,197,94,0.2); }
+    .phase-highlight.amber { background: var(--amber-dim); color: rgba(245,158,11,0.9); border: 1px solid rgba(245,158,11,0.2); }
+
+    .phase-empty { display: flex; align-items: flex-start; padding-top: 40px; }
+
+    /* ── GARANTIAS ── */
+    .garantias {
+      padding: 0 0 80px;
+    }
+
+    .garantias-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .garantia-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      background: var(--card);
+      transition: border-color 0.45s cubic-bezier(.16,1,.3,1),
+                  box-shadow 0.45s cubic-bezier(.16,1,.3,1),
+                  transform 0.45s cubic-bezier(.16,1,.3,1);
+    }
+    .garantia-card:hover {
+      border-color: rgba(59,130,246,0.3);
+      box-shadow: 0 8px 28px rgba(59,130,246,0.06);
+      transform: translateY(-3px);
+    }
+    .garantia-icon {
+      display: block;
+      font-size: 26px;
+      margin-bottom: 14px;
+      transition: transform 0.4s cubic-bezier(.16,1,.3,1);
+    }
+    .garantia-card:hover .garantia-icon { transform: scale(1.18) rotate(-4deg); }
+
+    .garantia-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .garantia-desc {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.65;
+    }
+
+    /* ── RESUMO DO INVESTIMENTO ── */
+    .investimento {
+      padding: 0 0 80px;
+    }
+
+    .inv-block {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      background: var(--card);
+    }
+
+    .inv-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 28px;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    .inv-row:last-child { border-bottom: none; }
+    .inv-label { color: rgba(255,255,255,0.6); }
+    .inv-value { font-weight: 700; }
+    .inv-value.blue { color: var(--blue); }
+    .inv-value.green { color: var(--green); }
+    .inv-value.muted { color: var(--muted); font-weight: 500; font-size: 12px; }
+
+    .inv-total {
+      padding: 24px 28px;
+      background: rgba(59,130,246,0.05);
+      border-top: 1px solid var(--blue-line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .inv-total-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+    .inv-total-value { font-size: 28px; font-weight: 900; letter-spacing: -0.02em; }
+    .inv-total-value span { font-size: 14px; font-weight: 500; color: var(--muted); }
+
+    /* ── SUPORTE ── */
+    .suporte-block {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 32px;
+      background: var(--card);
+      margin-bottom: 80px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    .suporte-col-title {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .suporte-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .suporte-list li {
+      font-size: 13px;
+      color: rgba(255,255,255,0.7);
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .suporte-list li .check { color: var(--green); flex-shrink: 0; }
+    .suporte-list li .cross { color: #555; flex-shrink: 0; }
+
+    /* ── FOOTER ── */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 24px;
+      text-align: center;
+    }
+    .footer-name { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.7); margin-bottom: 4px; }
+    .footer-info { font-size: 12px; color: var(--muted); line-height: 1.8; }
+
+    /* ── ANIMAÇÕES ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(59,130,246,0.2); }
+      50%       { box-shadow: 0 0 40px rgba(59,130,246,0.45); }
+    }
+
+    .hero-inner { animation: fadeUp 0.9s cubic-bezier(.16,1,.3,1) both; }
+    .hero-meta  { animation: fadeUp 1.1s 0.15s cubic-bezier(.16,1,.3,1) both; }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.65s cubic-bezier(.16,1,.3,1), transform 0.65s cubic-bezier(.16,1,.3,1);
+    }
+    .reveal.visible        { opacity: 1; transform: translateY(0); }
+    .reveal.exit-up        { opacity: 0; transform: translateY(-24px); }
+
+    /* cards da esquerda entram da esquerda, direita da direita */
+    .phase-left .reveal-h  { opacity: 0; transform: translateX(-28px); transition: opacity 0.65s cubic-bezier(.16,1,.3,1), transform 0.65s cubic-bezier(.16,1,.3,1); }
+    .phase-right .reveal-h { opacity: 0; transform: translateX(28px);  transition: opacity 0.65s cubic-bezier(.16,1,.3,1), transform 0.65s cubic-bezier(.16,1,.3,1); }
+    .phase-left .reveal-h.visible,
+    .phase-right .reveal-h.visible  { opacity: 1; transform: translateX(0); }
+    .phase-left .reveal-h.exit-up,
+    .phase-right .reveal-h.exit-up  { opacity: 0; transform: translateY(-24px); }
+
+    /* garantia cards com stagger via delay inline */
+    .garantia-card {
+      transition-delay: var(--delay, 0ms);
+    }
+
+    /* sonar handles active node animation */
+
+    /* número em destaque no investimento */
+    .inv-total-value {
+      background: linear-gradient(135deg, #3B82F6, #60A5FA);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* CTA final */
+    .cta-section {
+      padding: 80px 0;
+      text-align: center;
+    }
+    .cta-box {
+      border: 1px solid var(--blue-line);
+      border-radius: 20px;
+      padding: 56px 40px;
+      background: linear-gradient(135deg, rgba(59,130,246,0.07) 0%, rgba(59,130,246,0.02) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-box::before {
+      content: '';
+      position: absolute;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 65%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .cta-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 20px;
+    }
+    .cta-title {
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .cta-title em { color: var(--blue); font-style: normal; }
+    .cta-sub {
+      font-size: 15px;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 40px;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 16px 32px;
+      border-radius: 100px;
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: transform 0.35s cubic-bezier(.16,1,.3,1),
+                  box-shadow 0.35s cubic-bezier(.16,1,.3,1),
+                  gap 0.35s cubic-bezier(.16,1,.3,1);
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .cta-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+      opacity: 0;
+      transition: opacity 0.35s;
+      border-radius: inherit;
+    }
+    .cta-btn:hover {
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 12px 40px rgba(59,130,246,0.45);
+      gap: 16px;
+    }
+    .cta-btn:hover::before { opacity: 1; }
+    .cta-btn-arrow {
+      font-size: 18px;
+      transition: transform 0.35s cubic-bezier(.16,1,.3,1);
+    }
+    .cta-btn:hover .cta-btn-arrow { transform: translateX(4px); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 680px) {
+      .cursor-dot, .cursor-ring { display: none; }
+
+      /* ── HERO: tela cheia, tipografia agressiva ── */
+      .hero {
+        min-height: 100svh;
+        padding: 0 24px;
+        justify-content: center;
+        gap: 0;
+      }
+      .hero-inner { width: 100%; }
+      .badge {
+        font-size: 9px;
+        letter-spacing: 0.15em;
+        padding: 5px 12px;
+        margin-bottom: 28px;
+      }
+      .hero-title {
+        font-size: clamp(40px, 11vw, 56px);
+        line-height: 0.96;
+        margin-bottom: 20px;
+        letter-spacing: -0.04em;
+      }
+      .hero-sub {
+        font-size: 14px;
+        line-height: 1.65;
+        margin-bottom: 36px;
+        color: rgba(255,255,255,0.45);
+      }
+
+      /* métricas em grade 2×2 */
+      .hero-meta {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1px;
+        background: var(--border);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        overflow: hidden;
+        margin-bottom: 0;
+      }
+      .hero-meta-item {
+        background: var(--card);
+        padding: 18px 16px;
+        text-align: left;
+        min-width: unset;
+      }
+      .hero-meta-label {
+        font-size: 9px;
+        letter-spacing: 0.15em;
+        margin-bottom: 6px;
+      }
+      .hero-meta-value { font-size: 16px; font-weight: 800; }
+
+      /* scroll hint maior */
+      .scroll-hint { bottom: 24px; }
+
+      /* ── TIMELINE ── */
+      .timeline-line, .timeline-line-progress { display: none; }
+
+      .phase {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 0;
+        padding: 8px 0;
+      }
+      .phase-center {
+        flex: 0 0 48px;
+        flex-direction: column;
+        padding-top: 24px;
+        align-items: center;
+        justify-content: flex-start;
+      }
+      .phase-left,
+      .phase-right {
+        flex: 1;
+        padding: 16px 0 16px 12px;
+        justify-content: flex-start;
+      }
+      .phase-left  { order: 1; }
+      .phase-right { order: 1; }
+      .phase-center { order: 0; }
+      .phase-empty { display: none; }
+
+      /* card mobile: borda esquerda colorida como detalhe */
+      .phase-card {
+        max-width: 100%;
+        border-left-width: 3px;
+        padding: 20px 18px;
+      }
+      .phase-card.done   { border-left-color: var(--green); }
+      .phase-card.active { border-left-color: var(--blue); }
+      .phase-card:hover  { transform: none; }
+      .phase-name  { font-size: 17px; }
+      .phase-list li { font-size: 13px; }
+
+      /* nó maior e mais legível */
+      .phase-node { width: 40px; height: 40px; font-size: 13px; }
+
+      /* reveal-h: só de baixo no mobile */
+      .phase-left .reveal-h,
+      .phase-right .reveal-h {
+        transform: translateY(24px);
+        transition: opacity 0.65s cubic-bezier(.16,1,.3,1), transform 0.65s cubic-bezier(.16,1,.3,1);
+      }
+      .phase-left .reveal-h.visible,
+      .phase-right .reveal-h.visible { transform: translateY(0); }
+      .phase-left .reveal-h.exit-up,
+      .phase-right .reveal-h.exit-up  { transform: translateY(-20px); }
+
+      /* ── SEÇÕES ── */
+      .section-header { padding: 56px 0 36px; }
+      .section-title  { font-size: clamp(26px, 7vw, 36px); }
+      .section-desc   { font-size: 14px; }
+
+      /* ── GARANTIAS ── */
+      .garantias-grid { grid-template-columns: 1fr; gap: 12px; }
+      .garantia-card:hover { transform: none; }
+      .garantia-icon { font-size: 28px; }
+      .garantia-title { font-size: 15px; }
+
+      /* ── INVESTIMENTO ── */
+      .inv-row { flex-direction: column; align-items: flex-start; gap: 4px; padding: 16px 20px; }
+      .inv-label { font-size: 12px; }
+      .inv-value { font-size: 15px; }
+      .inv-total { flex-direction: column; gap: 6px; padding: 20px; }
+      .inv-total-label { font-size: 11px; }
+      .inv-total-value { font-size: 26px; }
+
+      /* ── SUPORTE ── */
+      .suporte-block { grid-template-columns: 1fr; gap: 28px; padding: 24px 20px; }
+      .suporte-list li { font-size: 13px; }
+
+      /* ── CTA ── */
+      .cta-box  { padding: 44px 24px; }
+      .cta-title { font-size: clamp(28px, 8vw, 40px); }
+      .cta-sub  { font-size: 14px; }
+      .cta-btn  { width: 100%; justify-content: center; font-size: 15px; padding: 18px 24px; }
+      .cta-btn:hover { transform: none; }
+
+      /* ── FOOTER ── */
+      .footer { padding: 32px 20px; }
+      .footer-name { font-size: 14px; }
+      .footer-info { font-size: 12px; }
+    }
+
+    @media (max-width: 390px) {
+      .hero-title { font-size: clamp(36px, 10vw, 48px); }
+      .hero-meta-value { font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="wave-canvas"></canvas>
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="badge">
+      <span class="badge-dot"></span>
+      Tecnosup × 7BS
+    </div>
+
+    <h1 class="hero-title">
+      Da ideia ao sistema<br>
+      <em>no ar em 20 dias.</em>
+    </h1>
+
+    <p class="hero-sub">
+      Cada etapa documentada, cada prazo definido.<br>
+      Você acompanha tudo — e recebe um sistema que é seu, pra sempre.
+    </p>
+
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Prazo de entrega</div>
+        <div class="hero-meta-value"><span class="count" data-target="20">0</span> dias úteis</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Suporte incluso</div>
+        <div class="hero-meta-value"><span class="count" data-target="12">0</span> meses</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Infraestrutura</div>
+        <div class="hero-meta-value">No seu nome</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="hero-meta-label">Investimento</div>
+        <div class="hero-meta-value">R$ 129,90/mês</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Ver o processo</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<section>
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">Roadmap completo</div>
+      <h2 class="section-title">Tudo que acontece,<br><em>sem mistério.</em></h2>
+      <p class="section-desc">Da primeira conversa até o sistema no ar. Você sabe exatamente onde está em cada momento.</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="timeline">
+      <div class="timeline-line"></div>
+      <div class="timeline-line-progress" id="timelineProgress"></div>
+
+      <div class="phase reveal">
+        <div class="phase-left">
+          <div class="phase-card done reveal-h">
+            <span class="phase-tag done">✓ Concluído</span>
+            <div class="phase-name">Apresentação</div>
+            <div class="phase-time">
+              <span>Visita presencial</span>
+              <span class="phase-time-dot"></span>
+              <span>Cruzeiro/SP</span>
+            </div>
+            <ul class="phase-list">
+              <li>Análise da barbearia e das necessidades reais da 7BS</li>
+              <li>Demo ao vivo do sistema funcionando</li>
+              <li>Apresentação dos diferenciais e do processo</li>
+              <li>Todas as dúvidas respondidas na hora</li>
+            </ul>
+            <div class="phase-highlight green">Essa etapa já aconteceu. Agora é só avançar.</div>
+          </div>
+        </div>
+        <div class="phase-center">
+          <div class="phase-node done">✓</div>
+        </div>
+        <div class="phase-empty"></div>
+      </div>
+
+      <div class="phase reveal">
+        <div class="phase-empty"></div>
+        <div class="phase-center">
+          <div class="phase-node active">1</div>
+        </div>
+        <div class="phase-right">
+          <div class="phase-card active reveal-h">
+            <span class="phase-tag active">Próxima etapa</span>
+            <div class="phase-name">Contrato & Pagamento</div>
+            <div class="phase-time">
+              <span>1 dia</span>
+              <span class="phase-time-dot"></span>
+              <span>Reunião de alinhamento</span>
+            </div>
+            <ul class="phase-list">
+              <li>Reunião de 30 minutos — presencial ou vídeo</li>
+              <li>Escopo detalhado por escrito (sem surpresas)</li>
+              <li>Assinatura do contrato</li>
+              <li>Início do parcelamento em 12× — desenvolvimento começa imediatamente</li>
+            </ul>
+            <div class="phase-highlight blue">Só começamos a desenvolver após a confirmação do contrato. Sem custo oculto em nenhuma fase.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase reveal">
+        <div class="phase-left">
+          <div class="phase-card upcoming reveal-h">
+            <span class="phase-tag upcoming">Dias 1–3</span>
+            <div class="phase-name">Onboarding</div>
+            <div class="phase-time">
+              <span>3 dias úteis</span>
+              <span class="phase-time-dot"></span>
+              <span>Com você presente</span>
+            </div>
+            <ul class="phase-list">
+              <li>Criação das contas de infraestrutura no seu nome (Firebase, Vercel)</li>
+              <li>Registro do domínio no Registro.br — no seu CPF/CNPJ</li>
+              <li>Coleta dos materiais: logo, identidade visual, conteúdo e dados da 7BS</li>
+            </ul>
+            <div class="phase-highlight amber">Tudo no seu nome desde o primeiro dia. Domínio, servidores, banco de dados — sua propriedade, não nossa.</div>
+          </div>
+        </div>
+        <div class="phase-center">
+          <div class="phase-node upcoming">2</div>
+        </div>
+        <div class="phase-empty"></div>
+      </div>
+
+      <div class="phase reveal">
+        <div class="phase-empty"></div>
+        <div class="phase-center">
+          <div class="phase-node upcoming">3</div>
+        </div>
+        <div class="phase-right">
+          <div class="phase-card upcoming reveal-h">
+            <span class="phase-tag upcoming">Dias 4–17</span>
+            <div class="phase-name">Desenvolvimento</div>
+            <div class="phase-time">
+              <span>Até 14 dias úteis</span>
+              <span class="phase-time-dot"></span>
+              <span>A partir dos materiais</span>
+            </div>
+            <ul class="phase-list">
+              <li>Sistema digital com a identidade da 7BS — seu nome, seu domínio, sua marca</li>
+              <li>Fluxo de atendimento ou agendamento — o cliente age em poucos cliques, sem sair do seu site</li>
+              <li>Painel financeiro: faturamento, gastos e fechamento de caixa</li>
+              <li>Gestão de equipe e comissões automáticas</li>
+              <li>Programa de fidelização e recorrência para clientes</li>
+              <li>Cupons, controle de estoque e auditoria</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase reveal">
+        <div class="phase-left">
+          <div class="phase-card upcoming reveal-h">
+            <span class="phase-tag upcoming">Dias 18–20</span>
+            <div class="phase-name">Revisão & Ajustes</div>
+            <div class="phase-time">
+              <span>Até 3 dias úteis</span>
+              <span class="phase-time-dot"></span>
+              <span>Para você aprovar</span>
+            </div>
+            <ul class="phase-list">
+              <li>Você acessa o sistema completo em ambiente de teste</li>
+              <li>Solicita ajustes dentro do escopo — sem custo adicional</li>
+              <li>A gente aplica e te devolve para aprovação final</li>
+            </ul>
+            <div class="phase-highlight blue">Prazo de aprovação: 3 dias úteis. Sem resposta dentro do prazo = sistema considerado aprovado.</div>
+          </div>
+        </div>
+        <div class="phase-center">
+          <div class="phase-node upcoming">4</div>
+        </div>
+        <div class="phase-empty"></div>
+      </div>
+
+      <div class="phase reveal">
+        <div class="phase-empty"></div>
+        <div class="phase-center">
+          <div class="phase-node upcoming">5</div>
+        </div>
+        <div class="phase-right">
+          <div class="phase-card upcoming reveal-h">
+            <span class="phase-tag upcoming">Entrega</span>
+            <div class="phase-name">Entrega & Treinamento</div>
+            <div class="phase-time">
+              <span>Presencial ou vídeo</span>
+              <span class="phase-time-dot"></span>
+              <span>No seu ritmo</span>
+            </div>
+            <ul class="phase-list">
+              <li>Sistema no ar no seu domínio oficial</li>
+              <li>Treinamento do painel admin — você sai sabendo usar tudo</li>
+              <li>Todos os acessos (Firebase, Vercel, domínio, admin) entregues por escrito</li>
+            </ul>
+            <div class="phase-highlight green">A partir daqui, o sistema é 100% seu. A gente fica do lado — mas a rédea é sua.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase reveal">
+        <div class="phase-left">
+          <div class="phase-card upcoming reveal-h">
+            <span class="phase-tag upcoming">Meses 1–12</span>
+            <div class="phase-name">Suporte Incluso</div>
+            <div class="phase-time">
+              <span>12 meses</span>
+              <span class="phase-time-dot"></span>
+              <span>Incluído no setup</span>
+            </div>
+            <ul class="phase-list">
+              <li>WhatsApp seg–sex, 9h–18h — resposta em até 24h úteis</li>
+              <li>Correção de bugs e falhas de funcionamento</li>
+              <li>Atualizações de segurança</li>
+              <li>Suporte para dúvidas sobre o painel</li>
+            </ul>
+            <div class="phase-highlight green">Zero mensalidade no primeiro ano. Suporte completo já incluído no setup — sem surpresas.</div>
+          </div>
+        </div>
+        <div class="phase-center">
+          <div class="phase-node upcoming">6</div>
+        </div>
+        <div class="phase-empty"></div>
+      </div>
+
+      <div class="phase reveal">
+        <div class="phase-empty"></div>
+        <div class="phase-center">
+          <div class="phase-node upcoming">7</div>
+        </div>
+        <div class="phase-right">
+          <div class="phase-card upcoming reveal-h">
+            <span class="phase-tag upcoming">Após 12 meses</span>
+            <div class="phase-name">Continuidade</div>
+            <div class="phase-time">
+              <span>Opcional</span>
+              <span class="phase-time-dot"></span>
+              <span>Sem permanência mínima</span>
+            </div>
+            <ul class="phase-list">
+              <li>R$ 64,95/mês — suporte contínuo, renovação de domínio</li>
+              <li>Cancela quando quiser — o sistema continua no ar</li>
+              <li>Infraestrutura permanece nas suas contas independente da mensalidade</li>
+            </ul>
+            <div class="phase-highlight blue">Se cancelar a mensalidade, o sistema não para. Ele fica no ar nas suas contas — só o suporte é suspenso.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<section>
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">Financeiro</div>
+      <h2 class="section-title">Tudo que você <em>paga</em>.<br>Sem letra miúda.</h2>
+    </div>
+
+    <div class="investimento">
+      <div class="inv-block">
+        <div class="inv-row">
+          <span class="inv-label">Forma de pagamento</span>
+          <span class="inv-value">12× no cartão</span>
+        </div>
+        <div class="inv-row">
+          <span class="inv-label">Sistema completo (desenvolvimento + configuração + infra)</span>
+          <span class="inv-value green">Incluso</span>
+        </div>
+        <div class="inv-row">
+          <span class="inv-label">Domínio .com.br (Registro.br, no seu CNPJ)</span>
+          <span class="inv-value green">Incluso</span>
+        </div>
+        <div class="inv-row">
+          <span class="inv-label">Infraestrutura Firebase + Vercel</span>
+          <span class="inv-value green">Incluso — R$ 0/mês</span>
+        </div>
+        <div class="inv-row">
+          <span class="inv-label">Suporte técnico — 12 meses</span>
+          <span class="inv-value green">Incluso</span>
+        </div>
+        <div class="inv-row">
+          <span class="inv-label">Após 12 meses (opcional, sem permanência mínima)</span>
+          <span class="inv-value muted">R$ 64,95/mês</span>
+        </div>
+        <div class="inv-total">
+          <div>
+            <div class="inv-total-label">12 parcelas de</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px;">Sistema completo + suporte 12 meses incluso</div>
+          </div>
+          <div class="inv-total-value">R$ 129,90 <span>/ mês</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<section>
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">O que garantimos</div>
+      <h2 class="section-title">Comprometimentos <em>por escrito.</em></h2>
+      <p class="section-desc">Tudo que está abaixo está no contrato. Não é promessa verbal.</p>
+    </div>
+
+    <div class="garantias">
+      <div class="garantias-grid">
+        <div class="garantia-card reveal" style="--delay:0ms">
+          <span class="garantia-icon">📋</span>
+          <div class="garantia-title">Escopo claro antes de começar</div>
+          <div class="garantia-desc">O contrato lista exatamente o que está incluso e o que não está. Nenhuma surpresa no meio do projeto.</div>
+        </div>
+        <div class="garantia-card reveal" style="--delay:80ms">
+          <span class="garantia-icon">⏱️</span>
+          <div class="garantia-title">20 dias úteis de prazo</div>
+          <div class="garantia-desc">Contado a partir do recebimento dos materiais, se cada etapa for executada no momento designado. O prazo só para se você atrasar no envio — e isso está no contrato também.</div>
+        </div>
+        <div class="garantia-card reveal" style="--delay:160ms">
+          <span class="garantia-icon">🔑</span>
+          <div class="garantia-title">Todos os acessos entregues</div>
+          <div class="garantia-desc">Firebase, Vercel, Cloudinary, domínio e painel admin — entregues por escrito no dia da entrega. Você tem tudo nas suas mãos.</div>
+        </div>
+        <div class="garantia-card reveal" style="--delay:240ms">
+          <span class="garantia-icon">🏠</span>
+          <div class="garantia-title">Infraestrutura no seu nome</div>
+          <div class="garantia-desc">Cada conta de infraestrutura fica no seu CPF ou CNPJ. Se você um dia encerrar o contrato com a Tecnosup, o sistema continua no ar.</div>
+        </div>
+        <div class="garantia-card reveal" style="--delay:320ms">
+          <span class="garantia-icon">🛡️</span>
+          <div class="garantia-title">Seus dados são seus</div>
+          <div class="garantia-desc">A Tecnosup não acessa, compartilha ou vende dados da 7BS. Está no contrato, Cláusula 3.</div>
+        </div>
+        <div class="garantia-card reveal" style="--delay:400ms">
+          <span class="garantia-icon">📞</span>
+          <div class="garantia-title">Suporte local em Cruzeiro</div>
+          <div class="garantia-desc">WhatsApp seg–sex 9h–18h. Se precisar de atendimento presencial, estamos na mesma cidade. Não é empresa italiana.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<section>
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">Suporte técnico</div>
+      <h2 class="section-title">O que está <em>dentro</em> e<br>o que está fora.</h2>
+      <p class="section-desc">Para não ter expectativa errada nos dois sentidos.</p>
+    </div>
+
+    <div class="suporte-block">
+      <div>
+        <div class="suporte-col-title">✓ Incluído no suporte</div>
+        <ul class="suporte-list">
+          <li><span class="check">✓</span> Correção de bugs e falhas de funcionamento</li>
+          <li><span class="check">✓</span> Dúvidas sobre como usar o painel admin</li>
+          <li><span class="check">✓</span> Atualizações de segurança</li>
+          <li><span class="check">✓</span> Suporte via WhatsApp seg–sex, 9h–18h</li>
+          <li><span class="check">✓</span> Resposta em até 24 horas úteis</li>
+        </ul>
+      </div>
+      <div>
+        <div class="suporte-col-title">✗ Não incluído no suporte</div>
+        <ul class="suporte-list">
+          <li><span class="cross">✗</span> Desenvolvimento de novas funcionalidades</li>
+          <li><span class="cross">✗</span> Alterações fora do escopo original</li>
+          <li><span class="cross">✗</span> Criação ou edição de conteúdo (textos, fotos)</li>
+          <li><span class="cross">✗</span> Problemas causados por mudanças que você fizer nas contas de infra</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="cta-section reveal">
+      <div class="cta-box">
+        <div class="cta-label">Próximo passo</div>
+        <h2 class="cta-title">Pronto pra<br><em>colocar no ar?</em></h2>
+        <p class="cta-sub">30 minutos de reunião e a gente define tudo. Sem enrolação, sem compromisso.</p>
+        <a href="https://wa.me/5512996065673?text=Oi%20Cardoso%2C%20quero%20marcar%20a%20reuni%C3%A3o" class="cta-btn" target="_blank">
+          <span>Falar com a Tecnosup</span>
+          <span class="cta-btn-arrow">→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-name">Tecnosup — Sistemas sob medida</div>
+  <div class="footer-info">
+    Abraão Cardoso · (12) 99606-5673 · Vitor Felipe · (12) 99103-7897<br>
+    Cruzeiro, SP · 2026
+  </div>
+</footer>
+
+<script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+<script>
+  /* ── LENIS ── */
+  const lenis = new Lenis({
+    duration: 1.2,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smoothWheel: true,
+    touchMultiplier: 1.5,
+  });
+  function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+  requestAnimationFrame(raf);
+
+  /* ── AURORA + GRADE VIVA ── */
+  (function() {
+    const canvas = document.getElementById('wave-canvas');
+    const ctx    = canvas.getContext('2d');
+    let W, H, t = 0;
+
+    const SPACING = 72;
+
+    /* aurora orbs de fundo */
+    const ORBS = [
+      { x: 0.22, y: 0.28, r: 0.72, speedX: 0.000007, speedY: 0.000005, color: [59,  130, 246], alpha: 0.050 },
+      { x: 0.72, y: 0.62, r: 0.78, speedX: 0.000004, speedY: 0.000008, color: [99,  102, 241], alpha: 0.040 },
+      { x: 0.48, y: 0.82, r: 0.68, speedX: 0.000009, speedY: 0.000003, color: [139, 92,  246], alpha: 0.030 },
+    ];
+
+    let nodes = [];
+    let cols  = 0;
+
+    function buildGrid() {
+      nodes = [];
+      cols  = Math.ceil(W / SPACING) + 2;
+      const rows = Math.ceil(H / SPACING) + 2;
+      const offX = (W - (cols - 1) * SPACING) / 2;
+      const offY = (H - (rows - 1) * SPACING) / 2;
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const bx = offX + c * SPACING;
+          const by = offY + r * SPACING;
+          /* fase única por nó — garante movimento orgânico descorrelacionado */
+          nodes.push({
+            bx, by,
+            phaseX: Math.random() * Math.PI * 2,
+            phaseY: Math.random() * Math.PI * 2,
+            freqX:  0.006 + Math.random() * 0.004,
+            freqY:  0.006 + Math.random() * 0.004,
+            amp:    5 + Math.random() * 4,
+          });
+        }
+      }
+    }
+
+    function resize() {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+      buildGrid();
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      t++;
+
+      /* ── aurora ── */
+      ORBS.forEach(o => {
+        const ox = (0.5 + Math.sin(t * o.speedX * 1000 + o.x * 8) * 0.36) * W;
+        const oy = (0.5 + Math.cos(t * o.speedY * 1000 + o.y * 8) * 0.32) * H;
+        const r  = o.r * Math.max(W, H);
+        const g  = ctx.createRadialGradient(ox, oy, 0, ox, oy, r);
+        g.addColorStop(0,   `rgba(${o.color},${o.alpha})`);
+        g.addColorStop(0.5, `rgba(${o.color},${o.alpha * 0.3})`);
+        g.addColorStop(1,   `rgba(${o.color},0)`);
+        ctx.beginPath(); ctx.fillStyle = g;
+        ctx.arc(ox, oy, r, 0, Math.PI * 2); ctx.fill();
+      });
+
+      /* ── posição atual de cada nó (pura matemática, sem física) ── */
+      const positions = nodes.map(n => ({
+        x: n.bx + Math.sin(t * n.freqX + n.phaseX) * n.amp,
+        y: n.by + Math.cos(t * n.freqY + n.phaseY) * n.amp,
+      }));
+
+      /* ── linhas ── */
+      ctx.lineWidth   = 0.5;
+      ctx.strokeStyle = 'rgba(55,80,160,0.18)';
+      positions.forEach((p, idx) => {
+        if (idx % cols < cols - 1) {
+          const nb = positions[idx + 1];
+          ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(nb.x, nb.y); ctx.stroke();
+        }
+        if (idx + cols < positions.length) {
+          const nb = positions[idx + cols];
+          ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(nb.x, nb.y); ctx.stroke();
+        }
+      });
+
+      /* ── nós ── */
+      positions.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 1.1, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(70,100,200,0.22)';
+        ctx.fill();
+      });
+
+      requestAnimationFrame(draw);
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+    draw();
+  })();
+
+  /* ── CURSOR ── */
+  const dot  = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  let rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', (e) => {
+    dot.style.left = e.clientX + 'px';
+    dot.style.top  = e.clientY + 'px';
+  });
+
+  (function animateRing() {
+    const dot_x = parseFloat(dot.style.left) || 0;
+    const dot_y = parseFloat(dot.style.top)  || 0;
+    rx += (dot_x - rx) * 0.12;
+    ry += (dot_y - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top  = ry + 'px';
+    requestAnimationFrame(animateRing);
+  })();
+
+  document.querySelectorAll('a, button, .phase-card, .garantia-card, .cta-btn').forEach(el => {
+    el.addEventListener('mouseenter', () => ring.classList.add('hovering'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
+  });
+
+  /* ── SCROLL REVEAL BIDIRECIONAL ── */
+  const revealEls = [
+    ...document.querySelectorAll('.reveal'),
+    ...document.querySelectorAll('.reveal-h'),
+  ];
+
+  function updateReveal() {
+    const vh = window.innerHeight;
+    revealEls.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      const inView = rect.top < vh * 0.88 && rect.bottom > vh * 0.08;
+      const above  = rect.bottom < vh * 0.08;
+      if (inView) {
+        el.classList.add('visible');
+        el.classList.remove('exit-up');
+      } else if (above) {
+        el.classList.remove('visible');
+        el.classList.add('exit-up');
+      } else {
+        el.classList.remove('visible');
+        el.classList.remove('exit-up');
+      }
+    });
+  }
+
+  lenis.on('scroll', updateReveal);
+  updateReveal();
+
+  /* ── SNAP POR FASE (estilo reels) ── */
+  const phases = Array.from(document.querySelectorAll('.phase'));
+  let snapTimeout = null;
+  let isSnapping  = false;
+
+  const SNAP_DELAY = window.matchMedia('(pointer: coarse)').matches ? 280 : 180;
+  const timelineSection = document.querySelector('.timeline').closest('section');
+
+  lenis.on('scroll', () => {
+    if (isSnapping) return;
+
+    /* só ativa snap se a seção da timeline estiver visível na tela */
+    const tlRect = timelineSection.getBoundingClientRect();
+    const vh     = window.innerHeight;
+    const tlVisible = tlRect.top < vh && tlRect.bottom > 0;
+    if (!tlVisible) return;
+
+    clearTimeout(snapTimeout);
+    snapTimeout = setTimeout(() => {
+      if (Math.abs(lenis.velocity) > 0.15) return; // ainda em movimento
+
+      /* só faz snap se pelo menos uma fase estiver razoavelmente centrada */
+      let closest = null;
+      let minDist  = Infinity;
+
+      phases.forEach(phase => {
+        const rect   = phase.getBoundingClientRect();
+        const center = rect.top + rect.height / 2;
+        const dist   = Math.abs(center - vh / 2);
+        if (dist < minDist) { minDist = dist; closest = phase; }
+      });
+
+      /* só encaixa se estiver dentro de metade da altura de uma fase */
+      const snapThreshold = closest ? closest.offsetHeight * 0.45 : 0;
+      if (!closest || minDist > snapThreshold) return;
+
+      isSnapping = true;
+      const rect        = closest.getBoundingClientRect();
+      const phaseCenter = rect.top + rect.height / 2;
+      const delta       = phaseCenter - vh / 2;
+      lenis.scrollTo(window.scrollY + delta, {
+        duration: 0.55,
+        easing: t => t < 0.5 ? 2*t*t : -1+(4-2*t)*t,
+        onComplete: () => { isSnapping = false; },
+      });
+    }, SNAP_DELAY);
+  });
+
+  /* ── ACENDER NÓS DA TIMELINE ── */
+  const timelineNodes = document.querySelectorAll('.phase-node.upcoming');
+  const TRIGGER_OFFSET = window.innerHeight * 0.55; // acende quando o nó passa 55% da tela
+
+  lenis.on('scroll', () => {
+    timelineNodes.forEach(node => {
+      const rect = node.getBoundingClientRect();
+      if (rect.top < TRIGGER_OFFSET) {
+        node.classList.add('lit');
+      } else {
+        node.classList.remove('lit');
+      }
+    });
+  });
+
+  /* ── COUNTER ANIMADO ── */
+  document.querySelectorAll('.count').forEach(el => {
+    const target = +el.dataset.target;
+    const duration = 1400;
+    const start = performance.now();
+    function step(now) {
+      const p = Math.min((now - start) / duration, 1);
+      const ease = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(ease * target);
+      if (p < 1) requestAnimationFrame(step);
+    }
+    setTimeout(() => requestAnimationFrame(step), 400);
+  });
+
+  /* ── TIMELINE PROGRESS ── */
+  const tl     = document.querySelector('.timeline');
+  const tlProg = document.getElementById('timelineProgress');
+
+  if (tl && tlProg) {
+    lenis.on('scroll', () => {
+      const rect   = tl.getBoundingClientRect();
+      const vh     = window.innerHeight;
+      const total  = tl.offsetHeight;
+      const scrolled = Math.max(0, vh * 0.5 - rect.top);
+      const pct    = Math.min(100, (scrolled / total) * 100);
+      tlProg.style.height = pct + '%';
+    });
+  }
+</script>
+</body>
+</html>
