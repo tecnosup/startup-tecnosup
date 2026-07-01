@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Proposta Comercial — Tecnosup (modelo)</title>
+<style>
+  :root {
+    /* Paleta oficial da Tecnosup (tecnosup-site.web.app) — tech/cyber dark + ciano neon */
+    --cyan: #0eb3ff;       /* acento principal — ciano neon da marca */
+    --cyan-deep: #0a8fcc;
+    --purple: #7000ff;     /* acento secundário — roxo da marca */
+    --purple-deep: #5400bf;
+    --cream: #e0e0e0;      /* texto claro da marca */
+    --neon: #00ff88;       /* destaque/realce — verde neon */
+    --ink: #030407;        /* fundo base */
+    --ink-2: #0b1121;      /* card */
+    --ink-3: #0e1520;      /* muted */
+    --zinc: #6b7a90;
+    --zinc-2: #9ca3af;
+    --ok: #00ff88;
+    --line: rgba(31,53,102,.55);   /* borda azul da marca (#1f3566) */
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--ink);
+    color: var(--cream);
+    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .mono { font-family: "SF Mono", "Consolas", monospace; }
+  .grad { background: linear-gradient(100deg, var(--cyan), var(--purple)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .cy { color: var(--cyan); }
+
+  /* cada seção é uma "página" cheia, como no reel */
+  .page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 80px 0;
+    position: relative;
+    border-bottom: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 32px; width: 100%; position: relative; z-index: 2; }
+  @media (max-width: 720px) { .page { min-height: auto; padding: 56px 0; } }
+
+  /* glow de canto (ciano/roxo Tecnosup) — assinatura visual do reel */
+  .glow-cyan { position: absolute; width: 900px; height: 900px; border-radius: 50%; background: radial-gradient(circle, rgba(14,179,255,.28), transparent 62%); pointer-events: none; z-index: 1; }
+  .glow-purple { position: absolute; width: 760px; height: 760px; border-radius: 50%; background: radial-gradient(circle, rgba(112,0,255,.22), transparent 62%); pointer-events: none; z-index: 1; }
+
+  .sec-num { font: 800 12px/1 "SF Mono", monospace; letter-spacing: .3em; text-transform: uppercase; color: var(--cyan); margin-bottom: 18px; display: block; }
+  h1 { font-size: clamp(40px, 8vw, 88px); font-weight: 900; line-height: .98; letter-spacing: -.03em; }
+  h2 { font-size: clamp(28px, 5vw, 48px); font-weight: 900; line-height: 1.02; letter-spacing: -.02em; margin-bottom: 18px; }
+  .lead { color: var(--zinc-2); font-size: clamp(16px, 2vw, 19px); max-width: 680px; }
+
+  /* ---- CAPA ---- */
+  .cover .brand-row { display: flex; align-items: center; gap: 14px; margin-bottom: 40px; }
+  .logo-slot { width: 48px; height: 48px; border-radius: 12px; border: 1px solid var(--line); background: var(--ink-2); display: grid; place-items: center; font: 900 16px/1 system-ui; color: var(--cyan); box-shadow: 0 0 24px rgba(14,179,255,.25); }
+  .brand-name { font: 900 18px/1 system-ui; letter-spacing: .04em; }
+  .brand-name small { display: block; font: 600 9px/1 "SF Mono", monospace; color: var(--zinc); letter-spacing: .2em; margin-top: 5px; }
+  .cover h1 { margin-bottom: 20px; }
+  .cover .tagline { font-size: clamp(17px, 2.4vw, 22px); color: var(--zinc-2); max-width: 640px; margin-bottom: 48px; }
+  .meta-row { display: flex; gap: 40px; flex-wrap: wrap; border-top: 1px solid var(--line); padding-top: 26px; }
+  .meta-row .m .k { font: 700 9px/1 "SF Mono", monospace; letter-spacing: .18em; text-transform: uppercase; color: var(--cyan); display: block; margin-bottom: 7px; }
+  .meta-row .m .v { font-size: 14px; color: var(--cream); font-weight: 600; }
+  .ph { color: var(--neon); border-bottom: 1px dashed rgba(0,255,136,.5); }
+
+  /* ---- LISTAS / CARDS ---- */
+  .grid { display: grid; gap: 16px; margin-top: 34px; }
+  .g2 { grid-template-columns: repeat(2,1fr); }
+  .g3 { grid-template-columns: repeat(3,1fr); }
+  .g4 { grid-template-columns: repeat(4,1fr); }
+  @media (max-width: 860px) { .g3, .g4 { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 600px) { .g2, .g3, .g4 { grid-template-columns: 1fr; } }
+
+  .card { background: var(--ink-2); border: 1px solid var(--line); border-radius: 16px; padding: 24px; transition: transform .15s, border-color .15s; }
+  .card:hover { transform: translateY(-3px); border-color: rgba(14,179,255,.4); }
+  .card .ico { width: 30px; height: 30px; margin-bottom: 14px; display: block; }
+
+  /* ícones SVG da marca — traço ciano com glow neon, fundo transparente */
+  svg.ico { fill: none; stroke: var(--cyan); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+    filter: drop-shadow(0 0 5px rgba(14,179,255,.55)); overflow: visible; }
+  svg.ico .accent { stroke: var(--neon); }
+  .icon-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+  @media print { svg.ico { stroke: var(--cyan-deep); filter: none; } svg.ico .accent { stroke: #0a8f4d; } }
+  .card h3 { font-size: 17px; margin-bottom: 8px; }
+  .card p { color: var(--zinc); font-size: 14px; }
+
+  /* problema vs solução */
+  .vs { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 34px; }
+  @media (max-width: 720px) { .vs { grid-template-columns: 1fr; } }
+  .vs .box { border-radius: 18px; padding: 28px; }
+  .vs .bad { background: linear-gradient(180deg, rgba(14,179,255,.10), transparent); border: 1px solid rgba(14,179,255,.3); }
+  .vs .good { background: linear-gradient(180deg, rgba(0,255,136,.08), transparent); border: 1px solid rgba(0,255,136,.3); }
+  .vs h3 { font-size: 15px; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 16px; font-family: "SF Mono", monospace; }
+  .vs .bad h3 { color: var(--cyan); }
+  .vs .good h3 { color: var(--ok); }
+  .vs ul { list-style: none; }
+  .vs li { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: var(--zinc-2); margin-bottom: 12px; line-height: 1.45; }
+  .vs li::before { font-weight: 900; flex-shrink: 0; }
+  .vs .bad li::before { content: "✕"; color: var(--cyan); }
+  .vs .good li::before { content: "✓"; color: var(--ok); }
+
+  /* ---- TABELA DE/PARA ---- */
+  table { width: 100%; border-collapse: collapse; background: var(--ink-2); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; margin-top: 30px; }
+  th, td { text-align: left; padding: 14px 16px; font-size: 13.5px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font: 800 10px/1 "SF Mono", monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--zinc-2); background: rgba(255,255,255,.02); }
+  td.feat { color: var(--cream); font-weight: 700; white-space: nowrap; }
+  tr:last-child td { border-bottom: none; }
+  .badge { display: inline-block; font: 800 9px/1 "SF Mono", monospace; letter-spacing: .1em; text-transform: uppercase; padding: 5px 9px; border-radius: 999px; }
+  .b-eq { color: var(--ok); background: rgba(0,255,136,.12); }
+  .b-pa { color: var(--neon); background: rgba(0,255,136,.14); }
+  .b-la { color: var(--cyan); background: rgba(14,179,255,.14); }
+
+  /* ---- CRONOGRAMA (cards atrelados a fase, estilo reel) ---- */
+  .timeline { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-top: 34px; }
+  @media (max-width: 860px) { .timeline { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px) { .timeline { grid-template-columns: 1fr; } }
+  .tphase { background: var(--ink-2); border: 1px solid var(--line); border-radius: 16px; padding: 22px; position: relative; }
+  .tphase .ph-tag { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .tphase .ph-n { font: 900 13px/1 "SF Mono", monospace; color: var(--ink); background: linear-gradient(135deg, var(--cyan), var(--purple)); width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; color: #fff; }
+  .tphase .ph-days { font: 700 9px/1 "SF Mono", monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--neon); }
+  .tphase h4 { font-size: 14px; margin-bottom: 10px; line-height: 1.25; }
+  .tphase ul { list-style: none; }
+  .tphase li { font-size: 12px; color: var(--zinc); margin-bottom: 7px; padding-left: 14px; position: relative; line-height: 1.4; }
+  .tphase li::before { content: "→"; position: absolute; left: 0; color: var(--cyan); }
+
+  /* ---- INVESTIMENTO ---- */
+  .invest { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 34px; }
+  @media (max-width: 720px) { .invest { grid-template-columns: 1fr; } }
+  .price-card { background: var(--ink-2); border: 1px solid var(--line); border-radius: 20px; padding: 32px; position: relative; overflow: hidden; }
+  .price-card.feature { border-color: rgba(14,179,255,.4); background: linear-gradient(180deg, rgba(14,179,255,.07), var(--ink-2)); }
+  .price-card .pc-tag { font: 800 10px/1 "SF Mono", monospace; letter-spacing: .16em; text-transform: uppercase; color: var(--cyan); margin-bottom: 16px; display: block; }
+  .price-card .pc-val { font: 900 40px/1 system-ui; letter-spacing: -.02em; margin-bottom: 6px; }
+  .price-card .pc-val .ph { font-size: 40px; }
+  .price-card .pc-sub { font-size: 13px; color: var(--zinc); margin-bottom: 22px; }
+  .price-card ul { list-style: none; }
+  .price-card li { display: flex; gap: 9px; font-size: 13.5px; color: var(--zinc-2); margin-bottom: 11px; }
+  .price-card li::before { content: "✓"; color: var(--ok); font-weight: 900; }
+  .pay-terms { margin-top: 30px; display: flex; gap: 12px; flex-wrap: wrap; }
+  .pay-terms .pt { flex: 1; min-width: 180px; background: var(--ink-2); border: 1px solid var(--line); border-radius: 14px; padding: 18px; }
+  .pay-terms .pt .ptk { font: 800 28px/1 system-ui; color: var(--cream); }
+  .pay-terms .pt .ptl { font: 700 9px/1 "SF Mono", monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--zinc); margin-top: 6px; }
+
+  /* ---- DIFERENCIAIS ---- */
+  .diff .card .ico { color: var(--cyan); }
+
+  /* ---- FECHAMENTO ---- */
+  .close-cta { text-align: center; }
+  .close-cta h2 { font-size: clamp(32px, 6vw, 60px); }
+  .btn-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 34px; }
+  .btn { font: 800 13px/1 system-ui; letter-spacing: .04em; text-transform: uppercase; padding: 16px 32px; border-radius: 14px; border: 2px solid rgba(0,0,0,.4); }
+  .btn-primary { background: linear-gradient(135deg, var(--cyan), var(--purple)); color: #fff; box-shadow: 0 6px 0 rgba(0,0,0,.5); }
+  .btn-ghost { background: var(--ink-2); color: var(--cream); border-color: var(--line); }
+  .sign-row { margin-top: 56px; display: flex; gap: 60px; justify-content: center; flex-wrap: wrap; }
+  .sign { text-align: center; }
+  .sign .line { width: 200px; border-top: 1px solid var(--zinc); margin-bottom: 10px; }
+  .sign .nm { font-size: 13px; color: var(--zinc-2); }
+
+  .note { margin-top: 28px; font: 600 11px/1.5 "SF Mono", monospace; color: var(--neon); background: rgba(0,255,136,.07); border: 1px dashed rgba(0,255,136,.35); border-radius: 10px; padding: 12px 16px; display: inline-block; }
+
+  @media print {
+    body { background: #fff; color: #111; }
+    .page { min-height: auto; page-break-inside: avoid; padding: 40px 0; }
+    .glow-cyan, .glow-purple { display: none; }
+    .card, table, .tphase, .price-card { background: #fafafa; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ SPRITE DE ÍCONES SVG (identidade Tecnosup) ============ -->
+<svg class="icon-defs" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path class="accent" d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><circle class="accent" cx="12" cy="15.5" r="1.6"/></symbol>
+  <symbol id="i-building" viewBox="0 0 24 24"><path d="M4 21V6l8-3 8 3v15"/><path d="M2 21h20"/><path class="accent" d="M9 21v-5h6v5"/><path d="M8 8h2M14 8h2M8 12h2M14 12h2"/></symbol>
+  <symbol id="i-tools" viewBox="0 0 24 24"><path d="M14.5 5.5a3.5 3.5 0 0 0-4.8 4.3l-6 6 2 2 6-6a3.5 3.5 0 0 0 4.3-4.8l-2.2 2.2-1.8-.4-.4-1.8 2.2-2.2Z"/><path class="accent" d="m14 14 4.5 4.5"/></symbol>
+  <symbol id="i-sparkle" viewBox="0 0 24 24"><path class="accent" d="M12 3v6m0 6v6m-9-9h6m6 0h6"/><path d="M12 8c.5 2 1.5 3 3.5 3.5C13.5 12 12.5 13 12 15c-.5-2-1.5-3-3.5-3.5C10.5 11 11.5 10 12 8Z"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="16" rx="2"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/><path class="accent" d="M7 13h3v3H7z"/></symbol>
+  <symbol id="i-receipt" viewBox="0 0 24 24"><path d="M5 3h14v18l-2.3-1.5L14.5 21l-2.5-1.5L9.5 21 7.3 19.5 5 21V3Z"/><path class="accent" d="M9 8h6M9 12h6"/></symbol>
+  <symbol id="i-cash" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><circle class="accent" cx="12" cy="12" r="2.6"/><path d="M7 9.5v5M17 9.5v5"/></symbol>
+  <symbol id="i-chair" viewBox="0 0 24 24"><path d="M7 4v8h10V4"/><path class="accent" d="M5 12h14"/><path d="M8 12v4m8-4v4M7 20v-4m10 4v-4"/></symbol>
+  <symbol id="i-crown" viewBox="0 0 24 24"><path d="M4 18 3 7l5 4 4-6 4 6 5-4-1 11H4Z"/><path class="accent" d="M4 18h16"/></symbol>
+  <symbol id="i-cart" viewBox="0 0 24 24"><path d="M3 4h2l2.2 11h10l1.8-8H6"/><circle class="accent" cx="9" cy="19" r="1.4"/><circle class="accent" cx="17" cy="19" r="1.4"/></symbol>
+  <symbol id="i-card" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path class="accent" d="M3 9.5h18"/><path d="M7 14.5h4"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 4v16h16"/><path class="accent" d="M8 16v-4m4 4V8m4 8v-6"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 20a5.5 5.5 0 0 1 11 0"/><path class="accent" d="M16 5.5a3.2 3.2 0 0 1 0 6.4M17.5 14.5a5.5 5.5 0 0 1 3 5"/></symbol>
+  <symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18c1.7 0 2-1.3 1.2-2.3-.8-1 .1-2.7 1.5-2.7H17a4 4 0 0 0 4-4c0-4.9-4-9-9-9Z"/><circle class="accent" cx="8" cy="11" r="1.1"/><circle class="accent" cx="12" cy="8" r="1.1"/><circle class="accent" cx="16" cy="10" r="1.1"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M9 15a4 4 0 0 1 0-6l2-2a4 4 0 0 1 6 6l-1 1"/><path class="accent" d="M15 9a4 4 0 0 1 0 6l-2 2a4 4 0 0 1-6-6l1-1"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4l2-2Z"/><path class="accent" d="M10 21a2 2 0 0 0 4 0"/></symbol>
+  <symbol id="i-whatsapp" viewBox="0 0 24 24"><path d="M3.5 20.5l1.3-4.3A8 8 0 1 1 8 19.2l-4.5 1.3Z"/><path class="accent" d="M9 8.5c-.3 2 .8 3.7 2.3 5 1.2 1 2.7 1.6 4 1.2.5-.2.6-.9.3-1.3l-1-1.1c-.3-.3-.7-.2-1 0l-.5.4c-.8-.4-1.5-1-2-1.8l.4-.5c.2-.3.2-.7 0-1l-.9-1.1c-.4-.4-1.1-.3-1.4.1Z"/></symbol>
+</svg>
+
+<!-- ============ 00 · CAPA ============ -->
+<section class="page cover">
+  <div class="glow-cyan" style="top:-280px; right:-220px;"></div>
+  <div class="glow-purple" style="bottom:-340px; left:-260px;"></div>
+  <div class="wrap">
+    <div class="brand-row">
+      <div class="logo-slot">T</div>
+      <div class="brand-name">Tecnosup<small>TECNOLOGIA QUE RESOLVE DE VERDADE</small></div>
+    </div>
+    <span class="sec-num">Proposta · 2026</span>
+    <h1>Proposta<br><span class="cy">Comercial</span></h1>
+    <p class="tagline" style="margin-top:20px">O sistema próprio da <strong style="color:var(--cream)"><span class="ph">[ CLIENTE ]</span></strong> — feito para substituir <span class="ph">[ SISTEMA ATUAL ]</span> e ir muito além dele.</p>
+    <div class="meta-row">
+      <div class="m"><span class="k">Cliente</span><span class="v"><span class="ph">[ CLIENTE ]</span></span></div>
+      <div class="m"><span class="k">Prestadora</span><span class="v">Tecnosup · github.com/tecnosup</span></div>
+      <div class="m"><span class="k">Responsáveis</span><span class="v">Vitor &amp; Abraão</span></div>
+      <div class="m"><span class="k">Data</span><span class="v"><span class="ph">[ MÊS · ANO ]</span></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 01 · O CONTEXTO ============ -->
+<section class="page">
+  <div class="glow-cyan" style="top:-300px; left:-240px;"></div>
+  <div class="wrap">
+    <span class="sec-num">01 · O contexto</span>
+    <h2>Operar no improviso ou na prateleira<br>não passa mais credibilidade.</h2>
+    <p class="lead">A <span class="ph">[ CLIENTE ]</span> está crescendo — e quer crescer com estrutura. Mas a operação depende hoje de <strong style="color:var(--cream)"><span class="ph">[ SISTEMA ATUAL ]</span></strong>, uma ferramenta genérica, limitada e igual à de qualquer concorrente. Quem usa a mesma prateleira tem a mesma cara e os mesmos tetos.</p>
+
+    <div class="vs">
+      <div class="box bad">
+        <h3>Hoje · na prateleira</h3>
+        <ul>
+          <li>Sistema genérico, igual ao de qualquer concorrente</li>
+          <li>Cliente preso a app ou fluxo engessado (atrito, desistência)</li>
+          <li>Visual datado, sem identidade da marca</li>
+          <li>Regras travadas — você se adapta ao sistema, não o contrário</li>
+          <li>Sem caminho próprio para escalar / abrir novas unidades</li>
+        </ul>
+      </div>
+      <div class="box good">
+        <h3>Com sistema próprio</h3>
+        <ul>
+          <li>Plataforma exclusiva, com a cara e as regras da <span class="ph">[ CLIENTE ]</span></li>
+          <li>Atendimento e agendamento direto no navegador — zero download</li>
+          <li>Experiência premium que vira diferencial de marca</li>
+          <li>Construído sob medida, sem depender de terceiros</li>
+          <li>Arquitetura pronta para multiunidade / expansão desde o dia zero</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 02 · A SOLUÇÃO ============ -->
+<section class="page">
+  <div class="glow-purple" style="top:-260px; right:-220px;"></div>
+  <div class="wrap">
+    <span class="sec-num">02 · A solução</span>
+    <h2>Uma landing exclusiva e um admin —<br>interligados num organismo só.</h2>
+    <p class="lead">O diferencial não é ter um site <em>e</em> um sistema. É os dois serem <strong style="color:var(--cream)">a mesma coisa</strong>: uma landing com a cara da sua marca, ligada em tempo real ao painel que a equipe opera. Nada de remendo entre ferramentas de terceiros.</p>
+    <div class="grid g2">
+      <div class="card">
+        <svg class="ico"><use href="#i-tools"/></svg>
+        <h3>Painel Admin — a equipe "em casa"</h3>
+        <p>A operação que a equipe já conhece, replicada e aprimorada: agenda, atendimento, caixa e controles do dia a dia. A memória muscular é preservada — sem retreinar do zero.</p>
+      </div>
+      <div class="card">
+        <svg class="ico"><use href="#i-sparkle"/></svg>
+        <h3>Landing exclusiva — a sua marca, sem teto</h3>
+        <p>Site só seu — cores, estilo e identidade da <span class="ph">[ CLIENTE ]</span>, estilizado a gosto, sem o molde genérico de prateleira. Tudo no navegador, sem app store.</p>
+      </div>
+    </div>
+    <p class="lead" style="margin-top:30px">Cada ação na landing cai direto no admin; cada venda alimenta o caixa; planos recorrentes viram receita previsível — <strong style="color:var(--cream)">um ecossistema interligado</strong>, não peças soltas. Construído em stack moderna (<strong style="color:var(--cream)">Next.js 16 · React 19 · Firestore</strong>), com banco dedicado e separação por unidade.</p>
+  </div>
+</section>
+
+<!-- ============ 03 · ESCOPO / MÓDULOS ============ -->
+<section class="page">
+  <div class="glow-cyan" style="bottom:-320px; right:-240px;"></div>
+  <div class="wrap">
+    <span class="sec-num">03 · Escopo do projeto</span>
+    <h2>O que entra no sistema.</h2>
+    <p class="lead">Os módulos que sustentam a operação da <span class="ph">[ CLIENTE ]</span>, do primeiro contato ao fechamento do caixa. Ajustável ao escopo de <span class="ph">[ SEGMENTO ]</span>.</p>
+    <div class="grid g3">
+      <div class="card"><svg class="ico"><use href="#i-calendar"/></svg><h3>Agenda inteligente</h3><p>Grade por profissional/recurso, mini-calendário, bloqueio de horário e encaixe rápido.</p></div>
+      <div class="card"><svg class="ico"><use href="#i-receipt"/></svg><h3>Comandas / pedidos</h3><p>Atendimento abre uma comanda; produtos e serviços entram durante a visita; fecha na saída.</p></div>
+      <div class="card"><svg class="ico"><use href="#i-cash"/></svg><h3>Caixa diário</h3><p>Abertura com saldo, lançamentos e fechamento com conferência de desvios.</p></div>
+      <div class="card"><svg class="ico"><use href="#i-chair"/></svg><h3>Fila de chegada</h3><p>Ordem de chegada digital (FIFO) para quem chega sem agendar.</p></div>
+      <div class="card"><svg class="ico"><use href="#i-crown"/></svg><h3>Clube de Assinaturas</h3><p>Planos recorrentes vendidos online — a receita previsível do negócio.</p></div>
+      <div class="card"><svg class="ico"><use href="#i-cart"/></svg><h3>Loja de produtos</h3><p>Venda de itens com retirada no local ou integração com o atendimento.</p></div>
+      <div class="card"><svg class="ico"><use href="#i-card"/></svg><h3>Pagamentos online</h3><p>Pix, cartão e travas antifalta — confirmação automática caindo no caixa.</p></div>
+      <div class="card"><svg class="ico"><use href="#i-chart"/></svg><h3>Comissões &amp; estoque</h3><p>Repasses por profissional e controle de entradas/saídas de produto.</p></div>
+      <div class="card"><svg class="ico"><use href="#i-users"/></svg><h3>Clientes &amp; carteira</h3><p>Cadastro, aprovação e saldo pré-pago para consumir depois.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 04 · CRONOGRAMA ============ -->
+<section class="page">
+  <div class="glow-cyan" style="bottom:-300px; left:-200px;"></div>
+  <div class="wrap">
+    <span class="sec-num">04 · Cronograma de entrega</span>
+    <h2>Fases até o lançamento.</h2>
+    <p class="lead">Roadmap pensado para a meta de <strong style="color:var(--cream)"><span class="ph">[ DATA-ALVO ]</span></strong> — entregas rápidas e validadas a cada etapa. Prazos ajustáveis ao escopo final.</p>
+    <div class="timeline">
+      <div class="tphase">
+        <div class="ph-tag"><span class="ph-n">1</span><span class="ph-days"><span class="ph">[ semana 1 ]</span></span></div>
+        <h4>Infra &amp; Agenda</h4>
+        <ul><li>Firebase dedicado</li><li>Landing institucional premium</li><li>Grid de agenda</li></ul>
+      </div>
+      <div class="tphase">
+        <div class="ph-tag"><span class="ph-n">2</span><span class="ph-days"><span class="ph">[ semana 2 ]</span></span></div>
+        <h4>Comandas &amp; Caixa</h4>
+        <ul><li>Coleção de comandas</li><li>Painel de comandas abertas</li><li>Fluxo de caixa diário</li></ul>
+      </div>
+      <div class="tphase">
+        <div class="ph-tag"><span class="ph-n">3</span><span class="ph-days"><span class="ph">[ semana 3 ]</span></span></div>
+        <h4>Fila &amp; Pagamentos</h4>
+        <ul><li>Fila de ordem de chegada</li><li>Carteira do cliente</li><li>Pagamentos online + Clube</li></ul>
+      </div>
+      <div class="tphase">
+        <div class="ph-tag"><span class="ph-n">4</span><span class="ph-days"><span class="ph">[ semana 4 ]</span></span></div>
+        <h4>Migração &amp; Testes</h4>
+        <ul><li>Aprovação de cadastros</li><li>Importação de clientes (CSV)</li><li>Homologação com a equipe</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 05 · DIFERENCIAIS ============ -->
+<section class="page diff">
+  <div class="glow-purple" style="top:-280px; right:-220px;"></div>
+  <div class="wrap">
+    <span class="sec-num">05 · Diferenciais</span>
+    <h2>Por que sob medida vence a prateleira.</h2>
+    <div class="grid g2">
+      <div class="card"><svg class="ico"><use href="#i-palette"/></svg><h3>Identidade exclusiva</h3><p>A landing tem a cara, as cores e o estilo da <span class="ph">[ CLIENTE ]</span> — estilizada a gosto, sem limitações. Nenhum concorrente terá a mesma, porque é só sua.</p></div>
+      <div class="card"><svg class="ico"><use href="#i-link"/></svg><h3>Tudo interligado</h3><p>Landing, agendamento, admin, caixa e Clube falam entre si em tempo real. Um organismo só — não ferramentas soltas remendadas com gambiarra.</p></div>
+      <div class="card"><svg class="ico"><use href="#i-whatsapp"/></svg><h3>WhatsApp inteligente</h3><p>Nossa arquitetura suporta conversa automática e notificações em tempo real no WhatsApp — lembrete de horário e reengajamento direto no app que o cliente já usa.</p></div>
+      <div class="card"><svg class="ico"><use href="#i-bolt"/></svg><h3>Performance brutal</h3><p>Next.js 16 + React 19: abre em menos de 1s no 4G de qualquer celular. Sem app pra baixar.</p></div>
+      <div class="card"><svg class="ico"><use href="#i-lock"/></svg><h3>Banco exclusivo</h3><p>Instância serverless dedicada à <span class="ph">[ CLIENTE ]</span> — seus dados não dividem espaço com mais ninguém.</p></div>
+      <div class="card"><svg class="ico"><use href="#i-bell"/></svg><h3>Fidelização nativa</h3><p>Lembretes automáticos, antifalta e reengajamento — ferramentas que a prateleira não dá.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 06 · INVESTIMENTO ============ -->
+<section class="page">
+  <div class="glow-cyan" style="top:-260px; left:-220px;"></div>
+  <div class="wrap">
+    <span class="sec-num">06 · Investimento</span>
+    <h2>Proposta de valor.</h2>
+    <p class="lead">Modelo em duas partes: a construção do sistema (uma vez) e a manutenção da plataforma (mensal). Valores variam conforme o escopo de cada projeto.</p>
+    <div class="invest">
+      <div class="price-card feature">
+        <span class="pc-tag">Setup · Desenvolvimento</span>
+        <div class="pc-val">R$ <span class="ph">_____</span></div>
+        <p class="pc-sub">Pagamento único pela construção completa do sistema — já com o 1º ano de operação incluso.</p>
+        <ul>
+          <li>Todos os módulos do escopo</li>
+          <li>Landing premium com a marca</li>
+          <li>Migração dos dados de <span class="ph">[ SISTEMA ATUAL ]</span></li>
+          <li>Domínio + hospedagem inclusos</li>
+          <li>1 ano de suporte incluso</li>
+          <li>Manual de uso + treinamento da equipe</li>
+          <li>Homologação assistida na virada</li>
+        </ul>
+      </div>
+      <div class="price-card">
+        <span class="pc-tag" style="color:var(--purple)">Mensalidade · Plataforma</span>
+        <div class="pc-val">R$ <span class="ph">___</span><span style="font-size:16px; color:var(--zinc)">/mês</span></div>
+        <p class="pc-sub">Mantém o sistema no ar, seguro e dando suporte — após o 1º ano incluso.</p>
+        <ul>
+          <li>Infra serverless dedicada</li>
+          <li>Suporte e correções</li>
+          <li>Backups e segurança</li>
+          <li>Novas features sob orçamento à parte</li>
+        </ul>
+      </div>
+    </div>
+    <div class="pay-terms">
+      <div class="pt"><div class="ptk"><span class="ph" style="font-size:28px">__%</span></div><div class="ptl">Na assinatura do contrato</div></div>
+      <div class="pt"><div class="ptk"><span class="ph" style="font-size:28px">__%</span></div><div class="ptl">Na entrega das fases</div></div>
+      <div class="pt"><div class="ptk"><span class="ph" style="font-size:28px">__%</span></div><div class="ptl">Na homologação final</div></div>
+    </div>
+    <div class="note">✎ Valores e condições de pagamento variam por projeto — preencher por Vitor &amp; Abraão antes de enviar ao cliente.</div>
+  </div>
+</section>
+
+<!-- ============ 07 · FECHAMENTO ============ -->
+<section class="page">
+  <div class="glow-cyan" style="top:-260px; right:-200px;"></div>
+  <div class="glow-purple" style="bottom:-300px; left:-220px;"></div>
+  <div class="wrap close-cta">
+    <span class="sec-num" style="color:var(--neon)">Vamos construir</span>
+    <h2>A <span class="ph">[ CLIENTE ]</span> merece um sistema<br>tão bom quanto o serviço.</h2>
+    <p class="lead" style="margin:0 auto;">Pronto para tirar o negócio do sistema de prateleira e colocá-lo num produto próprio, premium e escalável.</p>
+    <div class="btn-row">
+      <span class="btn btn-primary">Aprovar proposta</span>
+      <span class="btn btn-ghost">Falar com a equipe</span>
+    </div>
+    <div class="sign-row">
+      <div class="sign"><div class="line"></div><div class="nm"><span class="ph">[ CLIENTE ]</span></div></div>
+      <div class="sign"><div class="line"></div><div class="nm">Tecnosup · Vitor &amp; Abraão</div></div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

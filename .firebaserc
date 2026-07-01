@@ -1,5 +1,18 @@
 {
   "projects": {
     "default": "tecnosup-site"
-  }
+  },
+  "targets": {
+    "tecnosup-site": {
+      "hosting": {
+        "site": [
+          "tecnosup-site"
+        ],
+        "materiais": [
+          "tecnosup-materiais"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }

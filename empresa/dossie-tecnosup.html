@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dossiê Tecnosup — Quem somos, o que entregamos e o que agregamos</title>
+<style>
+  :root {
+    --cyan: #0eb3ff;
+    --cyan-deep: #0a8fcc;
+    --purple: #7000ff;
+    --purple-deep: #5400bf;
+    --cream: #e0e0e0;
+    --neon: #00ff88;
+    --ink: #030407;
+    --ink-2: #0b1121;
+    --ink-3: #0e1520;
+    --zinc: #6b7a90;
+    --zinc-2: #9ca3af;
+    --line: rgba(31,53,102,.55);
+    --warn: #ffbd2e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--ink); color: var(--cream);
+    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+    line-height: 1.6; -webkit-font-smoothing: antialiased;
+    background-image: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(14,179,255,.012) 3px, rgba(14,179,255,.012) 4px);
+  }
+  .mono { font-family: "SF Mono", "Consolas", monospace; }
+  .grad { background: linear-gradient(100deg, var(--cyan), var(--purple)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .cy { color: var(--cyan); } .nn { color: var(--neon); }
+
+  .page { min-height: 100vh; display: flex; align-items: center; padding: 80px 0; position: relative; border-bottom: 1px solid var(--line); overflow: hidden; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 32px; width: 100%; position: relative; z-index: 2; }
+  @media (max-width: 720px) { .page { min-height: auto; padding: 56px 0; } }
+
+  .glow-c { position: absolute; width: 920px; height: 920px; border-radius: 50%; background: radial-gradient(circle, rgba(14,179,255,.20), transparent 62%); pointer-events: none; z-index: 1; }
+  .glow-p { position: absolute; width: 780px; height: 780px; border-radius: 50%; background: radial-gradient(circle, rgba(112,0,255,.18), transparent 62%); pointer-events: none; z-index: 1; }
+
+  .sec-num { font: 800 12px/1 "SF Mono", monospace; letter-spacing: .3em; text-transform: uppercase; color: var(--cyan); margin-bottom: 18px; display: block; }
+  h1 { font-size: clamp(38px, 7.5vw, 84px); font-weight: 900; line-height: .98; letter-spacing: -.03em; }
+  h2 { font-size: clamp(28px, 5vw, 46px); font-weight: 900; line-height: 1.03; letter-spacing: -.02em; margin-bottom: 18px; }
+  .lead { color: var(--zinc-2); font-size: clamp(16px, 2vw, 19px); max-width: 720px; }
+
+  /* CAPA */
+  .cover { position: relative; }
+  /* vídeo de fundo (Higgsfield) */
+  .hero-vid { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    object-position: center; z-index: 0; pointer-events: none; }
+  /* faixa escura leve na base — dá acabamento sem pesar */
+  .hero-floor { position: absolute; left: 0; right: 0; bottom: 0; height: 40%; z-index: 1; pointer-events: none;
+    background: linear-gradient(0deg, rgba(3,4,7,.85) 0%, rgba(3,4,7,.4) 45%, rgba(3,4,7,0) 100%); }
+  /* selo da logo Tecnosup no canto inf. direito, com halo escuro AMPLO atrás que engole a partícula vizinha */
+  .hero-badge { position: absolute; bottom: 0; right: 0; z-index: 3; pointer-events: none;
+    display: grid; place-items: center;
+    width: clamp(220px, 26vw, 360px); height: clamp(180px, 22vw, 300px);
+    background: radial-gradient(70% 70% at 72% 68%, rgba(3,4,7,.97) 0%, rgba(3,4,7,.85) 38%, rgba(3,4,7,.4) 62%, rgba(3,4,7,0) 82%); }
+  .hero-badge img { height: clamp(64px, 8vw, 104px); width: auto; display: block;
+    transform: translate(-6%, -10%);
+    filter: drop-shadow(0 0 14px rgba(14,179,255,.5)); opacity: .94; }
+  /* overlay: vinheta cinematográfica nos cantos + escurece a esquerda (texto) e a base; halo respira à direita */
+  .hero-overlay { position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background:
+      radial-gradient(125% 140% at 50% 44%, rgba(3,4,7,0) 55%, rgba(3,4,7,.28) 82%, rgba(3,4,7,.6) 100%),
+      linear-gradient(90deg, rgba(3,4,7,.92) 0%, rgba(3,4,7,.78) 32%, rgba(3,4,7,.30) 62%, rgba(3,4,7,.55) 100%),
+      linear-gradient(0deg, rgba(3,4,7,.85) 0%, rgba(3,4,7,0) 38%); }
+  .cover .wrap { position: relative; z-index: 3; }
+  .cover .glow-c, .cover .glow-p { z-index: 1; opacity: .5; }
+  @media print { .hero-vid, .hero-overlay, .hero-floor, .hero-badge { display: none; } }
+  .cover .brand-row { display: flex; align-items: center; gap: 14px; margin-bottom: 40px; }
+  .logo-slot { width: 46px; height: 46px; border-radius: 11px; border: 1px solid var(--line); background: var(--ink-2); display: grid; place-items: center; font: 900 16px/1 system-ui; color: var(--cyan); box-shadow: 0 0 24px rgba(14,179,255,.25); }
+  .brand-name { font: 900 18px/1 system-ui; letter-spacing: .02em; }
+  .brand-name small { display: block; font: 600 9px/1 "SF Mono", monospace; color: var(--zinc); letter-spacing: .22em; margin-top: 5px; }
+  .pill-top { display:inline-block; font: 700 10px/1 "SF Mono", monospace; letter-spacing:.2em; text-transform:uppercase; color: var(--neon); border:1px solid rgba(0,255,136,.35); background: rgba(0,255,136,.06); padding: 8px 13px; border-radius:999px; margin-bottom: 26px; }
+  .cover h1 { margin-bottom: 22px; }
+  .cover .tagline { font-size: clamp(17px, 2.4vw, 22px); color: var(--zinc-2); max-width: 680px; margin-bottom: 46px; }
+  .meta-row { display: flex; gap: 40px; flex-wrap: wrap; border-top: 1px solid var(--line); padding-top: 26px; }
+  .meta-row .m .k { font: 700 9px/1 "SF Mono", monospace; letter-spacing: .18em; text-transform: uppercase; color: var(--cyan); display: block; margin-bottom: 7px; }
+  .meta-row .m .v { font-size: 14px; color: var(--cream); font-weight: 600; }
+
+  /* TIMELINE jornada */
+  .journey { display: flex; gap: 0; margin-top: 38px; flex-wrap: wrap; }
+  .jstep { flex: 1; min-width: 160px; position: relative; padding: 0 18px; }
+  .jstep::before { content: ""; position: absolute; top: 9px; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--cyan), var(--purple)); opacity: .4; }
+  .jstep .dot { width: 18px; height: 18px; border-radius: 50%; background: var(--ink); border: 3px solid var(--cyan); position: relative; z-index: 2; margin-bottom: 16px; box-shadow: 0 0 16px rgba(14,179,255,.5); }
+  .jstep .yr { font: 900 22px/1 system-ui; color: var(--cream); margin-bottom: 6px; }
+  .jstep .tx { font-size: 13px; color: var(--zinc); }
+
+  /* FOUNDERS */
+  .founders { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 34px; }
+  @media (max-width: 720px) { .founders { grid-template-columns: 1fr; } }
+  .founder { background: var(--ink-2); border: 1px solid var(--line); border-radius: 18px; padding: 28px; position: relative; overflow: hidden; }
+  .founder::after { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--cyan), var(--purple)); }
+  .founder .av { width: 56px; height: 56px; border-radius: 14px; background: linear-gradient(135deg, var(--cyan), var(--purple)); display: grid; place-items: center; font: 900 22px/1 system-ui; color: #fff; margin-bottom: 16px; }
+  .founder h3 { font-size: 21px; margin-bottom: 4px; }
+  .founder .role { font: 700 10px/1 "SF Mono", monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--cyan); margin-bottom: 14px; }
+  .founder p { font-size: 14px; color: var(--zinc-2); }
+
+  /* PORTFOLIO cards */
+  .grid { display: grid; gap: 16px; margin-top: 34px; }
+  .g2 { grid-template-columns: repeat(2,1fr); }
+  @media (max-width: 720px) { .g2 { grid-template-columns: 1fr; } }
+  .pcard { background: var(--ink-2); border: 1px solid var(--line); border-radius: 16px; padding: 26px; transition: transform .15s, border-color .15s; }
+  .pcard:hover { transform: translateY(-3px); border-color: rgba(14,179,255,.4); }
+  .pcard .top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .pcard h3 { font-size: 22px; letter-spacing: -.01em; }
+  .pcard .badge { font: 800 9px/1 "SF Mono", monospace; letter-spacing: .1em; text-transform: uppercase; padding: 6px 11px; border-radius: 999px; }
+  .b-live { color: var(--neon); background: rgba(0,255,136,.12); border: 1px solid rgba(0,255,136,.35); }
+  .b-soon { color: var(--cyan); background: rgba(14,179,255,.12); border: 1px solid rgba(14,179,255,.35); }
+  .b-dev { color: var(--warn); background: rgba(255,189,46,.1); border: 1px solid rgba(255,189,46,.3); }
+  .pcard .desc { font-size: 14px; color: var(--zinc-2); margin-bottom: 16px; }
+  .pcard .tags { display: flex; gap: 7px; flex-wrap: wrap; }
+  .pcard .tag { font: 600 10px/1 "SF Mono", monospace; color: var(--zinc); border: 1px solid var(--line); border-radius: 6px; padding: 5px 9px; }
+
+  /* SEGURANÇA & VELOCIDADE */
+  .specs { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-top: 34px; }
+  @media (max-width: 820px) { .specs { grid-template-columns: 1fr 1fr; } }
+  .spec { background: var(--ink-2); border: 1px solid var(--line); border-radius: 16px; padding: 24px; text-align: center; }
+  .spec .ico { width: 30px; height: 30px; margin: 0 auto 14px; display: block; }
+  .spec h4 { font-size: 15px; margin-bottom: 6px; }
+  .spec p { font-size: 12px; color: var(--zinc); }
+
+  /* ícones SVG da marca — traço ciano com glow neon, fundo transparente */
+  svg.ico { fill: none; stroke: var(--cyan); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+    filter: drop-shadow(0 0 5px rgba(14,179,255,.55)); overflow: visible; }
+  svg.ico .accent { stroke: var(--neon); }
+  .icon-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+  @media print { svg.ico { stroke: var(--cyan-deep); filter: none; } svg.ico .accent { stroke: #0a8f4d; } }
+
+  /* WHATSAPP — bloco de destaque + mock de conversa */
+  .wa-wrap { display: grid; grid-template-columns: 1.1fr .9fr; gap: 36px; align-items: center; margin-top: 34px; }
+  @media (max-width: 820px) { .wa-wrap { grid-template-columns: 1fr; } }
+  .wa-points { list-style: none; margin-top: 22px; }
+  .wa-points li { display: flex; gap: 12px; align-items: flex-start; font-size: 14px; color: var(--zinc-2); margin-bottom: 14px; line-height: 1.4; }
+  .wa-points li svg { width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px; }
+  .wa-phone { background: var(--ink-2); border: 1px solid var(--line); border-radius: 26px; padding: 16px 14px 22px; max-width: 320px; margin: 0 auto; box-shadow: 0 0 50px rgba(14,179,255,.12); }
+  .wa-top { display: flex; align-items: center; gap: 10px; padding: 4px 6px 14px; border-bottom: 1px solid var(--line); margin-bottom: 14px; }
+  .wa-top .av { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, var(--cyan), var(--purple)); display: grid; place-items: center; }
+  .wa-top .av svg { width: 18px; height: 18px; }
+  .wa-top .nm { font: 800 13px/1 system-ui; color: var(--cream); }
+  .wa-top .st { font: 600 9px/1 "SF Mono", monospace; color: var(--neon); letter-spacing: .1em; text-transform: uppercase; margin-top: 4px; }
+  .wa-msg { font-size: 13px; line-height: 1.45; padding: 10px 13px; border-radius: 14px; margin-bottom: 9px; max-width: 86%; }
+  .wa-in { background: var(--ink-3); border: 1px solid var(--line); color: var(--cream); border-bottom-left-radius: 4px; }
+  .wa-out { background: linear-gradient(135deg, rgba(14,179,255,.22), rgba(112,0,255,.22)); border: 1px solid rgba(14,179,255,.35); color: var(--cream); margin-left: auto; border-bottom-right-radius: 4px; }
+  .wa-msg .t { display: block; font: 600 8px/1 "SF Mono", monospace; color: var(--zinc); margin-top: 6px; text-align: right; }
+  @media print { .wa-phone { box-shadow: none; background: #fafafa; } }
+
+  /* KPIS */
+  .kgrid { display: grid; grid-template-columns: repeat(5,1fr); gap: 14px; margin-top: 34px; }
+  @media (max-width: 980px) { .kgrid { grid-template-columns: repeat(2,1fr); } }
+  @media (max-width: 560px) { .kgrid { grid-template-columns: 1fr; } }
+  .kcol { background: var(--ink-2); border: 1px solid var(--line); border-radius: 14px; padding: 18px; }
+  .kcol .kh { font: 800 10px/1.1 "SF Mono", monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--cyan); margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+  .kcol ul { list-style: none; }
+  .kcol li { font-size: 12.5px; color: var(--zinc-2); margin-bottom: 9px; padding-left: 14px; position: relative; line-height: 1.35; }
+  .kcol li::before { content: "▸"; position: absolute; left: 0; color: var(--neon); font-size: 10px; }
+
+  table { width: 100%; border-collapse: collapse; background: var(--ink-2); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; margin-top: 28px; }
+  th, td { text-align: left; padding: 14px 16px; font-size: 13px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font: 800 10px/1 "SF Mono", monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--zinc-2); background: rgba(255,255,255,.02); }
+  td.kpi { color: var(--cream); font-weight: 700; }
+  td.delta { font: 800 14px/1 "SF Mono", monospace; color: var(--neon); white-space: nowrap; }
+  tr:last-child td { border-bottom: none; }
+  .note { margin-top: 24px; font: 600 11px/1.6 "SF Mono", monospace; color: var(--zinc); background: rgba(255,255,255,.02); border: 1px dashed var(--line); border-radius: 10px; padding: 14px 18px; }
+
+  /* FECHAMENTO */
+  .close-cta { text-align: center; }
+  .btn-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 34px; }
+  .btn { font: 800 13px/1 system-ui; letter-spacing: .04em; text-transform: uppercase; padding: 16px 32px; border-radius: 13px; }
+  .btn-primary { background: linear-gradient(135deg, var(--cyan), var(--purple)); color: #fff; box-shadow: 0 0 32px rgba(14,179,255,.35); }
+  .btn-ghost { background: var(--ink-2); color: var(--cream); border: 1px solid var(--line); }
+
+  @media print {
+    body { background: #fff; color: #111; background-image: none; }
+    .page { min-height: auto; page-break-inside: avoid; padding: 38px 0; }
+    .glow-c, .glow-p { display: none; }
+    .kcol, table, .pcard, .spec, .founder { background: #fafafa; }
+    /* gradiente em texto fica invisível no papel — força cor sólida legível */
+    .grad { -webkit-text-fill-color: var(--cyan-deep); color: var(--cyan-deep); }
+    .cy, .sec-num, .kcol .kh, .pcard .badge, .founder .role, .meta-row .m .k { color: var(--cyan-deep) !important; }
+    .nn, td.delta, .kcol li::before { color: #0a8f4d !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ SPRITE DE ÍCONES SVG (identidade Tecnosup) ============ -->
+<svg class="icon-defs" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path class="accent" d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><circle class="accent" cx="12" cy="15.5" r="1.6"/></symbol>
+  <symbol id="i-db" viewBox="0 0 24 24"><ellipse cx="12" cy="5.5" rx="7" ry="3"/><path d="M5 5.5v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/><path class="accent" d="M5 11.5v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></symbol>
+  <symbol id="i-building" viewBox="0 0 24 24"><path d="M4 21V6l8-3 8 3v15"/><path d="M2 21h20"/><path class="accent" d="M9 21v-5h6v5"/><path d="M8 8h2M14 8h2M8 12h2M14 12h2"/></symbol>
+  <symbol id="i-lifebuoy" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle class="accent" cx="12" cy="12" r="3.4"/><path d="m6.3 6.3 3.3 3.3M14.4 14.4l3.3 3.3M17.7 6.3l-3.3 3.3M9.6 14.4l-3.3 3.3"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path class="accent" d="M12 3c2.5 2.4 3.8 5.6 3.8 9S14.5 18.6 12 21c-2.5-2.4-3.8-5.6-3.8-9S9.5 5.4 12 3Z"/></symbol>
+  <symbol id="i-cap" viewBox="0 0 24 24"><path d="M2 9l10-4 10 4-10 4L2 9Z"/><path class="accent" d="M6 11v5c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5v-5"/><path d="M22 9v5"/></symbol>
+  <symbol id="i-handshake" viewBox="0 0 24 24"><path d="m3 12 3-3 5 4 2-2 5 3 3-2"/><path class="accent" d="m11 13 2 2 3-1"/><path d="M3 12v4l4 3M21 11v5l-4 3"/></symbol>
+  <symbol id="i-disk" viewBox="0 0 24 24"><path d="M5 3h11l3 3v15H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M8 3v5h7V3"/><rect class="accent" x="8" y="13" width="8" height="6" rx="1"/></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24"><circle class="accent" cx="8" cy="8" r="4.2"/><path d="m11 11 9 9M17 17l2-2M14 14l2-2"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle class="accent" cx="12" cy="12" r="1.6"/></symbol>
+  <symbol id="i-dev" viewBox="0 0 24 24"><path class="accent" d="m8 9-3 3 3 3M16 9l3 3-3 3"/><path d="M13.5 7l-3 10"/></symbol>
+  <symbol id="i-whatsapp" viewBox="0 0 24 24"><path d="M3.5 20.5l1.3-4.3A8 8 0 1 1 8 19.2l-4.5 1.3Z"/><path class="accent" d="M9 8.5c-.3 2 .8 3.7 2.3 5 1.2 1 2.7 1.6 4 1.2.5-.2.6-.9.3-1.3l-1-1.1c-.3-.3-.7-.2-1 0l-.5.4c-.8-.4-1.5-1-2-1.8l.4-.5c.2-.3.2-.7 0-1l-.9-1.1c-.4-.4-1.1-.3-1.4.1Z"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4l2-2Z"/><path class="accent" d="M10 21a2 2 0 0 0 4 0"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M9 15a4 4 0 0 1 0-6l2-2a4 4 0 0 1 6 6l-1 1"/><path class="accent" d="M15 9a4 4 0 0 1 0 6l-2 2a4 4 0 0 1-6-6l1-1"/></symbol>
+</svg>
+
+<!-- ============ 00 · CAPA ============ -->
+<section class="page cover">
+  <video class="hero-vid" autoplay muted loop playsinline>
+    <source src="hero.mp4" type="video/mp4" />
+  </video>
+  <div class="hero-overlay"></div>
+  <div class="hero-floor"></div>
+  <div class="hero-badge"><img src="logo-tecnosup.png" alt="Tecnosup" /></div>
+  <div class="glow-c" style="top:-300px; right:-220px;"></div>
+  <div class="glow-p" style="bottom:-340px; left:-260px;"></div>
+  <div class="wrap">
+    <div class="brand-row">
+      <div class="logo-slot">T</div>
+      <div class="brand-name">Tecnosup<small>TECNOLOGIA QUE RESOLVE DE VERDADE</small></div>
+    </div>
+    <span class="pill-top">Dossiê · Quem somos &amp; o que agregamos</span>
+    <h1>Não vendemos<br>software.<br><span class="grad">Construímos vantagem.</span></h1>
+    <p class="tagline">Quem está por trás da Tecnosup, o que já entregamos e por que um ecossistema digital exclusivo — da landing ao admin — é o que separa um negócio bom de um negócio que domina o mercado.</p>
+    <div class="meta-row">
+      <div class="m"><span class="k">Empresa</span><span class="v">Tecnosup · Cruzeiro/SP · desde 2024</span></div>
+      <div class="m"><span class="k">Founders</span><span class="v">Abraão Cardoso &amp; Vitor</span></div>
+      <div class="m"><span class="k">Portfólio</span><span class="v">github.com/tecnosup</span></div>
+      <div class="m"><span class="k">Data</span><span class="v">Junho · 2026</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 01 · QUEM SOMOS ============ -->
+<section class="page">
+  <div class="glow-c" style="top:-280px; left:-240px;"></div>
+  <div class="wrap">
+    <span class="sec-num">01 · Quem somos</span>
+    <h2>Uma parceria que começou em 2024<br>— e só melhora desde então.</h2>
+    <p class="lead">A Tecnosup nasceu da dupla Abraão e Vitor. Começamos a desenvolver sistemas juntos em 2024 e, projeto após projeto, a parceria amadureceu e a qualidade dos produtos subiu de patamar. Hoje entregamos ecossistemas completos — uma landing exclusiva, com a identidade do cliente e sem limitações de prateleira, interligada em tempo real ao admin que a equipe opera. Tudo um organismo só, na tecnologia mais atual do mercado.</p>
+
+    <div class="journey">
+      <div class="jstep"><div class="dot"></div><div class="yr">2024</div><div class="tx">Início da jornada em desenvolvimento de sistemas, como dupla.</div></div>
+      <div class="jstep"><div class="dot"></div><div class="yr">2025</div><div class="tx">Consolidação da Tecnosup e dos primeiros produtos próprios.</div></div>
+      <div class="jstep"><div class="dot"></div><div class="yr">2026</div><div class="tx">Produtos em produção, vendendo e em entrega para clientes reais.</div></div>
+    </div>
+
+    <div class="founders">
+      <div class="founder">
+        <div class="av">A</div>
+        <h3>Abraão Cardoso</h3>
+        <div class="role">Co-founder · Front-end &amp; Produto</div>
+        <p>Responsável pela experiência do cliente — landing pages e interfaces que viram diferencial de marca. Cursando desenvolvimento de sistemas.</p>
+      </div>
+      <div class="founder">
+        <div class="av">V</div>
+        <h3>Vitor</h3>
+        <div class="role">Co-founder · Sistemas &amp; Back-end</div>
+        <p>Responsável pelos painéis administrativos e pela arquitetura dos sistemas. Finalizando a graduação na área.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 02 · PORTFÓLIO ============ -->
+<section class="page">
+  <div class="glow-p" style="top:-260px; right:-220px;"></div>
+  <div class="wrap">
+    <span class="sec-num">02 · Portfólio</span>
+    <h2>Prova viva: o que já está rodando.</h2>
+    <p class="lead">Não falamos de promessas — falamos de produtos. Tudo público no nosso GitHub (github.com/tecnosup).</p>
+    <div class="grid g2">
+      <div class="pcard">
+        <div class="top"><h3>Nyx</h3><span class="badge b-live">Em produção · vendendo</span></div>
+        <p class="desc">Sistema em uso profissional, já gerando vendas. Nossa prova de que a Tecnosup leva produto até o mercado — não para no protótipo.</p>
+        <div class="tags"><span class="tag">Next.js</span><span class="tag">React 19</span><span class="tag">TypeScript</span><span class="tag">Firebase</span></div>
+      </div>
+      <div class="pcard">
+        <div class="top"><h3>Sistema do Renato</h3><span class="badge b-soon">Perto da entrega</span></div>
+        <p class="desc">Ecossistema completo para um negócio real — landing premium + painel admin — substituindo uma ferramenta de prateleira por um sistema sob medida.</p>
+        <div class="tags"><span class="tag">Next.js 16</span><span class="tag">React 19</span><span class="tag">Firestore</span><span class="tag">Landing + Admin</span></div>
+      </div>
+      <div class="pcard">
+        <div class="top"><h3>Ortega</h3><span class="badge b-dev">Em desenvolvimento</span></div>
+        <p class="desc">Nossa base robusta de gestão — com pagamentos (Stripe), notificações push e autenticação segura. O motor que acelera cada novo projeto.</p>
+        <div class="tags"><span class="tag">Stripe</span><span class="tag">Web Push</span><span class="tag">bcrypt</span><span class="tag">Zod</span></div>
+      </div>
+      <div class="pcard">
+        <div class="top"><h3>Plataforma Tecnosup</h3><span class="badge b-live">Nosso próprio sistema</span></div>
+        <p class="desc">Comemos da própria comida: a Tecnosup roda sobre tecnologia que nós mesmos construímos. Site institucional e operação na nossa stack.</p>
+        <div class="tags"><span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">tecnosup-site.web.app</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 · SEGURANÇA & VELOCIDADE ============ -->
+<section class="page">
+  <div class="glow-c" style="bottom:-300px; left:-220px;"></div>
+  <div class="wrap">
+    <span class="sec-num">03 · Como construímos</span>
+    <h2>Rápido por princípio.<br>Seguro por arquitetura.</h2>
+    <p class="lead">Usamos a mesma stack das maiores plataformas do mundo. Isso não é vaidade técnica — é o que garante que o sistema do cliente seja veloz, confiável e pronto pra crescer.</p>
+    <div class="specs">
+      <div class="spec"><svg class="ico"><use href="#i-bolt"/></svg><h4>Velocidade</h4><p>Next.js 16 + React 19. Carregamento abaixo de 1s, sem app pra baixar.</p></div>
+      <div class="spec"><svg class="ico"><use href="#i-lock"/></svg><h4>Segurança</h4><p>Senhas com hash, validação de dados (Zod) e regras de acesso por papel.</p></div>
+      <div class="spec"><svg class="ico"><use href="#i-db"/></svg><h4>Banco dedicado</h4><p>Cada cliente em instância serverless exclusiva — dados isolados e seus.</p></div>
+      <div class="spec"><svg class="ico"><use href="#i-building"/></svg><h4>Escalável</h4><p>Arquitetura multiunidade desde o dia zero — pronta para franquear.</p></div>
+    </div>
+    <div class="note">Stack confirmada em nossos repositórios públicos: Next.js, React 19, TypeScript, Firebase/Firestore, Stripe, Web Push e validação com Zod — os mesmos padrões em todos os projetos.</div>
+  </div>
+</section>
+
+<!-- ============ 04 · O QUE ESTÁ INCLUSO ============ -->
+<section class="page">
+  <div class="glow-c" style="top:-260px; right:-220px;"></div>
+  <div class="wrap">
+    <span class="sec-num">04 · O que está incluso</span>
+    <h2>Entrega completa.<br>Sem letra miúda.</h2>
+    <p class="lead">A Tecnosup não some depois do "no ar". Cada projeto sai pronto para operar — documentado, hospedado e acompanhado de perto. Você recebe um sistema funcionando, não um arquivo e boa sorte.</p>
+    <div class="specs">
+      <div class="spec"><svg class="ico"><use href="#i-lifebuoy"/></svg><h4>Suporte de 1 ano</h4><p>Incluso no projeto — acompanhamento e correções no primeiro ano, sem custo à parte.</p></div>
+      <div class="spec"><svg class="ico"><use href="#i-globe"/></svg><h4>Domínio + hospedagem</h4><p>Inclusos no setup. Você não precisa contratar nem configurar nada por fora.</p></div>
+      <div class="spec"><svg class="ico"><use href="#i-cap"/></svg><h4>Manual &amp; treinamento</h4><p>Todo sistema sai com manual de uso próprio e a equipe orientada a operar desde o dia um.</p></div>
+      <div class="spec"><svg class="ico"><use href="#i-handshake"/></svg><h4>Entrega assistida</h4><p>Homologação junto da sua equipe — acompanhamos a virada para o novo sistema sem atrito.</p></div>
+      <div class="spec"><svg class="ico"><use href="#i-disk"/></svg><h4>Backups &amp; segurança</h4><p>Rotina de backup e padrões de segurança aplicados em todos os projetos — não é improviso.</p></div>
+      <div class="spec"><svg class="ico"><use href="#i-key"/></svg><h4>Os dados são seus</h4><p>Acessos e propriedade entregues a você. Sem refém de fornecedor, sem cofre fechado.</p></div>
+      <div class="spec"><svg class="ico"><use href="#i-target"/></svg><h4>Sob medida, de verdade</h4><p>Desenvolvido do zero com a cara da sua empresa até a entrega. Nada de molde genérico — o sistema é moldado ao seu negócio.</p></div>
+      <div class="spec"><svg class="ico"><use href="#i-dev"/></svg><h4>Feito por quem assina</h4><p>Você fala direto com os founders. Cada linha tem dono — sem terceirização, sem ruído.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 05 · WHATSAPP INTELIGENTE ============ -->
+<section class="page">
+  <div class="glow-p" style="bottom:-300px; right:-220px;"></div>
+  <div class="wrap">
+    <span class="sec-num">05 · Próximo nível</span>
+    <h2>WhatsApp que conversa<br>e avisa sozinho.</h2>
+    <p class="lead">Nossa arquitetura já fala a língua das notificações em tempo real. O próximo passo do ecossistema é o WhatsApp inteligente: conversa automática com o cliente e avisos que saem na hora certa — direto no app que todo mundo já tem aberto.</p>
+    <div class="wa-wrap">
+      <div>
+        <ul class="wa-points">
+          <li><svg class="ico"><use href="#i-whatsapp"/></svg><div><strong style="color:var(--cream)">Conversa inteligente</strong> — o cliente agenda, tira dúvida e confirma presença direto no chat, sem baixar nada.</div></li>
+          <li><svg class="ico"><use href="#i-bell"/></svg><div><strong style="color:var(--cream)">Notificações automáticas</strong> — lembrete de horário, confirmação e reengajamento disparados pelo sistema, no momento exato.</div></li>
+          <li><svg class="ico"><use href="#i-link"/></svg><div><strong style="color:var(--cream)">Ligado ao sistema</strong> — cada mensagem nasce de um evento real do admin: agendou, faltou, está na fila. Não é robô solto.</div></li>
+        </ul>
+      </div>
+      <div class="wa-phone">
+        <div class="wa-top">
+          <div class="av"><svg class="ico"><use href="#i-whatsapp"/></svg></div>
+          <div><div class="nm">Seu negócio</div><div class="st">online</div></div>
+        </div>
+        <div class="wa-msg wa-out">Olá! Seu horário é daqui a 15 minutos. Confirma presença? 💈<span class="t">09:45</span></div>
+        <div class="wa-msg wa-in">Confirmo! Já estou a caminho.<span class="t">09:46</span></div>
+        <div class="wa-msg wa-out">Perfeito, te esperamos. ✅<span class="t">09:46</span></div>
+        <div class="wa-msg wa-out">Ex. barbearia: <em>"Corte de cabelo em 15 minutos"</em> — adaptável a qualquer negócio.<span class="t">agora</span></div>
+      </div>
+    </div>
+    <div class="note" style="margin-top:28px;">Recurso em desenvolvimento sobre a base que já roda hoje (web-push e notificações em tempo real). Demonstrável em breve.</div>
+  </div>
+</section>
+
+<!-- ============ 06 · O QUE AGREGAMOS (KPIs) ============ -->
+<section class="page">
+  <div class="glow-p" style="top:-260px; right:-200px;"></div>
+  <div class="wrap">
+    <span class="sec-num">06 · O que agregamos ao seu negócio</span>
+    <h2>Tecnologia que move o ponteiro.</h2>
+    <p class="lead">Um ecossistema exclusivo não é "um site bonito". Cada peça ataca indicadores concretos do negócio — da primeira visita ao cliente recorrente.</p>
+    <div class="specs">
+      <div class="spec"><svg class="ico"><use href="#i-globe"/></svg><h4>Enche a agenda</h4><p>Mais gente te encontra (SEO local) e agenda sozinha pelo site — sem depender do WhatsApp manual.</p></div>
+      <div class="spec"><svg class="ico"><use href="#i-bell"/></svg><h4>Reduz as faltas</h4><p>Lembrete automático e trava antifalta para reincidentes — menos cadeira vazia, menos prejuízo.</p></div>
+      <div class="spec"><svg class="ico"><use href="#i-target"/></svg><h4>Cliente volta e gasta mais</h4><p>Clube de assinaturas, recompra e upsell de produtos — receita previsível e ticket maior.</p></div>
+      <div class="spec"><svg class="ico"><use href="#i-bolt"/></svg><h4>Menos trabalho manual</h4><p>Caixa, comandas e fila digitais. A equipe atende, o sistema cuida da gestão.</p></div>
+    </div>
+    <table>
+      <thead><tr><th>Indicador</th><th>Faixa de ganho*</th><th>Por que acontece</th></tr></thead>
+      <tbody>
+        <tr><td class="kpi">No-show</td><td class="delta">−20 a −40%</td><td>Lembretes automáticos + trava antifalta para reincidentes.</td></tr>
+        <tr><td class="kpi">Conversão do site</td><td class="delta">+15 a +30%</td><td>Carregamento &lt;1s, agendamento sem download, fluxo sob medida.</td></tr>
+        <tr><td class="kpi">Receita recorrente</td><td class="delta">novo canal</td><td>Clube de assinaturas vendido online — receita previsível.</td></tr>
+        <tr><td class="kpi">Ticket médio</td><td class="delta">+8 a +20%</td><td>Upsell de combos e produtos integrados ao checkout.</td></tr>
+        <tr><td class="kpi">Horas em gestão manual</td><td class="delta">−30 a −50%</td><td>Caixa, comandas e fila digitais — menos trabalho manual.</td></tr>
+      </tbody>
+    </table>
+    <div class="note">* Faixas ilustrativas de benchmark do setor de serviços locais. Não são garantia de resultado — dimensionam o potencial; o ganho real depende da operação e da execução.</div>
+  </div>
+</section>
+
+<!-- ============ 05 · FECHAMENTO ============ -->
+<section class="page">
+  <div class="glow-c" style="top:-260px; right:-200px;"></div>
+  <div class="glow-p" style="bottom:-300px; left:-220px;"></div>
+  <div class="wrap close-cta">
+    <span class="sec-num" style="color:var(--neon)">Vamos construir o seu</span>
+    <h2>Jovens na idade.<br><span class="grad">Veteranos na entrega.</span></h2>
+    <p class="lead" style="margin:0 auto;">A Tecnosup constrói o ecossistema digital exclusivo do seu negócio — da landing ao admin — com a tecnologia mais atual do mercado e o cuidado de quem assina cada linha. Vamos conversar?</p>
+    <div class="btn-row">
+      <span class="btn btn-primary">Agendar diagnóstico</span>
+      <span class="btn btn-ghost">Falar no WhatsApp</span>
+    </div>
+    <p class="mono" style="margin-top:40px; color:var(--zinc); font-size:11px; letter-spacing:.2em; text-transform:uppercase;">Tecnosup · github.com/tecnosup · Cruzeiro/SP</p>
+  </div>
+</section>
+
+</body>
+</html>

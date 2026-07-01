@@ -25,6 +25,16 @@ yarn-error.log*
 # vercel
 .vercel
 
+# media (não versionar vídeos pesados)
+*.mp4
+
+# firebase (cache e saída de deploy)
+.firebase/
+empresa/_publish/
+
+# repo separado (não incluir como submódulo)
+/renato/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
