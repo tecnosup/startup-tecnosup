@@ -1,0 +1,2157 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex">
+<meta name="googlebot" content="noindex,nofollow">
+<meta name="description" content="Documento interno da Tecnosup.">
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%F0%9F%A7%AD</text></svg>">
+<style>*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}img,svg{display:block;max-width:100%}button,input{font:inherit;color:inherit}ul,ol{list-style-position:outside}</style>
+<title>Manual do Colaborador — Tecnosup</title>
+
+<style>
+  /* ============================================================
+     TOKENS — identidade Tecnosup: quase-preto azulado + ciano
+     ============================================================ */
+  :root {
+    --ground:      #04070e;
+    --ground-2:    #070c18;
+    --surface:     #0b1121;
+    --surface-2:   #0e162a;
+    --line:        #182644;
+    --line-strong: #23386a;
+    --ink:         #ccd8ea;
+    --ink-strong:  #f0f5fc;
+    --muted:       #74849f;
+    --accent:      #0eb3ff;
+    --accent-dim:  #0a7fb8;
+    --accent-wash: rgba(14, 179, 255, 0.09);
+    --ok:          #3ddc97;
+    --warn:        #f5a524;
+    --crit:        #ff6058;
+    --shadow:      0 1px 0 rgba(255,255,255,0.03) inset;
+    /* marcas de gráfico — validadas p/ superfície #0b1121, banda L 0.48–0.67 */
+    --chart-1:     #1793d6;
+    --chart-crit:  #e8514a;
+
+    --mono: "Cascadia Mono", "Cascadia Code", ui-monospace, Consolas, "SF Mono", "Roboto Mono", monospace;
+    --sans: "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+    --serif: Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
+
+    --rail-w: 268px;
+    --measure: 66ch;
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root {
+      --ground:      #f5f8fc;  --ground-2:    #eef3fa;
+      --surface:     #ffffff;  --surface-2:   #f2f6fc;
+      --line:        #dde5f1;  --line-strong: #bfcee4;
+      --ink:         #1a2637;  --ink-strong:  #060c16;
+      --muted:       #5d6d87;
+      --accent:      #0669a8;  --accent-dim:  #0a8ed1;
+      --accent-wash: rgba(6, 105, 168, 0.07);
+      --ok:          #128a5c;  --warn: #a96b02;  --crit: #c3352c;
+      --shadow:      0 1px 2px rgba(16, 32, 56, 0.04);
+      --chart-1:     #0669a8;  --chart-crit:  #c3352c;
+    }
+  }
+  :root[data-theme="light"] {
+    --ground:      #f5f8fc;  --ground-2:    #eef3fa;
+    --surface:     #ffffff;  --surface-2:   #f2f6fc;
+    --line:        #dde5f1;  --line-strong: #bfcee4;
+    --ink:         #1a2637;  --ink-strong:  #060c16;
+    --muted:       #5d6d87;
+    --accent:      #0669a8;  --accent-dim:  #0a8ed1;
+    --accent-wash: rgba(6, 105, 168, 0.07);
+    --ok:          #128a5c;  --warn: #a96b02;  --crit: #c3352c;
+    --shadow:      0 1px 2px rgba(16, 32, 56, 0.04);
+    --chart-1:     #0669a8;  --chart-crit:  #c3352c;
+  }
+  :root[data-theme="dark"] {
+    --ground:      #04070e;  --ground-2:    #070c18;
+    --surface:     #0b1121;  --surface-2:   #0e162a;
+    --line:        #182644;  --line-strong: #23386a;
+    --ink:         #ccd8ea;  --ink-strong:  #f0f5fc;
+    --muted:       #74849f;
+    --accent:      #0eb3ff;  --accent-dim:  #0a7fb8;
+    --accent-wash: rgba(14, 179, 255, 0.09);
+    --ok:          #3ddc97;  --warn: #f5a524;  --crit: #ff6058;
+    --shadow:      0 1px 0 rgba(255,255,255,0.03) inset;
+    --chart-1:     #1793d6;  --chart-crit:  #e8514a;
+  }
+
+  /* ============================================================
+     BASE
+     ============================================================ */
+  html { scroll-behavior: smooth; scroll-padding-top: 86px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  }
+  body {
+    background: var(--ground); color: var(--ink);
+    font-family: var(--sans); font-size: 16px; line-height: 1.65;
+    -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; }
+  a:hover { border-bottom-color: var(--accent); }
+  a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px;
+  }
+  ::selection { background: var(--accent); color: var(--ground); }
+
+  /* ============================================================
+     TOPO
+     ============================================================ */
+  .topbar {
+    position: sticky; top: 0; z-index: 60;
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px clamp(12px, 2.4vw, 26px);
+    background: var(--ground); border-bottom: 1px solid var(--line);
+  }
+  .icon-btn {
+    display: grid; place-items: center; flex: none;
+    width: 32px; height: 30px; cursor: pointer;
+    background: none; border: 1px solid var(--line); border-radius: 3px;
+    color: var(--muted); transition: color .16s, border-color .16s;
+  }
+  .icon-btn:hover { color: var(--accent); border-color: var(--line-strong); }
+  .topbar-mark {
+    font-family: var(--mono); font-size: 12px; letter-spacing: .15em;
+    text-transform: uppercase; color: var(--ink-strong); font-weight: 700; white-space: nowrap;
+  }
+  .topbar-mark span { color: var(--accent); }
+  .topbar-spacer { flex: 1; }
+  .search {
+    display: flex; align-items: center; gap: 8px; min-width: 0;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 3px; padding: 5px 10px;
+  }
+  .search input {
+    background: none; border: 0; color: var(--ink);
+    font-family: var(--mono); font-size: 12.5px; width: 14ch; min-width: 0;
+  }
+  .search input::placeholder { color: var(--muted); }
+  .ghost-btn {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--muted); background: none; border: 1px solid var(--line);
+    padding: 6px 10px; border-radius: 3px; cursor: pointer; white-space: nowrap;
+    transition: color .16s, border-color .16s;
+  }
+  .ghost-btn:hover { color: var(--accent); border-color: var(--line-strong); }
+
+  /* ============================================================
+     SHELL + TRILHO
+     ============================================================ */
+  .shell { display: grid; grid-template-columns: var(--rail-w) minmax(0, 1fr); align-items: start; }
+  body.rail-collapsed { --rail-w: 56px; }
+
+  .rail {
+    position: sticky; top: 53px;
+    height: calc(100vh - 53px);
+    overflow-y: auto; overflow-x: hidden;
+    border-right: 1px solid var(--line);
+    background: var(--ground-2);
+    padding: 20px 0 40px;
+    scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent;
+  }
+  .rail::-webkit-scrollbar { width: 8px; }
+  .rail::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 4px; }
+  .rail::-webkit-scrollbar-track { background: transparent; }
+
+  .rail-head { padding: 0 18px 15px; border-bottom: 1px solid var(--line); margin-bottom: 12px; }
+  .rail-title {
+    font-family: var(--mono); font-size: 10px; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 11px;
+  }
+  .progress-row { display: flex; align-items: center; gap: 12px; }
+  .progress-ring { flex: none; }
+  .progress-ring circle { fill: none; stroke-width: 3.5; }
+  .progress-ring .track { stroke: var(--line-strong); }
+  .progress-ring .fill {
+    stroke: var(--accent); stroke-linecap: round;
+    transform: rotate(-90deg); transform-origin: 50% 50%;
+    transition: stroke-dashoffset .4s ease;
+  }
+  .progress-num { font-family: var(--mono); font-size: 17px; color: var(--ink-strong); font-variant-numeric: tabular-nums; line-height: 1.2; }
+  .progress-lbl { font-size: 11.5px; color: var(--muted); }
+
+  .rail-list { list-style: none; }
+  .rail-item > a {
+    display: grid; grid-template-columns: 26px 1fr 14px; align-items: baseline; gap: 8px;
+    padding: 7px 18px; border-bottom: 0; color: var(--muted);
+    font-size: 13.5px; line-height: 1.4; border-left: 2px solid transparent;
+    transition: color .14s, background .14s, border-color .14s;
+  }
+  .rail-item > a:hover { color: var(--ink); background: var(--accent-wash); }
+  .rail-item > a.current { color: var(--ink-strong); border-left-color: var(--accent); background: var(--accent-wash); }
+  .rail-n { font-family: var(--mono); font-size: 10.5px; color: var(--accent-dim); font-variant-numeric: tabular-nums; }
+  .rail-item > a.current .rail-n { color: var(--accent); }
+  .rail-check { font-size: 11px; color: var(--ok); opacity: 0; transition: opacity .16s; }
+  .rail-item > a.done .rail-check { opacity: 1; }
+
+  /* estado colapsado */
+  body.rail-collapsed .rail-head { padding: 0 8px 14px; }
+  body.rail-collapsed .rail-title,
+  body.rail-collapsed .progress-meta,
+  body.rail-collapsed .rail-t { display: none; }
+  body.rail-collapsed .progress-row { justify-content: center; }
+  body.rail-collapsed .rail-item > a { grid-template-columns: 1fr; justify-items: center; padding: 9px 4px; gap: 3px; }
+  body.rail-collapsed .rail-check { position: absolute; margin-top: -4px; margin-left: 20px; }
+  body.rail-collapsed .rail-item { position: relative; }
+
+  /* ============================================================
+     CONTEÚDO
+     ============================================================ */
+  .content { padding: 0 clamp(16px, 3.6vw, 56px) 130px; min-width: 0; }
+
+  .opener { padding: clamp(40px, 6vw, 76px) 0 34px; max-width: 74ch; }
+  .eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
+  .opener h1 {
+    font-size: clamp(29px, 5vw, 50px); line-height: 1.08; letter-spacing: -.025em;
+    font-weight: 700; color: var(--ink-strong); text-wrap: balance; margin-bottom: 18px;
+  }
+  .opener .lede { font-size: clamp(16px, 1.7vw, 18.5px); max-width: var(--measure); margin-bottom: 22px; }
+  .opener .sig {
+    font-family: var(--mono); font-size: 12px; color: var(--muted);
+    padding-top: 16px; border-top: 1px solid var(--line);
+    display: flex; flex-wrap: wrap; gap: 6px 20px;
+  }
+  .opener .sig b { color: var(--ink); font-weight: 500; }
+
+  .stage { padding-top: 54px; scroll-margin-top: 74px; }
+  .stage-head {
+    display: grid; grid-template-columns: auto 1fr auto; gap: 0 18px; align-items: start;
+    padding-bottom: 17px; margin-bottom: 28px; border-bottom: 1px solid var(--line-strong);
+  }
+  .stage-n {
+    font-family: var(--mono); font-weight: 700; font-size: clamp(29px, 4.2vw, 44px);
+    line-height: .9; color: var(--line-strong); font-variant-numeric: tabular-nums; letter-spacing: -.03em;
+  }
+  .stage-titles { min-width: 0; }
+  .stage-titles h2 {
+    font-size: clamp(21px, 2.5vw, 27px); font-weight: 650; color: var(--ink-strong);
+    letter-spacing: -.015em; line-height: 1.2; text-wrap: balance; margin-bottom: 6px;
+  }
+  .stage-obj { font-size: 14.5px; color: var(--muted); max-width: 62ch; }
+  .mark-done {
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--muted); background: none; border: 1px solid var(--line);
+    padding: 7px 11px; border-radius: 3px; cursor: pointer;
+    display: flex; align-items: center; gap: 7px; white-space: nowrap; transition: all .16s;
+  }
+  .mark-done:hover { border-color: var(--line-strong); color: var(--ink); }
+  .mark-done .box { width: 11px; height: 11px; border: 1px solid var(--line-strong); border-radius: 2px; flex: none; }
+  .mark-done[aria-pressed="true"] { color: var(--ok); border-color: color-mix(in srgb, var(--ok) 45%, transparent); }
+  .mark-done[aria-pressed="true"] .box { background: var(--ok); border-color: var(--ok); }
+
+  .stage p, .stage > ul, .stage > ol { max-width: var(--measure); }
+  .stage p + p { margin-top: 14px; }
+  h3 {
+    font-family: var(--mono); font-size: 12px; letter-spacing: .15em; text-transform: uppercase;
+    color: var(--accent); margin: 40px 0 14px; padding-bottom: 7px;
+    border-bottom: 1px solid var(--line); max-width: var(--measure);
+  }
+  h4 { font-size: 15.5px; font-weight: 650; color: var(--ink-strong); margin: 24px 0 8px; }
+  .stage ul, .stage ol { padding-left: 20px; margin: 12px 0; }
+  .stage li { margin-bottom: 7px; }
+  .stage li::marker { color: var(--accent-dim); }
+  strong, b { color: var(--ink-strong); font-weight: 650; }
+  code {
+    font-family: var(--mono); font-size: .875em; background: var(--surface-2);
+    border: 1px solid var(--line); padding: 1px 5px; border-radius: 3px;
+    color: var(--ink-strong); white-space: nowrap;
+  }
+
+  .principio {
+    font-family: var(--serif); font-style: italic; font-size: clamp(17px, 2vw, 21px);
+    line-height: 1.5; color: var(--ink-strong); max-width: 58ch;
+    margin: 22px 0 20px; padding-left: 20px; border-left: 2px solid var(--accent); text-wrap: pretty;
+  }
+  .principio .who {
+    display: block; margin-top: 10px; font-family: var(--mono); font-style: normal;
+    font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+  }
+
+  /* ============================================================
+     BLOCOS ANOTADOS
+     ============================================================ */
+  .block {
+    position: relative; background: var(--surface); border: 1px solid var(--line);
+    border-radius: 3px; padding: 24px 22px 20px; margin: 26px 0;
+    box-shadow: var(--shadow); max-width: 82ch;
+  }
+  .block > .tag {
+    position: absolute; top: -8px; left: 16px; font-family: var(--mono);
+    font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+    background: var(--ground); padding: 0 8px; color: var(--muted);
+  }
+  .block h4:first-of-type { margin-top: 0; }
+  .block p, .block ul, .block ol { max-width: 100%; }
+  .block.rule   { border-color: color-mix(in srgb, var(--accent) 34%, var(--line)); }
+  .block.rule > .tag   { color: var(--accent); }
+  .block.danger { border-color: color-mix(in srgb, var(--crit) 38%, var(--line)); }
+  .block.danger > .tag { color: var(--crit); }
+  .block.trap   { border-color: color-mix(in srgb, var(--warn) 38%, var(--line)); }
+  .block.trap > .tag   { color: var(--warn); }
+  .block.good   { border-color: color-mix(in srgb, var(--ok) 34%, var(--line)); }
+  .block.good > .tag   { color: var(--ok); }
+
+  /* ============================================================
+     CASO REAL
+     ============================================================ */
+  .caso {
+    border: 1px solid var(--line); border-left: 2px solid var(--warn); border-radius: 3px;
+    background: var(--ground-2); margin: 24px 0; max-width: 82ch; overflow: hidden;
+  }
+  .caso > summary { list-style: none; cursor: pointer; padding: 13px 18px; display: grid; grid-template-columns: 1fr auto; gap: 14px; align-items: center; }
+  .caso > summary::-webkit-details-marker { display: none; }
+  .caso-lbl { font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--warn); display: block; margin-bottom: 3px; }
+  .caso-ttl { font-size: 14.5px; color: var(--ink-strong); font-weight: 600; line-height: 1.35; }
+  .caso-toggle { font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+  .caso[open] .caso-toggle::after { content: "fechar"; }
+  .caso:not([open]) .caso-toggle::after { content: "abrir"; }
+  .caso-body { padding: 4px 18px 20px; border-top: 1px solid var(--line); margin-top: 2px; }
+  .caso-body > *:first-child { margin-top: 14px; }
+  .caso-body p, .caso-body ul, .caso-body ol { max-width: 100%; font-size: 14.5px; }
+
+  /* ============================================================
+     CÓDIGO
+     ============================================================ */
+  .codewrap { position: relative; margin: 18px 0; max-width: 84ch; }
+  .codewrap pre {
+    background: var(--ground-2); border: 1px solid var(--line); border-radius: 3px;
+    padding: 16px 18px; overflow-x: auto; font-family: var(--mono);
+    font-size: 12.8px; line-height: 1.62; color: var(--ink); tab-size: 2;
+  }
+  .codewrap pre code { background: none; border: 0; padding: 0; font-size: inherit; white-space: pre; color: inherit; }
+  .copy {
+    position: absolute; top: 8px; right: 8px; font-family: var(--mono); font-size: 10px;
+    letter-spacing: .08em; text-transform: uppercase; color: var(--muted);
+    background: var(--surface); border: 1px solid var(--line); padding: 4px 8px;
+    border-radius: 3px; cursor: pointer; opacity: 0; transition: opacity .15s, color .15s;
+  }
+  .codewrap:hover .copy, .copy:focus-visible { opacity: 1; }
+  .copy:hover { color: var(--accent); }
+  .c-cmt { color: var(--muted); } .c-key { color: var(--accent); }
+  .c-str { color: var(--ok); }    .c-bad { color: var(--crit); }
+
+  /* ============================================================
+     TABELAS
+     ============================================================ */
+  .tablewrap { overflow-x: auto; margin: 20px 0; border: 1px solid var(--line); border-radius: 3px; max-width: 92ch; }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; min-width: 520px; }
+  th {
+    text-align: left; font-family: var(--mono); font-size: 10px; letter-spacing: .13em;
+    text-transform: uppercase; color: var(--muted); padding: 10px 14px;
+    background: var(--surface-2); border-bottom: 1px solid var(--line); white-space: nowrap;
+  }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:last-child td { border-bottom: 0; }
+  .num { font-variant-numeric: tabular-nums; text-align: right; }
+  .ctr { text-align: center; }
+
+  .pill {
+    display: inline-block; font-family: var(--mono); font-size: 10px; letter-spacing: .1em;
+    text-transform: uppercase; padding: 2px 7px; border-radius: 2px; border: 1px solid;
+    white-space: nowrap; line-height: 1.6;
+  }
+  .pill.on   { color: var(--ok);   border-color: color-mix(in srgb, var(--ok) 45%, transparent);   background: color-mix(in srgb, var(--ok) 10%, transparent); }
+  .pill.off  { color: var(--crit); border-color: color-mix(in srgb, var(--crit) 45%, transparent); background: color-mix(in srgb, var(--crit) 10%, transparent); }
+  .pill.wait { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 45%, transparent); background: color-mix(in srgb, var(--warn) 10%, transparent); }
+  .pill.info { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 45%, transparent); background: var(--accent-wash); }
+
+  /* ============================================================
+     FIGURAS — o vocabulário visual
+     ============================================================ */
+  .fig { margin: 28px 0; max-width: 92ch; }
+  .fig-frame {
+    border: 1px solid var(--line); border-radius: 3px; background: var(--ground-2);
+    padding: clamp(16px, 2.4vw, 28px); overflow-x: auto;
+  }
+  .fig-cap {
+    font-family: var(--mono); font-size: 11px; line-height: 1.65; color: var(--muted);
+    margin-top: 9px; padding-top: 8px; border-top: 1px solid var(--line);
+  }
+  .fig-cap b { color: var(--ink); font-weight: 500; }
+
+  /* --- mockup de navegador --- */
+  .mocks { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(258px, 1fr)); align-items: start; }
+  .mock { border: 1px solid var(--line-strong); border-radius: 5px; overflow: hidden; background: var(--surface); }
+  .mock-bar { display: flex; align-items: center; gap: 7px; padding: 7px 9px; background: var(--surface-2); border-bottom: 1px solid var(--line); }
+  .mock-dots { display: flex; gap: 4px; flex: none; }
+  .mock-dots i { width: 7px; height: 7px; border-radius: 50%; background: var(--line-strong); display: block; }
+  .mock-url {
+    font-family: var(--mono); font-size: 9.5px; color: var(--muted); background: var(--ground);
+    border-radius: 2px; padding: 2px 7px; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .mock-body { padding: 12px; display: grid; gap: 8px; min-height: 168px; }
+  .mock-lbl {
+    font-family: var(--mono); font-size: 9.5px; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--accent); padding: 8px 10px 0;
+  }
+
+  /* peças de wireframe */
+  .wf { background: var(--surface-2); border-radius: 2px; display: block; }
+  .wf.t   { height: 9px; }
+  .wf.t.lg{ height: 15px; }
+  .wf.t.w70 { width: 70%; } .wf.t.w50 { width: 50%; } .wf.t.w40 { width: 40%; } .wf.t.w85 { width: 85%; }
+  .wf.img { height: 52px; background: linear-gradient(135deg, var(--surface-2), var(--line)); }
+  .wf.cta { height: 20px; width: 96px; background: var(--accent); opacity: .85; }
+  .wf-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .wf-card { border: 1px solid var(--line); border-radius: 2px; padding: 6px; display: grid; gap: 5px; }
+  .wf-kpi { border: 1px solid var(--line); border-radius: 2px; padding: 7px; display: grid; gap: 5px; }
+  .wf-kpi .n { font-family: var(--mono); font-size: 13px; color: var(--ink-strong); font-variant-numeric: tabular-nums; }
+  .wf-kpi .k { font-family: var(--mono); font-size: 8px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .wf-admin { display: grid; grid-template-columns: 26px 1fr; gap: 8px; }
+  .wf-side { background: var(--surface-2); border-radius: 2px; display: grid; gap: 5px; padding: 6px 5px; align-content: start; }
+  .wf-side i { height: 6px; background: var(--line-strong); border-radius: 1px; display: block; }
+  .wf-side i.on { background: var(--accent); }
+  .wf-table { display: grid; gap: 4px; }
+  .wf-tr { display: grid; grid-template-columns: 1fr 46px 34px; gap: 6px; align-items: center; padding: 4px 0; border-bottom: 1px solid var(--line); }
+
+  /* --- barramento de ligação entre os dois mockups --- */
+  .bus {
+    margin-top: 16px; border: 1px dashed var(--line-strong); border-radius: 3px;
+    padding: 12px 14px; display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: center;
+    background: var(--surface);
+  }
+  .bus-tag { font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); white-space: nowrap; }
+  .bus-txt { font-size: 13.5px; }
+
+  /* --- fluxo horizontal --- */
+  .flow { display: flex; flex-wrap: wrap; align-items: stretch; gap: 8px; }
+  .flow-node {
+    flex: 1 1 120px; min-width: 120px; border: 1px solid var(--line); border-radius: 3px;
+    background: var(--surface); padding: 12px 11px; text-align: center;
+  }
+  .flow-node .k { font-family: var(--mono); font-size: 9.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 5px; }
+  .flow-node .v { font-size: 13px; color: var(--ink-strong); line-height: 1.35; }
+  .flow-node.bad { border-color: color-mix(in srgb, var(--crit) 55%, var(--line)); background: color-mix(in srgb, var(--crit) 7%, var(--surface)); }
+  .flow-node.bad .k { color: var(--crit); }
+  .flow-node.good { border-color: color-mix(in srgb, var(--ok) 50%, var(--line)); background: color-mix(in srgb, var(--ok) 6%, var(--surface)); }
+  .flow-node.good .k { color: var(--ok); }
+  .flow-arrow { display: grid; place-items: center; font-family: var(--mono); color: var(--line-strong); flex: none; padding: 0 2px; font-size: 15px; }
+
+  /* --- camadas empilhadas --- */
+  .layers { display: grid; gap: 5px; }
+  .layer {
+    border: 1px solid var(--line); border-radius: 3px; background: var(--surface);
+    padding: 11px 14px; display: grid; grid-template-columns: 22px 1fr auto; gap: 12px; align-items: center;
+  }
+  .layer .lv { font-family: var(--mono); font-size: 10px; color: var(--accent-dim); font-variant-numeric: tabular-nums; }
+  .layer .lt { font-size: 13.5px; }
+  .layer .lt b { display: block; color: var(--ink-strong); }
+  .layer .lt span { font-size: 12.5px; color: var(--muted); }
+  .layer.fake { border-style: dashed; border-color: color-mix(in srgb, var(--crit) 45%, var(--line)); background: color-mix(in srgb, var(--crit) 5%, var(--surface)); }
+  .layer.fake .lv { color: var(--crit); }
+  .layer-gap { text-align: center; font-family: var(--mono); font-size: 12px; color: var(--line-strong); line-height: 1; }
+
+  /* --- linha do tempo de slots (o bug da duração) --- */
+  .gantt { display: grid; gap: 4px; min-width: 460px; }
+  .gantt-axis { display: grid; grid-template-columns: 118px 1fr; gap: 12px; align-items: end; }
+  .gantt-ticks { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 10px; color: var(--muted); border-bottom: 1px solid var(--line); padding-bottom: 4px; }
+  .gantt-row { display: grid; grid-template-columns: 118px 1fr; gap: 12px; align-items: center; }
+  .gantt-lbl { font-size: 12px; text-align: right; line-height: 1.3; }
+  .gantt-lbl b { display: block; color: var(--ink-strong); font-size: 12.5px; }
+  .gantt-lbl span { font-family: var(--mono); font-size: 10px; color: var(--muted); }
+  .gantt-track { position: relative; height: 26px; background: var(--surface-2); border-radius: 2px; }
+  .gantt-bar {
+    position: absolute; top: 3px; bottom: 3px; border-radius: 2px;
+    display: grid; place-items: center; font-family: var(--mono); font-size: 10px;
+    color: var(--ground); white-space: nowrap; overflow: hidden;
+  }
+  .gantt-bar.a { background: var(--chart-1); }
+  .gantt-bar.b { background: var(--chart-crit); }
+  .gantt-bar.ghost { background: transparent; border: 1px dashed var(--chart-crit); color: var(--chart-crit); }
+  .gantt-note { font-family: var(--mono); font-size: 10.5px; color: var(--crit); padding-left: 130px; }
+
+  /* --- gráfico de barras (cota) --- */
+  .chart { min-width: 420px; }
+  .chart-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; align-items: baseline; margin-bottom: 14px; }
+  .chart-ttl { font-size: 14.5px; color: var(--ink-strong); font-weight: 650; }
+  .chart-sub { font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+  .chart-legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 14px; }
+  .chart-legend span { display: flex; align-items: center; gap: 7px; font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+  .chart-legend i { width: 10px; height: 10px; border-radius: 2px; display: block; flex: none; }
+  .chart-svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .chart-svg .grid { stroke: var(--line); stroke-width: 1; }
+  .chart-svg .thr { stroke: var(--crit); stroke-width: 1.5; stroke-dasharray: 5 4; }
+  .chart-svg .thr-lbl { fill: var(--crit); font-family: var(--mono); font-size: 10px; }
+  .chart-svg .ax { fill: var(--muted); font-family: var(--mono); font-size: 10px; }
+  .chart-svg .val { fill: var(--ink-strong); font-family: var(--mono); font-size: 10px; font-weight: 600; }
+  .chart-svg rect.bar { transition: opacity .15s; }
+  .chart-svg g.bg:hover rect.bar { opacity: .78; }
+  .chart-tip {
+    position: absolute; pointer-events: none; z-index: 5; opacity: 0;
+    background: var(--surface); border: 1px solid var(--line-strong); border-radius: 3px;
+    padding: 8px 11px; font-family: var(--mono); font-size: 11px; color: var(--ink-strong);
+    box-shadow: 0 6px 22px rgba(0,0,0,.35); transition: opacity .12s; white-space: nowrap;
+  }
+  .chart-tip b { display: block; color: var(--accent); font-weight: 600; margin-bottom: 3px; }
+  .chart-tip em { display: block; font-style: normal; color: var(--muted); margin-top: 3px; }
+
+  /* --- antes / depois --- */
+  .ba { display: grid; gap: 12px; grid-template-columns: 1fr auto 1fr; align-items: center; }
+  .ba-card { border: 1px solid var(--line); border-radius: 3px; padding: 16px; text-align: center; background: var(--surface); }
+  .ba-card .k { font-family: var(--mono); font-size: 9.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  .ba-card .n { font-family: var(--mono); font-size: clamp(24px, 4vw, 38px); line-height: 1.1; margin: 8px 0 4px; font-variant-numeric: tabular-nums; }
+  .ba-card .u { font-size: 12px; color: var(--muted); }
+  .ba-card.before .n { color: var(--chart-crit); }
+  .ba-card.after  .n { color: var(--ok); }
+  .ba-arrow { font-family: var(--mono); color: var(--line-strong); font-size: 18px; }
+
+  /* --- telefones (compatibilidade) --- */
+  .phones { display: flex; gap: 22px; flex-wrap: wrap; }
+  .phone { width: 190px; flex: none; }
+  .phone-frame { border: 2px solid var(--line-strong); border-radius: 16px; padding: 14px 9px 12px; background: var(--ground); position: relative; }
+  .phone-frame::before { content: ""; position: absolute; top: 6px; left: 50%; transform: translateX(-50%); width: 42px; height: 4px; border-radius: 3px; background: var(--line-strong); }
+  .phone-cap { font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; margin-top: 9px; text-align: center; }
+  .phone.okp .phone-cap { color: var(--ok); }
+  .phone.badp .phone-cap { color: var(--crit); }
+  .phone.badp .phone-frame { border-color: color-mix(in srgb, var(--crit) 55%, var(--line-strong)); }
+  .demo-card { border-radius: 4px; padding: 11px; display: grid; gap: 7px; }
+  .demo-card.ok { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.16); }
+  .demo-card.broken { background: none; border: 1px solid transparent; }
+  .demo-card .t { height: 8px; background: var(--line-strong); border-radius: 2px; }
+  .demo-card .t.w60 { width: 60%; } .demo-card .t.w80 { width: 80%; }
+  .demo-card .b { height: 18px; width: 70px; border-radius: 3px; background: var(--accent); opacity: .85; }
+  .phone-body { display: grid; gap: 10px; }
+
+  /* --- git graph --- */
+  .git { min-width: 460px; }
+  .git-lane { display: grid; grid-template-columns: 104px 1fr; gap: 14px; align-items: center; height: 46px; }
+  .git-name { font-family: var(--mono); font-size: 11px; text-align: right; white-space: nowrap; }
+  .git-name.main { color: var(--crit); } .git-name.dev { color: var(--warn); } .git-name.feat { color: var(--accent); }
+  .git-track { position: relative; height: 100%; }
+  .git-line { position: absolute; top: 50%; left: 0; right: 0; height: 2px; transform: translateY(-50%); }
+  .git-line.main { background: color-mix(in srgb, var(--crit) 45%, var(--line)); }
+  .git-line.dev  { background: color-mix(in srgb, var(--warn) 45%, var(--line)); }
+  .git-line.feat { background: color-mix(in srgb, var(--accent) 50%, var(--line)); }
+  .git-dot {
+    position: absolute; top: 50%; width: 11px; height: 11px; border-radius: 50%;
+    transform: translate(-50%, -50%); border: 2px solid var(--ground-2);
+  }
+  .git-dot.main { background: var(--crit); } .git-dot.dev { background: var(--warn); } .git-dot.feat { background: var(--accent); }
+  .git-step {
+    position: absolute; transform: translateX(-50%); top: 50%; margin-top: -34px;
+    font-family: var(--mono); font-size: 9.5px; color: var(--muted); white-space: nowrap;
+  }
+  .git-up { position: absolute; transform: translateX(-50%); font-family: var(--mono); font-size: 13px; color: var(--line-strong); top: -12px; }
+
+  /* --- matriz de acesso --- */
+  .matrix td.ctr { font-family: var(--mono); font-size: 13px; }
+  .yes { color: var(--ok); } .no { color: var(--crit); } .partial { color: var(--warn); }
+
+  /* --- infra isolada --- */
+  .infra { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+  .infra-col { border: 1px solid var(--line); border-radius: 3px; background: var(--surface); padding: 14px; }
+  .infra-col h5 { font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: 11px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .infra-col ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
+  .infra-col li { font-family: var(--mono); font-size: 11.5px; color: var(--ink); display: grid; grid-template-columns: 12px 1fr; gap: 8px; margin: 0; }
+  .infra-col li i { color: var(--accent-dim); font-style: normal; }
+  .infra-x { display: grid; place-items: center; font-family: var(--mono); font-size: 11px; color: var(--crit); text-align: center; line-height: 1.5; }
+
+  /* ============================================================
+     LISTAS ESPECIAIS
+     ============================================================ */
+  .split { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); max-width: 92ch; margin: 24px 0; }
+  .split .block { margin: 0; max-width: none; }
+  .split ul { list-style: none; padding-left: 0; }
+  .split li { display: grid; grid-template-columns: 16px 1fr; gap: 9px; font-size: 14px; align-items: start; margin-bottom: 9px; }
+  .split li .ic { font-family: var(--mono); line-height: 1.5; }
+  .split .good li .ic { color: var(--ok); }
+  .split .danger li .ic { color: var(--crit); }
+
+  .checklist { list-style: none; padding-left: 0; max-width: 82ch; }
+  .checklist li { margin-bottom: 0; border-bottom: 1px solid var(--line); }
+  .checklist li:last-child { border-bottom: 0; }
+  .checklist label { display: grid; grid-template-columns: 18px 1fr; gap: 12px; align-items: start; padding: 11px 2px; cursor: pointer; font-size: 14.5px; }
+  .checklist input { margin-top: 4px; accent-color: var(--accent); width: 15px; height: 15px; }
+  .checklist input:checked + span { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--line-strong); }
+
+  .timeline { list-style: none; padding-left: 0; margin: 22px 0; max-width: 82ch; }
+  .timeline li {
+    display: grid; grid-template-columns: 88px 1fr; gap: 16px; padding-bottom: 18px;
+    border-left: 1px solid var(--line); margin-left: 6px; padding-left: 20px; position: relative; margin-bottom: 0;
+  }
+  .timeline li::before {
+    content: ""; position: absolute; left: -4.5px; top: 8px; width: 8px; height: 8px;
+    border-radius: 50%; background: var(--ground); border: 1.5px solid var(--accent-dim);
+  }
+  .timeline li.hit::before { background: var(--crit); border-color: var(--crit); }
+  .timeline li.fix::before { background: var(--ok); border-color: var(--ok); }
+  .timeline .when { font-family: var(--mono); font-size: 11.5px; color: var(--muted); padding-top: 2px; }
+  .timeline .what { font-size: 14.5px; }
+  .timeline .what b { display: block; }
+
+  /* ============================================================
+     BUSCA / RODAPÉ
+     ============================================================ */
+  .stage.hidden, .rail-item.hidden { display: none; }
+  .nores { display: none; padding: 60px 0; text-align: center; font-family: var(--mono); font-size: 13px; color: var(--muted); }
+  body.searching .nores.show { display: block; }
+  .foot {
+    margin-top: 80px; padding-top: 26px; border-top: 1px solid var(--line);
+    font-family: var(--mono); font-size: 11.5px; color: var(--muted); max-width: 82ch; line-height: 1.9;
+  }
+
+  /* ============================================================
+     RESPONSIVO
+     ============================================================ */
+  @media (max-width: 900px) {
+    .shell { grid-template-columns: 1fr; }
+    body.rail-collapsed { --rail-w: auto; }
+    .rail {
+      position: static; height: auto; max-height: 46vh;
+      border-right: 0; border-bottom: 1px solid var(--line); padding: 16px 0 18px;
+    }
+    body.rail-collapsed .rail { display: none; }
+    .rail-list { display: flex; flex-wrap: wrap; gap: 4px; padding: 0 14px; }
+    .rail-item > a { border-left: 0; border: 1px solid var(--line); border-radius: 3px; padding: 5px 10px; grid-template-columns: auto auto; }
+    .rail-item > a.current { border-color: var(--accent); }
+    .rail-check { display: none; }
+    .rail-item > a.done { border-color: color-mix(in srgb, var(--ok) 40%, transparent); }
+    .stage-head { grid-template-columns: auto 1fr; }
+    .mark-done { grid-column: 1 / -1; margin-top: 14px; justify-self: start; }
+    .search input { width: 8ch; }
+    .ba { grid-template-columns: 1fr; }
+    .ba-arrow { transform: rotate(90deg); }
+  }
+  @media (max-width: 560px) {
+    .topbar-mark { display: none; }
+    .timeline li { grid-template-columns: 1fr; gap: 3px; }
+    .infra { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <button class="icon-btn" id="railtoggle" aria-expanded="true" aria-controls="rail" aria-label="Mostrar ou esconder o índice">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>
+  </button>
+  <div class="topbar-mark">TECNOSUP <span>//</span> MANUAL DO COLABORADOR</div>
+  <div class="topbar-spacer"></div>
+  <div class="search">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" style="color:var(--muted);flex:none" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+    <input id="q" type="search" placeholder="buscar…" aria-label="Buscar no manual" autocomplete="off">
+  </div>
+  <button class="ghost-btn" id="theme">tema</button>
+  <button class="ghost-btn" id="reset">zerar</button>
+</header>
+
+<div class="shell">
+
+  <nav class="rail" id="rail" aria-label="Roadmap do manual">
+    <div class="rail-head">
+      <div class="rail-title">Progresso</div>
+      <div class="progress-row">
+        <svg class="progress-ring" width="44" height="44" viewBox="0 0 44 44" aria-hidden="true">
+          <circle class="track" cx="22" cy="22" r="18"></circle>
+          <circle class="fill" id="ring" cx="22" cy="22" r="18" stroke-dasharray="113" stroke-dashoffset="113"></circle>
+        </svg>
+        <div class="progress-meta">
+          <div class="progress-num"><span id="pdone">0</span>/<span id="ptotal">14</span></div>
+          <div class="progress-lbl">etapas concluídas</div>
+        </div>
+      </div>
+    </div>
+    <ul class="rail-list" id="raillist"></ul>
+  </nav>
+
+  <main class="content">
+
+    <section class="opener">
+      <div class="eyebrow">Onboarding · Engenharia</div>
+      <h1>Como a gente constrói, decide e entrega software na Tecnosup</h1>
+      <p class="lede">Este é o manual do Erick. Não é documentação de API nem tutorial de Next.js — é a linha de raciocínio da casa: como pensamos antes de escrever código, como nossos sistemas são montados, o que já quebrou em produção e o que aprendemos com cada queda. Tudo aqui vem de incidentes e decisões reais dos projetos Ortega, NYX, Século XXI e do painel interno.</p>
+      <p class="lede">Leia na ordem. Cada etapa fecha o que a próxima precisa. Marque como concluída conforme avança — o progresso fica salvo neste navegador.</p>
+      <div class="sig">
+        <span>Escopo: <b>colaborador</b></span>
+        <span>Base: <b>14 etapas</b></span>
+        <span>Fonte: <b>memória de 8 repositórios</b></span>
+        <span>Revisão: <b>27/07/2026</b></span>
+      </div>
+    </section>
+
+    <div class="nores" id="nores">nenhuma etapa corresponde à busca.</div>
+
+    <!-- ============================================================ 00 -->
+    <section class="stage" id="e00" data-n="00" data-title="O terreno">
+      <div class="stage-head">
+        <div class="stage-n">00</div>
+        <div class="stage-titles">
+          <h2>O terreno: no que você está entrando</h2>
+          <p class="stage-obj">Entender o modelo de negócio antes do código — porque quase toda decisão técnica nossa é consequência dele.</p>
+        </div>
+      </div>
+
+      <p>A Tecnosup é uma software house pequena em Cruzeiro/SP, dos sócios Abraão (Cardoso) e Vitor. Duas frentes de receita:</p>
+      <ol>
+        <li><strong>Sistemas web sob medida</strong> para negócios locais — landing exclusiva + painel administrativo, um organismo só. <strong>É o braço em que você entra e o foco deste manual.</strong></li>
+        <li><strong>Assistência técnica</strong> presencial e remota (PC, notebooks) + o TecnoApp, otimizador de Windows. É a origem da empresa e continua rodando, mas não é o seu terreno.</li>
+      </ol>
+
+      <h3>O produto, em uma imagem</h3>
+      <div class="fig">
+        <div class="fig-frame">
+          <div class="mocks">
+            <div>
+              <div class="mock">
+                <div class="mock-bar"><div class="mock-dots"><i></i><i></i><i></i></div><div class="mock-url">cliente.com.br</div></div>
+                <div class="mock-lbl">Landing pública</div>
+                <div class="mock-body">
+                  <span class="wf t lg w70"></span>
+                  <span class="wf t w85"></span>
+                  <span class="wf cta"></span>
+                  <div class="wf-row" style="margin-top:4px">
+                    <div class="wf-card"><span class="wf img"></span><span class="wf t w70"></span><span class="wf t w40"></span></div>
+                    <div class="wf-card"><span class="wf img"></span><span class="wf t w70"></span><span class="wf t w40"></span></div>
+                    <div class="wf-card"><span class="wf img"></span><span class="wf t w70"></span><span class="wf t w40"></span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="mock">
+                <div class="mock-bar"><div class="mock-dots"><i></i><i></i><i></i></div><div class="mock-url">cliente.com.br/admin</div></div>
+                <div class="mock-lbl">Painel do dono</div>
+                <div class="mock-body">
+                  <div class="wf-admin">
+                    <div class="wf-side"><i class="on"></i><i></i><i></i><i></i><i></i><i></i></div>
+                    <div style="display:grid;gap:8px">
+                      <div class="wf-row">
+                        <div class="wf-kpi"><span class="k">hoje</span><span class="n">12</span></div>
+                        <div class="wf-kpi"><span class="k">receita</span><span class="n">840</span></div>
+                        <div class="wf-kpi"><span class="k">pend.</span><span class="n">3</span></div>
+                      </div>
+                      <div class="wf-table">
+                        <div class="wf-tr"><span class="wf t w85"></span><span class="wf t"></span><span class="wf t"></span></div>
+                        <div class="wf-tr"><span class="wf t w70"></span><span class="wf t"></span><span class="wf t"></span></div>
+                        <div class="wf-tr"><span class="wf t w85"></span><span class="wf t"></span><span class="wf t"></span></div>
+                        <div class="wf-tr"><span class="wf t w50"></span><span class="wf t"></span><span class="wf t"></span></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bus">
+            <span class="bus-tag">↕ mesmo banco, tempo real</span>
+            <span class="bus-txt">O cliente final agenda na landing e o registro aparece no painel do dono <strong>na hora</strong>. Não são dois produtos integrados — é um produto só, com duas caras.</span>
+          </div>
+        </div>
+        <div class="fig-cap"><b>Fig. 00.1</b> — A forma de todo sistema Tecnosup. Quando você for tentado a resolver algo com um widget de terceiro num iframe, lembre que o produto <b>é</b> a integração.</div>
+      </div>
+
+      <h3>O modelo comercial</h3>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Item</th><th>Valor</th><th>O que cobre</th></tr></thead>
+          <tbody>
+            <tr><td>Setup (uma vez)</td><td class="num">R$ 1.500–2.000</td><td>Desenvolvimento do zero, domínio, hospedagem e suporte no 1º ano</td></tr>
+            <tr><td>Mensalidade (após 1 ano)</td><td class="num">R$ 129/mês</td><td>Operação: hospedagem, banco dedicado, suporte, backup, segurança</td></tr>
+            <tr><td>Feature nova pós-entrega</td><td class="num">orçada à parte</td><td>Não está na mensalidade. Nunca prometa "evolução contínua".</td></tr>
+            <tr><td>Custo mensal da Tecnosup por cliente</td><td class="num">R$ 0</td><td>Toda a infra fica no nome e no cartão do cliente</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="block rule">
+        <span class="tag">Consequência técnica</span>
+        <p>Como o custo de infra é <strong>zero para a gente e do cliente para ele</strong>, cada cliente tem projeto Firebase, conta Vercel, bucket e domínio <strong>próprios e isolados</strong>. Isso significa que <strong>não existe multi-tenant aqui</strong>. Nunca proponha arquitetura compartilhada, banco único com <code>tenantId</code> ou "vamos reaproveitar o Firebase do outro cliente". Não é preguiça de arquitetura — é o modelo de negócio.</p>
+      </div>
+
+      <h3>O diferencial que vendemos</h3>
+      <p>O argumento central da Tecnosup, e o que separa a gente da prateleira: <strong>uma landing exclusiva, com a identidade visual do cliente e sem limitações de template, ligada em tempo real ao admin</strong>. Um cliente que hoje paga R$163/mês numa plataforma genérica tem a mesma cara que os concorrentes dele e os mesmos tetos.</p>
+
+      <h3>Mapa dos sistemas</h3>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Repositório</th><th>Cliente / uso</th><th>Stack</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr><td><code>tecnosup/ortega</code></td><td>Ortega Barber (Igor) — barbearia</td><td>Next 16 · Firebase · R2 · Vercel</td><td><span class="pill on">produção real</span></td></tr>
+            <tr><td><code>tecnosup/nyx</code></td><td>NYX (Giovanna) — e-commerce streetwear</td><td>Next 15 · Firebase · Cloudinary</td><td><span class="pill on">produção</span></td></tr>
+            <tr><td>projeto Renato</td><td>Barbearia Século XXI</td><td>Next 16 · Firebase · Tailwind 4</td><td><span class="pill wait">em desenvolvimento</span></td></tr>
+            <tr><td><code>tecnosup/projeto-docevale</code></td><td>Doce Vale Brownies (João)</td><td>HTML/CSS/JS + admin Next</td><td><span class="pill wait">landing pronta</span></td></tr>
+            <tr><td><code>tecnosup/pasta-base</code></td><td>Boilerplate da fábrica</td><td>Next 15 · Firebase · Cloudinary</td><td><span class="pill info">template</span></td></tr>
+            <tr><td><code>tecnosup/startup-tecnosup</code></td><td>Painel interno da própria Tecnosup</td><td>Next 16 · Firebase · Z-API · Groq</td><td><span class="pill on">interno</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="block danger">
+        <span class="tag">Regra fundadora</span>
+        <p><strong>Cada cliente vive na própria pasta, no próprio repositório, na própria infraestrutura.</strong> Em 27/04/2026 um rebranding de um cliente novo foi aplicado direto no repositório da NYX, que estava no ar. O site da Giovanna foi ao ar com o conteúdo de outra marca e exigiu <code>git reset --hard</code> + force push de emergência. Dano real a um cliente real.</p>
+        <p>Antes de qualquer <code>edit</code> ou <code>write</code>, a pergunta é sempre a mesma: <em>estou na pasta certa para ESTE cliente?</em></p>
+      </div>
+    </section>
+
+    <!-- ============================================================ 01 -->
+    <section class="stage" id="e01" data-n="01" data-title="Sua hierarquia">
+      <div class="stage-head">
+        <div class="stage-n">01</div>
+        <div class="stage-titles">
+          <h2>Sua hierarquia: colaborador, não owner</h2>
+          <p class="stage-obj">Saber exatamente onde sua autonomia começa e onde ela para — e por que a linha está onde está.</p>
+        </div>
+      </div>
+
+      <p>Você entra como <strong>colaborador</strong>. Isso não é desconfiança nem tamanho de contribuição: é que as contas de infraestrutura são <strong>do cliente</strong>, não da Tecnosup, e a operação de negócios reais depende delas. Um deploy errado no Ortega às 14h de uma terça é uma barbearia sem agenda.</p>
+
+      <h3>Matriz de acesso</h3>
+      <div class="fig">
+        <div class="tablewrap" style="margin:0">
+          <table class="matrix">
+            <thead><tr><th>Recurso</th><th class="ctr">Erick<br>colaborador</th><th class="ctr">Abraão / Vitor<br>sócios</th><th class="ctr">Cliente<br>titular</th></tr></thead>
+            <tbody>
+              <tr><td>Ler o código do repositório</td><td class="ctr yes">●</td><td class="ctr yes">●</td><td class="ctr no">—</td></tr>
+              <tr><td>Criar branch <code>feat/*</code> e abrir PR</td><td class="ctr yes">●</td><td class="ctr yes">●</td><td class="ctr no">—</td></tr>
+              <tr><td>Revisar e aprovar PR de outro</td><td class="ctr yes">●</td><td class="ctr yes">●</td><td class="ctr no">—</td></tr>
+              <tr><td>Merge em <code>dev</code></td><td class="ctr partial">via PR</td><td class="ctr yes">●</td><td class="ctr no">—</td></tr>
+              <tr><td>Merge em <code>main</code></td><td class="ctr no">—</td><td class="ctr yes">●</td><td class="ctr no">—</td></tr>
+              <tr><td>Deploy de produção</td><td class="ctr no">—</td><td class="ctr yes">●</td><td class="ctr no">—</td></tr>
+              <tr><td>Firebase / Firestore de <strong>teste</strong></td><td class="ctr yes">●</td><td class="ctr yes">●</td><td class="ctr no">—</td></tr>
+              <tr><td>Firebase / Firestore de <strong>produção</strong></td><td class="ctr no">—</td><td class="ctr yes">●</td><td class="ctr yes">●</td></tr>
+              <tr><td>Env vars de produção (Vercel)</td><td class="ctr no">—</td><td class="ctr yes">●</td><td class="ctr partial">titular</td></tr>
+              <tr><td>Billing, domínio, DNS</td><td class="ctr no">—</td><td class="ctr partial">opera</td><td class="ctr yes">●</td></tr>
+              <tr><td>Owner da organização GitHub</td><td class="ctr no">—</td><td class="ctr yes">●</td><td class="ctr no">—</td></tr>
+              <tr><td>Falar com o cliente sobre prazo/escopo/preço</td><td class="ctr no">—</td><td class="ctr yes">●</td><td class="ctr yes">●</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="fig-cap"><b>Fig. 01.1</b> — <span class="yes">●</span> acesso pleno · <span class="partial">texto âmbar</span> acesso condicionado · <span class="no">—</span> sem acesso. A linha existe porque <b>as contas são do cliente</b>, não porque o trabalho vale menos.</div>
+      </div>
+
+      <div class="block rule">
+        <span class="tag">Como isso funciona na prática</span>
+        <p>Você não fica bloqueado por não ter acesso — você fica <strong>protegido</strong>. Seu trabalho termina num PR verde, com roteiro de teste escrito. Quem tem a chave aperta o botão. Se algo que você precisa está do outro lado da linha, o caminho é: descreva o que precisa e por quê, no PR ou no chat. Não invente contorno, não peça a chave "só dessa vez", não rode comando com credencial que alguém colou no chat.</p>
+      </div>
+
+      <div class="block danger">
+        <span class="tag">Segredo — regra absoluta</span>
+        <p><strong>Nenhuma credencial aparece neste guia e nunca vai aparecer.</strong> Em 17/06/2026 o conteúdo de um JSON de service account do Firebase foi ecoado dentro de um chat durante uma configuração de <code>.env.local</code>. A chave dava acesso total ao Firestore do cliente. Resultado: a service account inteira teve que ser excluída no Google Cloud, o que invalidou <em>todas</em> as chaves — inclusive a do outro dev, que passou dias com cinco rotas de API quebradas na máquina dele.</p>
+        <p>Ao lidar com credencial: passe <strong>o caminho do arquivo</strong>, nunca o conteúdo.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ 02 -->
+    <section class="stage" id="e02" data-n="02" data-title="Ambiente local">
+      <div class="stage-head">
+        <div class="stage-n">02</div>
+        <div class="stage-titles">
+          <h2>Ambiente local: nunca toque no banco do cliente</h2>
+          <p class="stage-obj">Montar a máquina e entender o único erro de ambiente que já derrubou um sistema em produção.</p>
+        </div>
+      </div>
+
+      <h3>O mapa mental dos ambientes</h3>
+      <div class="fig">
+        <div class="fig-frame">
+          <div class="flow" style="margin-bottom:14px">
+            <div class="flow-node good"><span class="k">✓ seu lugar</span><span class="v">Máquina local<br><code style="font-size:11px">npm run dev:emulator</code></span></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node good"><span class="k">emulador</span><span class="v">Firestore + Auth<br>em memória</span></div>
+          </div>
+          <div class="flow" style="margin-bottom:14px">
+            <div class="flow-node"><span class="k">alternativa</span><span class="v">Máquina local<br><code style="font-size:11px">npm run dev</code></span></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node"><span class="k">firebase de teste</span><span class="v">projeto separado<br>não-produtivo</span></div>
+          </div>
+          <div class="flow">
+            <div class="flow-node bad"><span class="k">⚠ preview vercel</span><span class="v">branch <code style="font-size:11px">dev</code> / feature</span></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node bad"><span class="k">✕ banco de produção</span><span class="v">dados reais do cliente<br>agendamentos, caixa, estoque</span></div>
+          </div>
+        </div>
+        <div class="fig-cap"><b>Fig. 02.1</b> — Os três caminhos. O terceiro é a armadilha: o Preview do Vercel <b>não é um ambiente isolado</b> — ele grava no banco real. Detalhe completo na etapa 09.</div>
+      </div>
+
+      <h3>Primeiro dia</h3>
+      <div class="codewrap">
+        <button class="copy">copiar</button>
+<pre><code>git clone https://github.com/tecnosup/&lt;projeto&gt;.git
+cd &lt;projeto&gt;
+npm install
+
+<span class="c-cmt"># o .env.local NÃO está no repositório e nunca estará.</span>
+<span class="c-cmt"># peça ao Abraão — você recebe o de TESTE, não o de produção.</span>
+
+git checkout dev
+git pull origin dev
+git checkout -b feat/erick-&lt;sua-area&gt;
+npm run dev</code></pre>
+      </div>
+
+      <h3>O emulador é o seu banco</h3>
+      <div class="codewrap">
+        <button class="copy">copiar</button>
+<pre><code><span class="c-cmt"># terminal 1 — sobe o emulador (UI de inspeção em http://localhost:4000)</span>
+npm run emulator
+
+<span class="c-cmt"># terminal 2 — popula dados de teste</span>
+<span class="c-cmt"># o emulador sobe VAZIO toda vez, então rode o seed a cada reinício</span>
+npm run seed:emulator
+
+<span class="c-cmt"># terminal 2 — sobe o Next apontando pro emulador</span>
+npm run dev:emulator</code></pre>
+      </div>
+      <p>No modo emulador o app usa um projectId <code>demo-*</code>, e as flags <code>NEXT_PUBLIC_USE_EMULATOR</code> / <code>FIRESTORE_EMULATOR_HOST</code> nunca são setadas em produção. Para persistir dados entre reinícios existe <code>--import=./emu-data --export-on-exit</code>.</p>
+
+      <div class="block danger">
+        <span class="tag">A regra do PROJECT_ID</span>
+        <p><strong>Antes de rodar qualquer coisa, confira para qual banco seu <code>.env.local</code> aponta.</strong></p>
+        <div class="codewrap" style="margin:12px 0 0">
+          <button class="copy">copiar</button>
+<pre><code>grep PROJECT_ID .env.local
+<span class="c-cmt"># NEXT_PUBLIC_FIREBASE_PROJECT_ID=...</span>
+<span class="c-cmt"># FIREBASE_ADMIN_PROJECT_ID=...</span></code></pre>
+        </div>
+        <p style="margin-top:12px">Os dois têm que bater, e têm que ser o projeto de <strong>teste</strong>. Já aconteceu de alguém afirmar num relatório que um teste tinha caído em produção sem ter conferido o PROJECT_ID — e não tinha. O contrário também já aconteceu, e foi pior.</p>
+      </div>
+
+      <details class="caso">
+        <summary>
+          <span>
+            <span class="caso-lbl">Incidente · 08/07/2026</span>
+            <span class="caso-ttl">O dev local apontava para o Firebase de produção e estourou a cota do cliente</span>
+          </span>
+          <span class="caso-toggle"></span>
+        </summary>
+        <div class="caso-body">
+          <p>O <code>.env.local</code> do Ortega apontava para o mesmo banco que a barbearia usava ao vivo. Rodar <code>npm run dev</code>, typecheck e curls de teste consumia <strong>cota de leitura do banco real</strong>.</p>
+          <p>No dia 08/07 isso estourou o limite do plano gratuito: <code>8 RESOURCE_EXHAUSTED: Quota exceeded</code>. Vários endpoints do admin passaram a devolver 500 no local.</p>
+          <p><strong>O sintoma que confunde:</strong> no navegador o erro aparece como <code>Failed to execute 'json' on 'Response': Unexpected end of JSON input</code>, porque <code>fetch(...).then(r =&gt; r.json())</code> sem checar <code>r.ok</code> estoura quando o 500 vem com corpo vazio. Você vai caçar bug de parsing e o problema é cota. <strong>Sempre cheque <code>r.ok</code>.</strong></p>
+          <p><strong>Resolução:</strong> projeto Firebase separado só para desenvolvimento. São 9 chaves que mudam — as 6 <code>NEXT_PUBLIC_FIREBASE_*</code> e as 3 <code>FIREBASE_ADMIN_*</code>. As demais podem ficar iguais.</p>
+        </div>
+      </details>
+
+      <h3>Ferramentas específicas desta operação</h3>
+      <div class="block trap">
+        <span class="tag">Duas que custam tempo se você não souber</span>
+        <p><strong>Ler PDF (manual de marca do cliente):</strong> não há poppler/<code>pdftoppm</code> nas máquinas. Use Python + <code>pymupdf</code>: <code>fitz</code> renderiza páginas com <code>page.get_pixmap(dpi=150)</code> e extrai as imagens embutidas em alta resolução com <code>doc.extract_image(xref)</code>. Numa tentativa anterior o manual foi lido só pelos PNGs soltos e o sistema tipográfico inteiro saiu errado — <strong>o PDF é a autoridade da marca</strong>.</p>
+        <p><strong>Screenshot mobile de verdade:</strong> <code>chrome --headless --window-size=390,844</code> <em>mente</em>. No Windows a largura de layout não desce abaixo de ~504px, então as media queries respondem como tablet e você vai depurar um bug de responsividade que não existe. O caminho certo é CDP: <code>--remote-debugging-port</code> + <code>--remote-allow-origins=*</code> (sem essa flag o handshake dá 403), conectar via websocket e chamar <code>Emulation.setDeviceMetricsOverride</code>.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ 03 -->
+    <section class="stage" id="e03" data-n="03" data-title="Anatomia do sistema">
+      <div class="stage-head">
+        <div class="stage-n">03</div>
+        <div class="stage-titles">
+          <h2>Anatomia: como nossos sistemas são estruturados</h2>
+          <p class="stage-obj">A forma padrão de um projeto Tecnosup — e por que ela é sempre a mesma.</p>
+        </div>
+      </div>
+
+      <h3>As camadas, e o atalho proibido</h3>
+      <div class="fig">
+        <div class="fig-frame">
+          <div class="layers">
+            <div class="layer"><span class="lv">01</span><span class="lt"><b>Componente / página</b><span>Só renderiza e chama. Não monta query, não conhece Firestore.</span></span><span class="pill info">client</span></div>
+            <div class="layer-gap">↓</div>
+            <div class="layer"><span class="lv">02</span><span class="lt"><b>Rota de API / Server Action</b><span>Sessão → Zod → chama <code>lib/</code> → auditoria. Fina, sem regra de negócio.</span></span><span class="pill info">server</span></div>
+            <div class="layer-gap">↓</div>
+            <div class="layer"><span class="lv">03</span><span class="lt"><b>Camada <code>lib/</code></b><span>É aqui que a regra de negócio mora. Um módulo por domínio.</span></span><span class="pill info">server</span></div>
+            <div class="layer-gap">↓</div>
+            <div class="layer"><span class="lv">04</span><span class="lt"><b>Firestore (Admin SDK)</b><span><code>getAdminDb()</code> por request, nunca singleton de módulo.</span></span><span class="pill info">dados</span></div>
+            <div class="layer-gap" style="margin-top:8px">✕</div>
+            <div class="layer fake"><span class="lv">✕</span><span class="lt"><b>Componente falando direto com o Firestore</b><span>Duplica regra, vaza credencial pro client, quebra a auditoria. Nunca.</span></span><span class="pill off">proibido</span></div>
+          </div>
+        </div>
+        <div class="fig-cap"><b>Fig. 03.1</b> — Todo dado sobe e desce por essas quatro camadas, na ordem. O pulo de camada é o começo de toda divergência de regra que a etapa 04 descreve.</div>
+      </div>
+
+      <h3>Stack padrão</h3>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Camada</th><th>Escolha</th><th>Por quê</th></tr></thead>
+          <tbody>
+            <tr><td>Framework</td><td>Next.js (App Router) + TypeScript</td><td>SSR para SEO da landing + API routes no mesmo repo</td></tr>
+            <tr><td>Estilo</td><td>Tailwind CSS</td><td>Velocidade. Atenção à versão — ver etapa 07</td></tr>
+            <tr><td>Auth</td><td>Firebase Auth + custom claim <code>admin:true</code></td><td>Sem servidor de identidade próprio</td></tr>
+            <tr><td>Banco</td><td>Firestore (Admin SDK no servidor)</td><td>Sem ops. Custo por documento lido — ver etapa 06</td></tr>
+            <tr><td>Storage</td><td>Cloudflare R2 (novos) / Cloudinary (legado)</td><td>R2 é o padrão atual; conta no nome do cliente</td></tr>
+            <tr><td>Deploy</td><td>Vercel</td><td>Plano Hobby, projeto por cliente</td></tr>
+            <tr><td>Validação</td><td>Zod</td><td>Fronteira de entrada de toda rota e action</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Árvore canônica</h3>
+      <div class="codewrap">
+        <button class="copy">copiar</button>
+<pre><code>src/
+├── app/
+│   ├── (public)/              <span class="c-cmt">← landing + fluxos do cliente final</span>
+│   │   ├── page.tsx           <span class="c-cmt">  server component</span>
+│   │   └── agendamento/       <span class="c-cmt">  fluxo em passos</span>
+│   ├── admin/
+│   │   ├── login/
+│   │   └── (protected)/       <span class="c-cmt">← tudo aqui exige sessão</span>
+│   │       ├── page.tsx       <span class="c-cmt">  dashboard</span>
+│   │       ├── agendamentos/
+│   │       ├── financeiro/
+│   │       └── auditoria/
+│   ├── cliente/               <span class="c-cmt">← área do assinante (sessão própria)</span>
+│   └── api/
+│       ├── publico/           <span class="c-cmt">← sem auth, dados abertos e só leitura</span>
+│       └── admin/             <span class="c-cmt">← toda rota valida sessão no servidor</span>
+├── components/
+│   ├── ui/                    <span class="c-cmt">← Confirm, Sucesso, Select, DatePicker…</span>
+│   ├── landing/
+│   └── admin/
+└── lib/                       <span class="c-cmt">← a camada que importa</span></code></pre>
+      </div>
+
+      <h3>A camada <code>lib/</code> é o coração</h3>
+      <p>No Ortega são cerca de 40 arquivos nesse padrão. Alguns, para você reconhecer o vocabulário:</p>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Arquivo</th><th>Responsabilidade</th></tr></thead>
+          <tbody>
+            <tr><td><code>lib/agendamentos.ts</code></td><td>CRUD + regras de agendamento</td></tr>
+            <tr><td><code>lib/grade.ts</code></td><td><strong>Fonte da verdade dos horários livres</strong> (etapa 04)</td></tr>
+            <tr><td><code>lib/comandas.ts</code></td><td>Comanda e espelhamento de status no agendamento</td></tr>
+            <tr><td><code>lib/caixas-abertos-agg.ts</code></td><td>Documento agregador de caixas (etapa 06)</td></tr>
+            <tr><td><code>lib/cliente-auth.ts</code></td><td>Sessão do assinante — HMAC puro, sem Firestore</td></tr>
+            <tr><td><code>lib/cliente-auth-server.ts</code></td><td>A parte que toca o Firestore, marcada <code>server-only</code></td></tr>
+            <tr><td><code>lib/rate-limit.ts</code></td><td>Limite por IP</td></tr>
+            <tr><td><code>lib/audit.ts</code></td><td>Log de toda mutação do admin</td></tr>
+            <tr><td><code>lib/flags.ts</code></td><td>Feature flags (etapa 04)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Repare no par <code>cliente-auth.ts</code> / <code>cliente-auth-server.ts</code>: a lógica de cripto é isolada da de banco porque ela roda no middleware, onde não existe acesso ao Firestore. Separar arquivo por <em>ambiente de execução</em>, não só por assunto, é um padrão nosso.</p>
+
+      <h3>A forma de uma rota admin</h3>
+      <div class="codewrap">
+        <button class="copy">copiar</button>
+<pre><code><span class="c-cmt">// src/app/api/admin/itens/route.ts</span>
+<span class="c-key">export const</span> dynamic = <span class="c-str">"force-dynamic"</span>;   <span class="c-cmt">// obrigatório em rota admin</span>
+
+<span class="c-key">export async function</span> POST(req: Request) {
+  <span class="c-cmt">// 1. sessão SEMPRE primeiro — antes de ler o corpo</span>
+  <span class="c-key">const</span> user = <span class="c-key">await</span> getSessionUser();
+  <span class="c-key">if</span> (!user) <span class="c-key">return</span> NextResponse.json({ erro: <span class="c-str">"nao autorizado"</span> }, { status: <span class="c-str">401</span> });
+
+  <span class="c-cmt">// 2. valide a entrada com Zod. nunca confie no front.</span>
+  <span class="c-key">const</span> parsed = ItemSchema.safeParse(<span class="c-key">await</span> req.json());
+  <span class="c-key">if</span> (!parsed.success)
+    <span class="c-key">return</span> NextResponse.json({ erro: parsed.error.issues[0].message }, { status: <span class="c-str">400</span> });
+
+  <span class="c-cmt">// 3. Firestore rejeita undefined — limpe antes de gravar</span>
+  <span class="c-key">const</span> dados = semUndefined(parsed.data);
+
+  <span class="c-cmt">// 4. a regra de negócio vive em lib/, não aqui</span>
+  <span class="c-key">const</span> id = <span class="c-key">await</span> criarItem(dados);
+
+  <span class="c-cmt">// 5. toda mutação de admin gera auditoria</span>
+  <span class="c-key">await</span> registrarAuditoria(user, <span class="c-str">"item.create"</span>, id);
+
+  <span class="c-key">return</span> NextResponse.json({ ok: <span class="c-key">true</span>, id });
+}</code></pre>
+      </div>
+
+      <div class="block rule">
+        <span class="tag">Cinco linhas que sempre estão lá</span>
+        <ul>
+          <li><code>export const dynamic = "force-dynamic"</code> em toda rota e layout do admin.</li>
+          <li><code>credentials: "include"</code> em todo <code>fetch</code> do admin, senão o cookie não vai.</li>
+          <li>Firestore <strong>rejeita <code>undefined</code></strong> — filtre os campos antes de <code>.add()</code> / <code>.update()</code>.</li>
+          <li><code>getAdminDb()</code> é chamado <strong>por request</strong>, nunca guardado em singleton.</li>
+          <li><code>orderBy</code> duplo exige índice composto. Ordene por um campo e faça o segundo sort em memória.</li>
+        </ul>
+      </div>
+
+      <h3>Modelagem no Firestore</h3>
+      <ul>
+        <li><strong>Desnormalize o que a tela lê junto.</strong> O agendamento guarda <code>barbeiroId</code> <em>e</em> <code>barbeiroNome</code>. Uma leitura em vez de duas.</li>
+        <li><strong>Guarde o ID, não só o rótulo.</strong> Caso real: o modelo <code>Agendamento</code> guardava o nome do serviço mas não o <code>servicoId</code>. Resultado: a tela de comissões <em>não conseguiu</em> calcular comissão por serviço, e a feature ficou bloqueada por uma decisão de modelagem tomada meses antes. Nome é para exibir; ID é para calcular. Guarde os dois.</li>
+      </ul>
+    </section>
+
+    <!-- ============================================================ 04 -->
+    <section class="stage" id="e04" data-n="04" data-title="Linha de raciocínio">
+      <div class="stage-head">
+        <div class="stage-n">04</div>
+        <div class="stage-titles">
+          <h2>Linha de raciocínio: como decidimos antes de codar</h2>
+          <p class="stage-obj">Os seis princípios que a gente aprendeu quebrando coisa. Esta é a etapa mais importante do manual.</p>
+        </div>
+      </div>
+
+      <h3>1 · Dado antes de hipótese</h3>
+      <p class="principio">Se você ainda não olhou o documento no banco, você não sabe a causa — você tem uma teoria bonita.<span class="who">O erro mais caro que a gente já cometeu</span></p>
+
+      <div class="fig">
+        <div class="fig-frame">
+          <div class="gantt">
+            <div class="gantt-axis">
+              <span></span>
+              <div class="gantt-ticks"><span>13:00</span><span>13:30</span><span>14:00</span><span>14:30</span><span>15:00</span></div>
+            </div>
+            <div class="gantt-row">
+              <div class="gantt-lbl"><b>Cauã</b><span>corte · 45 min</span></div>
+              <div class="gantt-track"><div class="gantt-bar a" style="left:33.3%;width:37.5%">13:40 → 14:25</div></div>
+            </div>
+            <div class="gantt-row">
+              <div class="gantt-lbl"><b>Clezio</b><span>gravado: 10 min</span></div>
+              <div class="gantt-track"><div class="gantt-bar b" style="left:25%;width:8.4%"></div></div>
+            </div>
+            <div class="gantt-row">
+              <div class="gantt-lbl"><b>Clezio (real)</b><span>combo ≈ 65 min</span></div>
+              <div class="gantt-track"><div class="gantt-bar ghost" style="left:25%;width:54.2%">13:30 → ~14:35 · sobrepõe</div></div>
+            </div>
+            <div class="gantt-note">↑ o sistema só enxergava a barra pequena — por isso ofereceu 13:30</div>
+          </div>
+        </div>
+        <div class="fig-cap"><b>Fig. 04.1</b> — O bug de 14/07 desenhado. Com <b>10 min</b> gravados, o intervalo do Clezio encosta mas não sobrepõe: o site ofereceu 13:30 <b>corretamente</b>, segundo o dado que tinha. A lógica estava certa; o dado estava errado.</div>
+      </div>
+
+      <details class="caso" open>
+        <summary>
+          <span>
+            <span class="caso-lbl">Incidente · 14/07/2026</span>
+            <span class="caso-ttl">Dois agendamentos sobrepostos no mesmo barbeiro — e as quatro hipóteses erradas</span>
+          </span>
+          <span class="caso-toggle"></span>
+        </summary>
+        <div class="caso-body">
+          <p><strong>As hipóteses levantadas na hora — todas refutadas depois:</strong></p>
+          <ul>
+            <li>"Falta validação server-side de conflito" — é um fato técnico verdadeiro, mas <em>não causou este caso</em>.</li>
+            <li>"Race condition / cache velho" — os dois agendamentos foram criados com <strong>1h42 de diferença</strong>.</li>
+            <li>"O cliente escolheu sobrancelha primeiro e corte depois" — o fluxo público escolhe tudo no passo 1.</li>
+            <li>"Status pendente não ocupa slot" — pendente sempre ocupou; a API só ignora cancelado.</li>
+          </ul>
+          <p><strong>A causa real, encontrada lendo os dois documentos em produção:</strong> o serviço "Cabelo na Tesoura + Barba" foi cadastrado <strong>sem duração</strong>. <code>resolverDuracaoMin(svc, fallback)</code> devolve o fallback quando o serviço não tem duração — e o front passava o passo da grade (5 min) como fallback. <strong>O serviço sem duração virou 5 minutos silenciosamente</strong>, e o combo de uma hora foi gravado como 10.</p>
+          <p><strong>O que resolveu:</strong> (1) cadastrar a duração real dos serviços faltantes — mata o caso na hora; (2) tornar <strong>duração obrigatória</strong> no cadastro, no cliente e no servidor.</p>
+          <p><strong>A lição:</strong> um fallback silencioso é uma bomba-relógio. Se um campo é essencial para o cálculo, ele é obrigatório na entrada — não tem default esperto que salve.</p>
+        </div>
+      </details>
+
+      <h3>2 · Uma fonte da verdade por domínio</h3>
+      <p class="principio">Se a mesma regra é escrita em cinco lugares, ela vai divergir em cinco lugares. É questão de quando.</p>
+
+      <div class="fig">
+        <div class="fig-frame">
+          <div style="display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))">
+            <div>
+              <div style="font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--crit);margin-bottom:11px">Antes · 5 implementações</div>
+              <div class="layers">
+                <div class="layer fake" style="grid-template-columns:1fr"><span class="lt"><b>Cliente público</b><span>cálculo próprio</span></span></div>
+                <div class="layer fake" style="grid-template-columns:1fr"><span class="lt"><b>Cliente logado</b><span>cálculo próprio</span></span></div>
+                <div class="layer fake" style="grid-template-columns:1fr"><span class="lt"><b>Agendar no admin</b><span>cálculo próprio</span></span></div>
+                <div class="layer fake" style="grid-template-columns:1fr"><span class="lt"><b>Reagendar no admin</b><span>cálculo próprio</span></span></div>
+                <div class="layer" style="grid-template-columns:1fr;border-color:color-mix(in srgb,var(--ok) 45%,var(--line))"><span class="lt"><b>Grade do admin</b><span>a única certa</span></span></div>
+              </div>
+            </div>
+            <div>
+              <div style="font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ok);margin-bottom:11px">Depois · 1 função</div>
+              <div class="layers">
+                <div class="layer" style="grid-template-columns:1fr"><span class="lt"><b>As 5 telas</b><span>só chamam</span></span></div>
+                <div class="layer-gap">↓</div>
+                <div class="layer" style="grid-template-columns:1fr;border-color:color-mix(in srgb,var(--accent) 50%,var(--line));background:var(--accent-wash)">
+                  <span class="lt"><b><code>lib/grade.ts</code></b><span><code>calcularSlotsLivres()</code><br><code>ocupacaoDeAgendamentos()</code></span></span>
+                </div>
+              </div>
+              <p style="font-size:12.5px;color:var(--muted);margin-top:14px;max-width:none">Passo configurável · o serviço tem que caber no dia · reserva o intervalo inteiro pela duração · remove horários passados.</p>
+            </div>
+          </div>
+        </div>
+        <div class="fig-cap"><b>Fig. 04.2</b> — A lógica nova existia só na grade do admin. <b>O cliente não lançou o site por causa dessa inconsistência.</b> Se a função não serve para a sua tela, mude a função — não faça uma cópia adaptada.</div>
+      </div>
+
+      <h3>3 · Remover a ambiguidade é melhor que consertar a ambiguidade</h3>
+      <p>Na mesma investigação apareceu a raiz da divergência: a opção <strong>"qualquer barbeiro disponível"</strong> (<code>barbeiroId = null</code>). Nesse fluxo os agendamentos de <em>todos</em> os barbeiros eram somados num conjunto único, então um horário sumia mesmo com outro barbeiro livre.</p>
+      <p>Dava para consertar a semântica. A decisão foi <strong>remover a opção</strong>: barbeiro virou obrigatório nas três telas de escolha. Menos superfície, menos estado ambíguo. E o backend nem mudou — nunca houve atribuição automática.</p>
+      <div class="block rule">
+        <span class="tag">Como aplicar</span>
+        <p>Quando uma feature existe mas ninguém consegue explicar o comportamento correto dela em uma frase, a pergunta certa não é "como conserto?" — é <strong>"isso precisa existir?"</strong>. Traga a proposta de remoção com o argumento. Remover é decisão de produto: você propõe, o Abraão decide.</p>
+      </div>
+
+      <h3>4 · Ocultar, não deletar</h3>
+      <p>Quando o cliente ainda não decidiu como uma parte do sistema vai funcionar, ela sai da frente do usuário mas <strong>fica no repositório</strong>:</p>
+      <div class="codewrap">
+        <button class="copy">copiar</button>
+<pre><code><span class="c-cmt">// src/lib/flags.ts</span>
+<span class="c-key">export const</span> ASSINATURAS_ATIVAS = <span class="c-key">false</span>;  <span class="c-cmt">// esconde planos + área do cliente</span>
+<span class="c-key">export const</span> REVIEWS_ATIVOS     = <span class="c-key">false</span>;  <span class="c-cmt">// esconde depoimentos</span></code></pre>
+      </div>
+      <div class="block trap">
+        <span class="tag">Ao esconder uma feature, mapeie TODAS as superfícies</span>
+        <p>Landing · navbar desktop · navbar mobile (hamburger) · rotas diretas (middleware redireciona) · botões dentro de outras telas · abas do admin. Esquecer uma é deixar um caminho aberto para uma tela quebrada.</p>
+      </div>
+
+      <h3>5 · Decidir antes de codar</h3>
+      <p>No Ortega, o checkout de plano e de produto ficou meses como <code>setTimeout(2200)</code> → ID aleatório → tela de sucesso. Nada era cobrado, o Pix era um QR estático, e o código <em>parecia</em> pronto.</p>
+      <p>Quando chegou a hora de fazer pagamento de verdade, a arquitetura foi desenhada <strong>agnóstica de gateway</strong> e aprovada antes de uma linha ser escrita: coleção <code>pagamentos</code> como fonte da verdade do status, rota de criação, <strong>webhook</strong> (é ele que torna o pagamento real), front reativo por <code>onSnapshot</code> no lugar do <code>setTimeout</code>, e a ponte com o caixa.</p>
+      <div class="block danger">
+        <span class="tag">Regra de escopo</span>
+        <p>Não escolha gateway, biblioteca de pagamento, provedor de e-mail ou serviço pago sozinho. Traga duas opções com trade-off. <strong>Escolha de fornecedor é decisão de negócio</strong> — tem custo, contrato e titularidade no nome do cliente.</p>
+      </div>
+
+      <h3>6 · Trabalhar em blocos, com validação no meio</h3>
+      <div class="fig">
+        <div class="fig-frame">
+          <div class="flow">
+            <div class="flow-node"><span class="k">passo 1</span><span class="v">Explique o bloco</span></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node good"><span class="k">pausa</span><span class="v">Espere o OK</span></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node"><span class="k">passo 2</span><span class="v">Implemente só ele</span></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node"><span class="k">passo 3</span><span class="v">Roteiro de teste</span></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node good"><span class="k">pausa</span><span class="v">Validação no localhost</span></div>
+          </div>
+        </div>
+        <div class="fig-cap"><b>Fig. 04.3</b> — O ciclo de um bloco. As duas pausas em verde não são opcionais. Um PR grande num sistema que uma barbearia usa às 9h da manhã é risco, não produtividade.</div>
+      </div>
+    </section>
+
+    <!-- ============================================================ 05 -->
+    <section class="stage" id="e05" data-n="05" data-title="Segurança">
+      <div class="stage-head">
+        <div class="stage-n">05</div>
+        <div class="stage-titles">
+          <h2>Segurança: o servidor decide, sempre</h2>
+          <p class="stage-obj">O modelo de auth em camadas, o que é proteção de verdade e o que é só enfeite de UI.</p>
+        </div>
+      </div>
+
+      <p>A base é sólida — numa varredura do Ortega, <strong>70 das 71 rotas de API validavam sessão no servidor</strong>, não havia segredo hardcoded e o <code>.env</code> nunca foi versionado. A única rota sem sessão é o <code>set-claim</code>, que é bootstrap e exige secret próprio + rate limit. Manter esse padrão é sua responsabilidade.</p>
+
+      <h3>As camadas de autenticação</h3>
+      <div class="fig">
+        <div class="fig-frame">
+          <div class="layers">
+            <div class="layer"><span class="lv">01</span><span class="lt"><b>Login e-mail/senha</b><span>Firebase Auth devolve um <code>idToken</code></span></span><span class="pill info">client</span></div>
+            <div class="layer-gap">↓</div>
+            <div class="layer"><span class="lv">02</span><span class="lt"><b>Custom claim <code>admin: true</code></b><span>Verificado no servidor antes de emitir a sessão</span></span><span class="pill info">server</span></div>
+            <div class="layer-gap">↓</div>
+            <div class="layer"><span class="lv">03</span><span class="lt"><b>Session cookie</b><span><code>httpOnly</code> · <code>secure</code> (só em produção) · <code>sameSite lax</code></span></span><span class="pill info">server</span></div>
+            <div class="layer-gap">↓</div>
+            <div class="layer" style="border-color:color-mix(in srgb,var(--ok) 50%,var(--line));background:color-mix(in srgb,var(--ok) 6%,var(--surface))">
+              <span class="lv" style="color:var(--ok)">04</span><span class="lt"><b>Cada rota chama <code>getSessionUser()</code></b><span>Esta é a camada que <em>de fato</em> protege. Todas as outras a preparam.</span></span><span class="pill on">a real</span>
+            </div>
+            <div class="layer-gap" style="margin-top:8px">✕</div>
+            <div class="layer fake"><span class="lv">✕</span><span class="lt"><b><code>AdminAuthGuard</code> (client-side)</b><span>Esconde a interface e evita o flash de conteúdo. <strong>Não protege nada.</strong></span></span><span class="pill off">não é segurança</span></div>
+          </div>
+        </div>
+        <div class="fig-cap"><b>Fig. 05.1</b> — Se você criar uma tela nova de admin e proteger só com o guard, os dados estão abertos para quem chamar a API direto. <b>Toda rota valida por si mesma</b> — não confie no middleware, no layout nem no componente pai.</div>
+      </div>
+
+      <h3>Endpoints públicos</h3>
+      <div class="block trap">
+        <span class="tag">Caso real · o que quase foi feito errado</span>
+        <p>Surgiu a ideia de deixar o cliente cancelar o próprio agendamento pelo fluxo público. O caminho preguiçoso seria expor o <code>PATCH /api/agendamentos/[id]</code> que já existe e já faz tudo.</p>
+        <p><strong>Por que é um furo:</strong> o ID vaza fácil pela URL e pelo <code>sessionStorage</code>. Qualquer terceiro cancelaria agendamento alheio.</p>
+        <p><strong>A forma certa:</strong> endpoint dedicado <code>POST /api/publico/agendamentos/[id]/cancelar</code> que valida <strong>posse</strong> (o telefone informado bate com o do agendamento) e <strong>janela de tempo</strong> (só até X horas antes). Endpoint público faz uma coisa só, com validação explícita — nunca reaproveita o endpoint poderoso do admin.</p>
+      </div>
+
+      <div class="block danger">
+        <span class="tag">Dívida de segurança conhecida — não repita o padrão</span>
+        <p>Num dos projetos, <strong>o telefone é a única credencial</strong> do cliente: quem souber o número lista e cancela os agendamentos alheios. A raiz é estrutural — <em>não existe entidade "cliente" no banco</em>. As coleções são barbers, services, products, appointments, comandas… e o cliente só existe como <code>customerPhone</code> dentro de cada agendamento. Por isso a assinatura não tem dono e o bloqueio por reincidência não tem onde morar.</p>
+        <p>A lição: <strong>identidade é entidade.</strong> Se um ator do sistema tem histórico, direitos ou estado, ele precisa de coleção própria — não de um campo string espalhado.</p>
+      </div>
+
+      <h3>Checklist de segurança de todo PR</h3>
+      <ul class="checklist" data-ck="seg">
+        <li><label><input type="checkbox"><span>Toda rota nova chama <code>getSessionUser()</code> antes de qualquer coisa</span></label></li>
+        <li><label><input type="checkbox"><span>Toda entrada externa passa por <strong>Zod</strong> — body, query e params</span></label></li>
+        <li><label><input type="checkbox"><span>Endpoint público novo tem <strong>rate limit</strong> e valida posse do recurso</span></label></li>
+        <li><label><input type="checkbox"><span>Nenhum segredo no código, no log, no PR ou no chat</span></label></li>
+        <li><label><input type="checkbox"><span>Mudou <code>firestore.rules</code>? Está no PR e alguém precisa republicar</span></label></li>
+        <li><label><input type="checkbox"><span>Mutação de admin gera <strong>auditoria</strong></span></label></li>
+        <li><label><input type="checkbox"><span>Dado de cartão <strong>não</strong> toca nosso front — tokenização no SDK do gateway</span></label></li>
+        <li><label><input type="checkbox"><span>Nenhum campo sensível vazando em resposta de API pública</span></label></li>
+      </ul>
+
+      <div class="block trap">
+        <span class="tag">PCI — por que cartão não passa por nós</span>
+        <p>Um hook de pagamento chegou a coletar número de cartão no front e validar só com Luhn — o próprio comentário do código dizia "nada é enviado a lugar nenhum". <strong>Coletar dado de cartão no nosso front já nos coloca no escopo PCI</strong>, mesmo sem enviar. O padrão correto é o SDK do gateway tokenizar; o dado nunca entra no nosso domínio.</p>
+      </div>
+
+      <p>Camadas ainda no radar, se quiser propor: guard <em>server-side</em> no layout do admin (elimina o flash) e headers <code>CSP</code>, <code>X-Frame-Options</code> e <code>HSTS</code> no <code>next.config</code> — a NYX já tem, o Ortega ainda não.</p>
+    </section>
+
+    <!-- ============================================================ 06 -->
+    <section class="stage" id="e06" data-n="06" data-title="Custo e performance">
+      <div class="stage-head">
+        <div class="stage-n">06</div>
+        <div class="stage-titles">
+          <h2>Custo e performance: o Firestore cobra por documento lido</h2>
+          <p class="stage-obj">A área que mais derrubou sistema nosso. Se você entender só uma etapa técnica deste manual, que seja esta.</p>
+        </div>
+      </div>
+
+      <p class="principio">O volume de leitura nunca foi proporcional ao movimento real da barbearia. Todo o custo era overhead de código.</p>
+
+      <ol>
+        <li><strong>O Firestore cobra por documento lido, não por requisição.</strong> Uma query que devolve 1.000 documentos custa 1.000 leituras, mesmo que você use só a contagem.</li>
+        <li><strong>O plano gratuito não desacelera ao bater o limite — ele para.</strong> São 50 mil leituras/dia; ao estourar, tudo devolve <code>RESOURCE_EXHAUSTED</code> até a meia-noite do Pacífico. O sistema cai na cara do cliente.</li>
+      </ol>
+
+      <div class="fig">
+        <div class="fig-frame" style="position:relative">
+          <div class="chart" id="chart">
+            <div class="chart-head">
+              <div>
+                <div class="chart-ttl">Leituras do Firestore por dia — projeto do Ortega</div>
+                <div class="chart-sub">julho/2026 · limite do plano gratuito: 50.000/dia</div>
+              </div>
+            </div>
+            <svg class="chart-svg" id="chartsvg" viewBox="0 0 640 250" role="img" aria-label="Gráfico de barras: leituras diárias do Firestore entre 20 e 26 de julho de 2026. Os dias 22 e 23 ultrapassam o limite de 50 mil leituras; a partir de 24 o consumo cai até 7,3 mil no dia 26."></svg>
+            <div class="chart-legend">
+              <span><i style="background:var(--chart-1)"></i> dentro do limite</span>
+              <span><i style="background:var(--chart-crit)"></i> estourou · site fora do ar</span>
+              <span><i style="background:transparent;border-top:2px dashed var(--crit);height:0;border-radius:0"></i> limite 50k/dia</span>
+            </div>
+          </div>
+          <div class="chart-tip" id="charttip" role="status" aria-live="polite"></div>
+        </div>
+        <div class="fig-cap"><b>Fig. 06.1</b> — Medidos no console do Firebase: <b>23/07 ≈ 55 mil</b> (pico), <b>25/07 ≈ 25 mil</b>, <b>26/07 = 7,3 mil</b> (24h corridas). Os dias 20 a 22 são reconstituídos a partir do total de <b>218 mil</b> da janela de 7 dias, sabendo que 22/07 estourou. Passe o cursor nas barras.</div>
+      </div>
+
+      <h3>A saga completa</h3>
+      <ul class="timeline">
+        <li><span class="when">08/07</span><span class="what"><b>Primeiro susto</b>O polling do admin rodava a cada 30s com ~6 queries varrendo coleções. Conta: 120 ciclos/h × 10h × ~40 docs ≈ 48 mil leituras/dia <em>só do polling</em>.</span></li>
+        <li class="fix"><span class="when">08/07</span><span class="what"><b>Frente 1 — polling 30s → 90s</b>Corta ~3×, mata ~60% do problema. Deployado no mesmo dia.</span></li>
+        <li class="hit"><span class="when">22/07</span><span class="what"><b>Estourou de verdade</b>Site fora do ar. Gargalo medido: a rota de notificações lia <strong>até 1.000 comandas dos últimos 30 dias a cada 90 segundos</strong>, só para descobrir quais datas tinham comanda finalizada sem fechamento.</span></li>
+        <li class="fix"><span class="when">23/07</span><span class="what"><b>Frente 2 — documento agregador</b><code>meta/caixasAbertos</code>, atualizado <em>on-write</em> quando comanda finaliza ou fechamento é criado.</span></li>
+        <li class="hit"><span class="when">24/07</span><span class="what"><b>Caiu de novo</b>O billing não tinha ativado de verdade — cartão recusado pelo antifraude do Google. Quatro horas de tentativa; a decisão foi esperar o reset da cota e resolver o billing com calma.</span></li>
+        <li class="fix"><span class="when">25/07</span><span class="what"><b>Frentes 3, 4 e 5</b>Poda de 90 dias no agregador, polling do fluxo público de 5s → 20s com parada em status final e pausa em aba oculta, e janela de data nas varreduras de coleção.</span></li>
+        <li><span class="when">26/07</span><span class="what"><b>Baseline</b>1,7 mil leituras no período de cota. Ressalva registrada na própria medição: era domingo, dia não representativo.</span></li>
+      </ul>
+
+      <h3>O ganho da frente 2, em números</h3>
+      <div class="fig">
+        <div class="fig-frame">
+          <div class="ba">
+            <div class="ba-card before">
+              <div class="k">antes · a cada 90s</div>
+              <div class="n">~1.100</div>
+              <div class="u">documentos lidos<br>(comandas 30d + fechamentos)</div>
+            </div>
+            <div class="ba-arrow">→</div>
+            <div class="ba-card after">
+              <div class="k">depois · a cada 90s</div>
+              <div class="n">1</div>
+              <div class="u">documento lido<br><code style="font-size:11px">meta/caixasAbertos</code></div>
+            </div>
+          </div>
+        </div>
+        <div class="fig-cap"><b>Fig. 06.2</b> — O agregador é atualizado <b>on-write</b>: quem paga o custo é quem escreve (raro), não quem lê (constante). Esse é o padrão para qualquer número derivado que um polling precisa.</div>
+      </div>
+
+      <h3>A descoberta mais instrutiva</h3>
+      <div class="block trap">
+        <span class="tag">7.272 leituras numa coleção de 136 documentos</span>
+        <p>Na tela de Agendamentos, <code>dataSelecionada</code> estava na lista de dependências de um único <code>carregar()</code> que buscava agendamentos + fechamentos + slots <strong>juntos</strong>. Mas só os <em>slots</em> dependem do dia escolhido.</p>
+        <p>Cada clique no calendário relia tudo de novo — ~60% do consumo total do sistema. <strong>A correção foi separar em efeitos distintos.</strong> Sempre que puser algo numa dep list, pergunte: <em>tudo que este efeito faz realmente depende disso?</em></p>
+      </div>
+
+      <h3>O repertório</h3>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Técnica</th><th>Quando usar</th><th>Ganho</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Agregador on-write</strong></td><td>Polling precisa de um número derivado de muitos docs</td><td>~1.100 leituras → 1</td></tr>
+            <tr><td><strong><code>.count()</code></strong></td><td>Você só precisa contar, não ler</td><td>N leituras → 1</td></tr>
+            <tr><td><strong>Janela de data</strong></td><td>Toda query que varre coleção inteira</td><td>Estrutural: o custo para de crescer</td></tr>
+            <tr><td><strong>Pausa em aba oculta</strong></td><td>Todo polling, sem exceção</td><td>Elimina abas esquecidas</td></tr>
+            <tr><td><strong>Cadências separadas</strong></td><td>Dados quentes vs. relatório</td><td>Só o essencial no tick curto</td></tr>
+            <tr><td><strong>Parar em estado final</strong></td><td>Polling de status</td><td>Evita polling eterno</td></tr>
+            <tr><td><strong>Calcular no load</strong></td><td>KPI de período</td><td>Tira query pesada do tick</td></tr>
+            <tr><td><strong>Poda com retenção</strong></td><td>Documento agregador que cresce</td><td>Evita estourar 1 MiB/doc</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="block rule">
+        <span class="tag">A pergunta antes de escrever uma query</span>
+        <p><strong>"Isso cresce com o histórico?"</strong> Uma query de "últimos 30 dias" dentro de um <code>setInterval</code> hoje lê 35 documentos e daqui a seis meses lê 400. Não é <em>se</em> vai estourar — é <em>quando</em>. Se cresce e roda em loop, o design está errado, mesmo que os números de hoje estejam bons.</p>
+      </div>
+
+      <div class="block trap">
+        <span class="tag">Armadilha de diagnóstico</span>
+        <p>A tela <strong>Query Insights em "Latência (ms)" não responde sobre custo de cota</strong> — mostra queries lentas, não queries que leem muito. Uma coleção pode sumir do topo por latência (é rápida) e continuar sendo o maior custo. Para custo, use a quebra por coleção com tipo de carga em <em>operações/documentos</em>.</p>
+      </div>
+
+      <div class="block danger">
+        <span class="tag">Billing é preventivo, não reativo</span>
+        <p>Ativar o plano pago <strong>depois</strong> de bloqueado não é imediato — propaga em minutos com o cliente no chão. Por isso o billing é ativado <strong>na entrega</strong>, com o cartão do cliente, mais alerta de orçamento. O plano pago não cobra nada dentro da cota gratuita. Isso está em cláusula de contrato: custos de infra são 100% do contratante, e a Tecnosup se obriga a manter o sistema dentro da cota gratuita <em>por design</em> — obrigação de meio, não de resultado.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ 07 -->
+    <section class="stage" id="e07" data-n="07" data-title="Frontend real">
+      <div class="stage-head">
+        <div class="stage-n">07</div>
+        <div class="stage-titles">
+          <h2>Frontend: o celular do cliente não é o seu</h2>
+          <p class="stage-obj">Compatibilidade, tipografia e as pegadinhas que só aparecem no aparelho de outra pessoa.</p>
+        </div>
+      </div>
+
+      <p>Nosso público final usa aparelho antigo. Isso não é detalhe — já derrubou site em produção duas vezes.</p>
+
+      <div class="fig">
+        <div class="fig-frame">
+          <div class="phones">
+            <div class="phone okp">
+              <div class="phone-frame">
+                <div class="phone-body">
+                  <div class="demo-card ok"><span class="t w80"></span><span class="t w60"></span><span class="b"></span></div>
+                  <div class="demo-card ok"><span class="t w60"></span><span class="t w80"></span></div>
+                </div>
+              </div>
+              <div class="phone-cap">Safari 16.4+ · o que você vê</div>
+            </div>
+            <div class="phone badp">
+              <div class="phone-frame">
+                <div class="phone-body">
+                  <div class="demo-card broken"><span class="t w80"></span><span class="t w60"></span><span class="b"></span></div>
+                  <div class="demo-card broken"><span class="t w60"></span><span class="t w80"></span></div>
+                </div>
+              </div>
+              <div class="phone-cap">iPhone 7 · iOS 15.8</div>
+            </div>
+            <div style="flex:1;min-width:220px;align-self:center">
+              <p style="font-size:13.5px;max-width:none;margin:0 0 10px"><code>bg-white/10</code> gera <code>color-mix(in oklab, …)</code>. O Safari 15 não conhece a função e <strong>descarta a declaração inteira</strong> — o fundo e a borda do card somem.</p>
+              <p style="font-size:13.5px;max-width:none;margin:0"><strong>Não é degradação suave.</strong> E quando o problema é JS em vez de CSS, o resultado é erro de parse: <strong>página em branco</strong>.</p>
+            </div>
+          </div>
+        </div>
+        <div class="fig-cap"><b>Fig. 07.1</b> — Uma landing chegou a ter <b>380 <code>color-mix()</code> e 75 <code>@property</code></b> no CSS de produção. O iPhone 7 para no iOS 15.8 e nunca sobe.</div>
+      </div>
+
+      <div class="block danger">
+        <span class="tag">Por que acontece</span>
+        <p><strong>Next.js 16</strong> transpila para Chrome 111 / Safari 16.4 por padrão, mas <em>respeita</em> o <code>browserslist</code> do <code>package.json</code>.</p>
+        <p><strong>Tailwind CSS 4</strong> tem os alvos <strong>fixos dentro do pacote</strong> (safari 16.4, chrome 111, firefox 128) e <strong>ignora o <code>browserslist</code> completamente</strong>. Não tem config que resolva.</p>
+      </div>
+
+      <h4>Os dois caminhos</h4>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Caminho</th><th>Resolve</th><th>Custo</th></tr></thead>
+          <tbody>
+            <tr><td><code>browserslist</code> explícito + converter os modificadores de opacidade da landing em <code>rgba()</code> literal</td><td>JS pelo browserslist; CSS na mão, já que o Tailwind ignora</td><td>Baixo, mas manual e fácil de regredir</td></tr>
+            <tr><td>Migrar <strong>Tailwind 4 → 3</strong></td><td>Estrutural: o v3 nunca gerou <code>oklch</code>/<code>color-mix</code>/<code>@property</code></td><td>Alto, mas definitivo</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Um remendo com <code>@supports not (color: color-mix(...))</code> já foi tentado e <strong>não resolveu</strong>: cobre só uma lista manual de seletores e <em>não cobre <code>@property</code> de forma alguma</em> — que é usado nas mecânicas internas do próprio framework. Testado no iPhone 7 real: o problema persistiu.</p>
+
+      <div class="block trap">
+        <span class="tag">Se você migrar v4 → v3, essa é a pegadinha</span>
+        <p>O v4 aceita <strong>qualquer</strong> porcentagem de opacidade (<code>/4</code>, <code>/15</code>, <code>/35</code>, <code>/98</code>). O v3 só tem escala fixa (0, 5, 10, 20, 25, 30…). Classes fora da escala são <strong>silenciosamente ignoradas</strong> — a cor sai 100% opaca. Números que eram marca d'água atrás dos cards apareceram dourado chapado.</p>
+        <p><strong>Correção:</strong> estender <code>theme.extend.opacity</code> no <code>tailwind.config.js</code> com os valores usados. Resolve todos de uma vez sem tocar componente. Cuidado com <code>/08</code> — zero à esquerda é ambíguo no parser do v3; normalize para <code>/8</code>.</p>
+        <p><strong>Critério objetivo de sucesso:</strong> o CSS gerado tem <code>0 oklch</code>, <code>0 color-mix</code>, <code>0 @property</code>.</p>
+      </div>
+
+      <h3>Tipografia: meça, não confie</h3>
+      <div class="block trap">
+        <span class="tag">Medido com TextMetrics no navegador</span>
+        <div class="tablewrap" style="margin:12px 0">
+          <table>
+            <thead><tr><th>Fonte</th><th class="num">Altura de tinta (maiúscula)</th><th class="num">Largura por caractere</th></tr></thead>
+            <tbody>
+              <tr><td>Boldonse (títulos)</td><td class="num">1,21 em</td><td class="num">0,766 em</td></tr>
+              <tr><td>Poppins (texto)</td><td class="num">0,71 em</td><td class="num">0,647 em</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>Consequência:</strong> <code>line-height</code> abaixo de 1.21 faz as linhas <strong>se sobreporem</strong>, e títulos estouram telas estreitas com facilidade. Naquela landing o piso ficou em 1.38 (1.46 no hero).</p>
+        <p><strong>Contraste:</strong> amarelo sobre preto passa com folga (13:1), mas <strong>branco sobre amarelo dá 1.6:1 e reprova</strong>. Sobre amarelo, texto é preto. Sempre calcule o par, não escolha no olho.</p>
+      </div>
+
+      <h3>Teste objetivo de estouro horizontal</h3>
+      <div class="codewrap">
+        <button class="copy">copiar</button>
+<pre><code><span class="c-key">const</span> d = document.documentElement;
+<span class="c-key">if</span> (d.scrollWidth &gt; d.clientWidth) {
+  console.warn(<span class="c-str">"estouro:"</span>, d.scrollWidth - d.clientWidth, <span class="c-str">"px"</span>);
+  [...document.querySelectorAll(<span class="c-str">"*"</span>)]
+    .filter(el =&gt; el.getBoundingClientRect().right &gt; d.clientWidth)
+    .forEach(el =&gt; console.log(el));
+}</code></pre>
+      </div>
+
+      <div class="block trap">
+        <span class="tag">Imagem sumindo na landing? Reinicie o dev antes de caçar CSS</span>
+        <p>O otimizador de imagens do <code>next dev</code> (Next 16 + Turbopack) trava em requisições específicas de <code>/_next/image</code>: a resposta <strong>nunca chega</strong> e <strong>nenhum erro é escrito no log</strong>. Fica preso por par (arquivo, largura) — o mesmo arquivo responde 200 em outras larguras.</p>
+        <p>O box da imagem fica com o tamanho certo e vazio. <strong>Parece bug de CSS e não é.</strong> Isso custou uma sessão inteira. Dois sinais: o indicador "N" do Next dev aparece no canto da screenshot, e o mesmo arquivo funciona em outra largura. Some ao reiniciar o servidor.</p>
+      </div>
+
+      <h3>Detalhes que já valeram uma sessão</h3>
+      <ul>
+        <li><strong>PWA no iOS:</strong> declare <code>viewport</code> e <code>appleWebApp</code> pela API do Next (<code>export const viewport</code>), <strong>não</strong> por <code>&lt;meta&gt;</code> manual — o Next sobrescreve e zera o <code>env()</code>. E <code>black-translucent</code> é obrigatório para <code>env(safe-area-inset-*)</code> funcionar.</li>
+        <li><strong>Assets 3D/ilustração:</strong> PNG transparente, ~2× de resolução, <strong>peças separadas</strong> (não uma tela 9:16 montada), mesma luz e ângulo — para dar para posicionar de forma responsiva no código.</li>
+        <li><strong>Arquivo-fonte de marca não vai para o git.</strong> Uma pasta de designer tinha 198 MB. Se entrar, o git carrega esse peso para sempre e todo mundo baixa em cada clone. O que a web precisa sai otimizado — naquele caso, 524 KB no total.</li>
+      </ul>
+    </section>
+
+    <!-- ============================================================ 08 -->
+    <section class="stage" id="e08" data-n="08" data-title="Git e GitHub">
+      <div class="stage-head">
+        <div class="stage-n">08</div>
+        <div class="stage-titles">
+          <h2>Git e GitHub: o fluxo é obrigatório</h2>
+          <p class="stage-obj">Como o trabalho circula entre pessoas sem ninguém pisar no pé do outro.</p>
+        </div>
+      </div>
+
+      <div class="fig">
+        <div class="fig-frame">
+          <div class="git">
+            <div class="git-lane">
+              <span class="git-name main">main</span>
+              <div class="git-track">
+                <span class="git-line main"></span>
+                <span class="git-dot main" style="left:4%"></span>
+                <span class="git-dot main" style="left:92%"></span>
+                <span class="git-step" style="left:92%">merge · produção</span>
+              </div>
+            </div>
+            <div class="git-lane">
+              <span class="git-name dev">dev</span>
+              <div class="git-track">
+                <span class="git-line dev"></span>
+                <span class="git-dot dev" style="left:4%"></span>
+                <span class="git-dot dev" style="left:74%"></span>
+                <span class="git-step" style="left:74%">PR + revisão</span>
+                <span class="git-up" style="left:92%">↑</span>
+              </div>
+            </div>
+            <div class="git-lane">
+              <span class="git-name feat">feat/erick-…</span>
+              <div class="git-track">
+                <span class="git-line feat" style="left:14%;right:26%"></span>
+                <span class="git-dot feat" style="left:14%"></span>
+                <span class="git-dot feat" style="left:34%"></span>
+                <span class="git-dot feat" style="left:54%"></span>
+                <span class="git-dot feat" style="left:74%"></span>
+                <span class="git-step" style="left:14%">parte de dev</span>
+                <span class="git-up" style="left:74%">↑</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="fig-cap"><b>Fig. 08.1</b> — O único caminho: a branch nasce de <b>dev</b> atualizada, volta para <b>dev</b> por PR revisado, e só então <b>dev</b> sobe para <b>main</b>. Você trabalha na faixa azul; as duas de cima não são suas.</div>
+      </div>
+
+      <h3>O ciclo completo</h3>
+      <div class="codewrap">
+        <button class="copy">copiar</button>
+<pre><code><span class="c-cmt"># 1. SEMPRE comece sincronizando. sem exceção.</span>
+git checkout dev &amp;&amp; git pull origin dev
+
+<span class="c-cmt"># 2. branch da sua área</span>
+git checkout -b feat/erick-produtos
+
+<span class="c-cmt"># 3. trabalhe e commite normalmente</span>
+git add -A
+git commit -m <span class="c-str">"feat: filtro de categoria na listagem de produtos"</span>
+
+<span class="c-cmt"># 4. antes de abrir o PR, sincronize de novo</span>
+git checkout dev &amp;&amp; git pull origin dev
+git checkout feat/erick-produtos
+git merge dev            <span class="c-cmt"># resolva conflito AQUI, não no PR</span>
+
+<span class="c-cmt"># 5. suba e abra PR para dev</span>
+git push -u origin feat/erick-produtos</code></pre>
+      </div>
+
+      <div class="block danger">
+        <span class="tag">Proibições</span>
+        <ul>
+          <li><strong>Nunca</strong> <code>git push --force</code>. Em nenhuma branch, em nenhuma circunstância.</li>
+          <li><strong>Nunca</strong> commite direto em <code>dev</code> ou <code>main</code> — mesmo que o git deixe.</li>
+          <li><strong>Nunca</strong> abra branch a partir de <code>main</code>. Sempre de <code>dev</code> atualizada.</li>
+          <li><strong>Nunca</strong> commite <code>.env*</code>, JSON de service account, ou pasta de assets pesados.</li>
+          <li><strong>Nunca</strong> reescreva histórico de branch compartilhada.</li>
+        </ul>
+      </div>
+
+      <div class="block trap">
+        <span class="tag">Sinal de que a dev está desatualizada</span>
+        <p>Quando um PR entra direto na <code>main</code> sem voltar para a <code>dev</code>, quem branchar da <code>dev</code> parte de código velho. Já aconteceu de a <code>dev</code> ficar <strong>10 commits atrás da <code>main</code></strong>. Comece a sessão checando:</p>
+        <div class="codewrap" style="margin:12px 0 0">
+          <button class="copy">copiar</button>
+<pre><code>git fetch --all
+git rev-list --count origin/dev..origin/main
+<span class="c-cmt"># 0 = tudo certo. qualquer outro número = avise antes de branchar.</span></code></pre>
+        </div>
+      </div>
+
+      <h3>Convenção de commit</h3>
+      <div class="codewrap">
+        <button class="copy">copiar</button>
+<pre><code>feat:     nova funcionalidade
+fix:      correção de bug
+refactor: mudança sem impacto de comportamento
+chore:    build, deps, config
+perf:     otimização
+style:    só visual/formatação</code></pre>
+      </div>
+
+      <h3>Divisão de áreas — e o arquivo que dá conflito</h3>
+      <p>Cada dev tem um território para não haver conflito de merge. A divisão é <strong>organizacional, não um limite de atuação</strong>: você pode ler e propor mudança em qualquer parte, mas antes de mexer na área de outro, avise.</p>
+      <div class="block danger">
+        <span class="tag">Arquivo compartilhado</span>
+        <p><code>src/components/admin/AdminNav.tsx</code> é o único arquivo com risco real de conflito entre áreas. <strong>Qualquer alteração ali precisa ser comunicada antes de você editar.</strong> Se cada um adicionar um item de menu na sua branch, o merge quebra.</p>
+      </div>
+
+      <h3>Revisão de PR</h3>
+      <ul>
+        <li>O autor <strong>não</strong> se auto-aprova. Sempre outro par de olhos.</li>
+        <li>Revisor roda a branch <strong>localmente</strong>, com o <code>.env.local</code> de teste. <span class="pill off">nunca no preview</span> — motivo na etapa 09.</li>
+        <li>O PR traz <strong>roteiro de teste</strong>: o que clicar e o que deve acontecer.</li>
+        <li>Achou um bug real na revisão? Ótimo — foi assim que se pegou um agregador cujo mapa interno crescia sem limite e ia estourar o teto de 1 MiB por documento. Revisão pegou antes de produção.</li>
+      </ul>
+
+      <h3>Duas pegadinhas de plataforma</h3>
+      <div class="block trap">
+        <span class="tag">Windows é case-insensitive; o servidor é Linux</span>
+        <p>Uma pasta em <code>public/CORTES</code> funciona na sua máquina e quebra em produção se o código pede <code>/cortes/</code>. Imagens somem <em>só no ar</em>. Confira o casing exato de todo path de asset.</p>
+      </div>
+      <div class="block trap">
+        <span class="tag">"Upar" significa local <em>e</em> remoto</span>
+        <p>Quando pedirem para "upar" um trabalho, a expectativa é commit/merge <strong>e</strong> <code>git push</code> na branch remota correspondente. Parar no commit local já gerou a impressão de trabalho não feito.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ 09 -->
+    <section class="stage" id="e09" data-n="09" data-title="Deploy e ambientes">
+      <div class="stage-head">
+        <div class="stage-n">09</div>
+        <div class="stage-titles">
+          <h2>Deploy: você não deploya — e precisa saber por quê</h2>
+          <p class="stage-obj">Entender o pipeline mesmo sem operá-lo, para entregar PR que sobe sem susto.</p>
+        </div>
+      </div>
+
+      <div class="fig">
+        <div class="fig-frame">
+          <div class="flow">
+            <div class="flow-node"><span class="k">você</span><span class="v">PR aprovado<br>em <code style="font-size:11px">dev</code></span></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node"><span class="k">sócio</span><span class="v">merge<br><code style="font-size:11px">dev → main</code></span></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node bad"><span class="k">✕ não acontece</span><span class="v">deploy automático<br>no push</span></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node good"><span class="k">sócio, manual</span><span class="v"><code style="font-size:11px">vercel --prod --yes</code></span></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node good"><span class="k">no ar</span><span class="v">produção</span></div>
+          </div>
+        </div>
+        <div class="fig-cap"><b>Fig. 09.1</b> — <b>Push na <code>main</code> não sobe a produção</b>, só atualiza o GitHub. Isso é resultado de bloqueios reais de plataforma: a conta GitHub da organização foi sinalizada pelo antiabuso, quebrando a integração com a Vercel, e contas novas nasceram <code>limited</code>. O deploy pela CLI não é gambiarra — é o caminho oficial.</div>
+      </div>
+
+      <div class="block danger">
+        <span class="tag">⚠ Preview do Vercel aponta para o banco de PRODUÇÃO</span>
+        <p>Todas as variáveis de Firebase estão marcadas para <strong>Production E Preview</strong> com o mesmo valor. Não existe valor separado só para Preview.</p>
+        <p><strong>Consequência:</strong> qualquer preview de <code>dev</code> ou de uma feature <strong>escreve no banco real do cliente</strong>. Mandar alguém "revisar no preview" é mandar essa pessoa mexer em produção — cadastrar produto, ajustar estoque, criar serviço, tudo cai no cliente.</p>
+        <p><strong>Por isso a revisão é local.</strong> <code>git checkout feat/... &amp;&amp; npm install &amp;&amp; npm run dev</code> com o <code>.env.local</code> de teste. Zero risco, zero configuração.</p>
+      </div>
+
+      <h3>O que deploy toca e o que não toca</h3>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Recurso</th><th>Muda no deploy?</th><th>Observação</th></tr></thead>
+          <tbody>
+            <tr><td>Código da aplicação</td><td><span class="pill on">sim</span></td><td>É só isso que sobe</td></tr>
+            <tr><td>Dados do Firestore</td><td><span class="pill off">não</span></td><td>Serviço separado. Deploy não perde agendamento</td></tr>
+            <tr><td>Variáveis de ambiente</td><td><span class="pill off">não</span></td><td>Vivem no painel da Vercel</td></tr>
+            <tr><td><code>firestore.rules</code> / índices</td><td><span class="pill wait">só com comando próprio</span></td><td>Exige <code>firebase deploy</code> à parte — <strong>sinalize no PR</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Isso importa quando você precisa garantir para um cliente nervoso que a atualização não vai apagar nada: numa entrega, o snapshot antes × depois dos agendamentos do dia foi comparado e conferiu — 7 agendamentos, idênticos.</p>
+
+      <div class="block trap">
+        <span class="tag">Variáveis de ambiente não viajam</span>
+        <p>Ao transferir um projeto Vercel de conta, as env vars <strong>não vão junto</strong>. Se ninguém repuser antes do primeiro deploy, o site quebra em runtime. Outra: projeto criado pela CLI nasce com <code>framework: null</code> e dá <strong>404 em tudo</strong>, mesmo com build perfeito. Importar pelo dashboard detecta sozinho.</p>
+      </div>
+
+      <h3>Antes de pedir merge, seu PR precisa passar aqui</h3>
+      <ul class="checklist" data-ck="deploy">
+        <li><label><input type="checkbox"><span><code>npm run build</code> passa limpo (exit 0)</span></label></li>
+        <li><label><input type="checkbox"><span>Typecheck sem erro novo</span></label></li>
+        <li><label><input type="checkbox"><span>Testado no <strong>emulador</strong> ou no Firebase de teste — nunca em produção</span></label></li>
+        <li><label><input type="checkbox"><span>Roteiro de teste escrito na descrição do PR</span></label></li>
+        <li><label><input type="checkbox"><span>Sinalizado se mexeu em <code>firestore.rules</code>, índices, <code>firebase.json</code> ou <code>.firebaserc</code></span></label></li>
+        <li><label><input type="checkbox"><span>Sinalizada toda env var nova que precisa ser criada na Vercel</span></label></li>
+        <li><label><input type="checkbox"><span>Nenhuma migração de dado necessária — ou script separado e documentado</span></label></li>
+        <li><label><input type="checkbox"><span>Retrocompatibilidade: dado antigo sem o campo novo continua funcionando</span></label></li>
+      </ul>
+
+      <div class="block good">
+        <span class="tag">Retrocompatibilidade — o padrão que salvou uma entrega</span>
+        <p>Quando a duração numérica de serviço foi introduzida, os serviços e agendamentos antigos não tinham o campo. Em vez de exigir migração, o código usa <strong>o passo da grade como fallback</strong>: registros antigos ocupam um slot e não somem da agenda. O cliente nem percebeu a mudança de modelo.</p>
+        <p>Sempre que adicionar campo a um documento que já existe em produção, responda no PR: <em>o que acontece com os registros que não têm esse campo?</em></p>
+      </div>
+    </section>
+
+    <!-- ============================================================ 10 -->
+    <section class="stage" id="e10" data-n="10" data-title="Acabamento">
+      <div class="stage-head">
+        <div class="stage-n">10</div>
+        <div class="stage-titles">
+          <h2>Acabamento: o que separa "funciona" de "entregue"</h2>
+          <p class="stage-obj">Os padrões de interface e de comunicação que fazem o sistema parecer profissional.</p>
+        </div>
+      </div>
+
+      <h3>Padrões de feedback — use os que existem</h3>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Situação</th><th>Use</th><th>Não use</th></tr></thead>
+          <tbody>
+            <tr><td>Confirmar ação destrutiva</td><td><code>useConfirm()</code> — retorna <code>Promise&lt;boolean&gt;</code></td><td><code>window.confirm()</code></td></tr>
+            <tr><td>Ação relevante concluída</td><td><code>useSucesso()</code> — popup verde animado</td><td>toast discreto</td></tr>
+            <tr><td>Info leve e reversível</td><td>toast ("link copiado", toggle)</td><td>popup grande</td></tr>
+            <tr><td>Erro em ação do usuário</td><td>mensagem explícita na tela</td><td>falha silenciosa</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="block danger">
+        <span class="tag">Por que window.confirm está banido</span>
+        <p>Um usuário clicou "concluído" por acidente e quebrou a análise financeira <strong>sem forma de reverter</strong>. Ação destrutiva pede modal próprio, com o que vai acontecer escrito, e botão de desfazer quando for possível.</p>
+      </div>
+      <div class="block trap">
+        <span class="tag">Falha silenciosa é dívida</span>
+        <p>Em duas telas do admin, <code>handleDelete</code> não dá feedback de erro: se o DELETE falha por rede, <strong>nada acontece na tela</strong>. O usuário acha que apagou. Isso está anotado como pendência há meses — não crie mais desses. <strong>Toda ação assíncrona tem três estados visíveis: carregando, sucesso, erro.</strong></p>
+      </div>
+      <p>Detalhe de custo: popup e confirm são <strong>client-side puros — zero leitura no banco</strong>. O que custa é o refetch depois da ação. Sempre que der, atualize em memória em vez de recarregar a lista inteira.</p>
+
+      <h3>Código</h3>
+      <ul>
+        <li><strong>Sem comentário óbvio.</strong> Comentário só quando o <em>porquê</em> não é evidente. Comentário JSX descrevendo a seção é ruído e vem sendo removido.</li>
+        <li><strong>Prefira editar o arquivo existente</strong> a recriar do zero — recriar apaga correções que ninguém lembra que estão ali.</li>
+        <li><strong>Não reinstale dependências sem perguntar.</strong></li>
+        <li><strong>Limite de caracteres em todo campo de texto do admin</strong>, com contador. O cliente vai digitar um parágrafo no campo de título e quebrar o layout dele mesmo.</li>
+        <li><strong>Achou inconsistência entre a documentação e o código real?</strong> Avise. Já houve <code>STATUS.md</code> afirmando que o storage era R2 enquanto o código chamava Cloudinary havia meses.</li>
+      </ul>
+
+      <h3>Patch notes: dois públicos, dois textos</h3>
+      <div class="split">
+        <div class="block">
+          <span class="tag">Técnico — para a equipe</span>
+          <p>O que mudou por arquivo, decisões tomadas, o que ficou pendente, o que precisa de atenção no deploy. Verificado contra o git, não contra a memória.</p>
+        </div>
+        <div class="block">
+          <span class="tag">Humanizado — para o cliente</span>
+          <p>O que ele vai <em>ver</em> e <em>sentir</em>, na linguagem do negócio dele. Sem nome de arquivo, sem jargão. E só é verdade <strong>depois</strong> do deploy — não mande antes.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ 11 -->
+    <section class="stage" id="e11" data-n="11" data-title="Cliente e escopo">
+      <div class="stage-head">
+        <div class="stage-n">11</div>
+        <div class="stage-titles">
+          <h2>Cliente e escopo: onde o dev para e o negócio começa</h2>
+          <p class="stage-obj">Reconhecer a decisão que não é sua — e o que nunca prometer.</p>
+        </div>
+      </div>
+
+      <p class="principio">Decisão de produto não é decisão técnica. Quando a resposta depende de como o cliente quer tocar o negócio dele, a resposta não é sua.</p>
+
+      <h3>Exemplos reais de decisão que não era do dev</h3>
+      <ul>
+        <li><strong>Cliente cancelar o próprio agendamento pelo site.</strong> Tecnicamente trivial. Mas o dono pode <em>preferir</em> que o cliente ligue — reagenda na conversa, mantém a relação. Self-service pode ser pior para o negócio dele.</li>
+        <li><strong>Ferramenta antifalta.</strong> A proposta inicial era sinal antecipado obrigatório para todo agendamento. O sócio rejeitou: cria atrito para cliente bom. O conceito certo virou <strong>bloqueio por reincidência</strong> — o cliente agenda normal, o barbeiro marca a falta, e a partir de N faltas <em>aquele</em> cliente passa a ser obrigado a pré-pagar.</li>
+        <li><strong>Assinatura manual entra em cobrança recorrente automática?</strong> Muda a complexidade da implementação inteira. Ficou parada esperando o cliente decidir — e a instrução foi explícita: preparar os dois cenários para apresentar, <strong>não implementar nenhum</strong>.</li>
+      </ul>
+
+      <div class="block rule">
+        <span class="tag">Como se comportar</span>
+        <p>Ao esbarrar numa dessas: <strong>pare, escreva os cenários com o trade-off de cada um, e devolva a decisão.</strong> Não crave o número (quantas faltas, quantas horas de antecedência, qual valor) sozinho. Deixar registrado "aguardando decisão" é entrega válida — implementar o palpite errado não é.</p>
+      </div>
+
+      <h3>O que nunca prometer</h3>
+      <div class="block danger">
+        <span class="tag">Expectativa é contrato informal</span>
+        <p>O desenvolvimento é <strong>personalizado, feito do zero com a cara da empresa até a entrega</strong>. Depois da entrega, <strong>toda feature nova é orçada e paga à parte</strong>. A mensalidade cobre operação — hospedagem, banco dedicado, suporte, backup, segurança — não features.</p>
+        <p>Evite em qualquer texto, PR ou conversa: "evolução contínua", "novas funcionalidades no roadmap", "a gente vai melhorando".</p>
+      </div>
+
+      <div class="block danger">
+        <span class="tag">Produção real muda a régua</span>
+        <p>A partir do momento em que um sistema tem clientes de verdade dentro, bug não é bug: é a operação de um negócio parada. Isso mudou o fluxo de trabalho da equipe inteira (etapa 04, princípio 6) e é a razão de existir de quase toda regra deste manual.</p>
+        <p>Antes de qualquer alteração visível num sistema em produção: <strong>descreva o que vai mudar e confirme antes de aplicar.</strong> Especialmente se envolver Firestore ou regras de segurança.</p>
+      </div>
+
+      <div class="block trap">
+        <span class="tag">Ajuste visual: pergunte antes de chutar</span>
+        <p>Quando alguém disser que algo "não ficou bom", pergunte <strong>exatamente o quê</strong> — a faixa? o logo? a posição? o tamanho? Chutar por print queima tentativas e paciência. Debater trinta segundos vale mais que três tentativas às cegas.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ 12 -->
+    <section class="stage" id="e12" data-n="12" data-title="Projeto novo do zero">
+      <div class="stage-head">
+        <div class="stage-n">12</div>
+        <div class="stage-titles">
+          <h2>Projeto novo do zero: o protocolo</h2>
+          <p class="stage-obj">O checklist que existe porque um cliente foi ao ar com o conteúdo de outro.</p>
+        </div>
+      </div>
+
+      <div class="fig">
+        <div class="fig-frame">
+          <div class="infra">
+            <div class="infra-col">
+              <h5>Cliente A</h5>
+              <ul>
+                <li><i>▪</i> pasta local própria</li>
+                <li><i>▪</i> repositório próprio</li>
+                <li><i>▪</i> projeto Firebase próprio</li>
+                <li><i>▪</i> projeto Vercel próprio</li>
+                <li><i>▪</i> bucket R2 próprio</li>
+                <li><i>▪</i> <code>.env</code> próprio</li>
+                <li><i>▪</i> domínio no CNPJ dele</li>
+                <li><i>▪</i> billing no cartão dele</li>
+              </ul>
+            </div>
+            <div class="infra-x">✕<br>nada<br>compartilhado</div>
+            <div class="infra-col">
+              <h5>Cliente B</h5>
+              <ul>
+                <li><i>▪</i> pasta local própria</li>
+                <li><i>▪</i> repositório próprio</li>
+                <li><i>▪</i> projeto Firebase próprio</li>
+                <li><i>▪</i> projeto Vercel próprio</li>
+                <li><i>▪</i> bucket R2 próprio</li>
+                <li><i>▪</i> <code>.env</code> próprio</li>
+                <li><i>▪</i> domínio no CNPJ dele</li>
+                <li><i>▪</i> billing no cartão dele</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="fig-cap"><b>Fig. 12.1</b> — Zero compartilhamento entre clientes. É o que torna o custo mensal da Tecnosup igual a R$ 0 e o que impede que um incidente num cliente respingue no outro.</div>
+      </div>
+
+      <ul class="checklist" data-ck="novo">
+        <li><label><input type="checkbox"><span><strong>Pasta local nova</strong>, em diretório próprio. Nunca dentro de projeto existente</span></label></li>
+        <li><label><input type="checkbox"><span><strong>Repositório novo</strong> no GitHub, sob a organização</span></label></li>
+        <li><label><input type="checkbox"><span><strong>Projeto Firebase novo</strong> — Firestore, Auth e regras próprios</span></label></li>
+        <li><label><input type="checkbox"><span><strong>Projeto Vercel novo</strong>, conectado ao repositório novo</span></label></li>
+        <li><label><input type="checkbox"><span><strong>Bucket de mídia isolado</strong> (R2)</span></label></li>
+        <li><label><input type="checkbox"><span><strong><code>.env</code> novo.</strong> Nunca copiar credencial de outro cliente</span></label></li>
+        <li><label><input type="checkbox"><span><strong>Domínio do cliente</strong>, registrado no CPF/CNPJ dele</span></label></li>
+        <li><label><input type="checkbox"><span><strong>Billing ativo antes da entrega</strong>, com cartão do cliente + alerta de orçamento</span></label></li>
+        <li><label><input type="checkbox"><span>Índices do Firestore deployados e <code>firestore.rules</code> publicadas</span></label></li>
+        <li><label><input type="checkbox"><span>Branch <code>dev</code> criada com proteção</span></label></li>
+        <li><label><input type="checkbox"><span>Claim de admin criada para o e-mail do cliente</span></label></li>
+      </ul>
+
+      <div class="block trap">
+        <span class="tag">Pré-requisito que já travou uma entrega na frente do cliente</span>
+        <p>Criar um Firestore em projeto Firebase novo <strong>exige uma conta de faturamento vinculada</strong>, senão dá "This API method requires billing to be enabled". Um projeto pode nascer <em>desvinculado</em> mesmo com a conta de faturamento existindo. Confirme antes da reunião — se a conta do cliente for nova, ele precisa do cartão à mão. E cartão brasileiro é recusado pelo antifraude do Google com frequência: já foram quatro horas perdidas com vários cartões e Pix, todos negados.</p>
+      </div>
+
+      <div class="block rule">
+        <span class="tag">Titularidade</span>
+        <p>O modelo é <strong>cliente dono, Tecnosup opera</strong>. As contas nascem no e-mail dedicado do sistema, a Tecnosup mantém acesso, e o cliente herda no fim do contrato. O <strong>código fica com a Tecnosup</strong> — é propriedade intelectual da casa. Um mesmo repositório GitHub pode alimentar vários projetos Vercel em contas diferentes, cada um com suas próprias env vars: é assim que o código fica com a gente e a hospedagem fica com o cliente.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ 13 -->
+    <section class="stage" id="e13" data-n="13" data-title="Seu primeiro PR">
+      <div class="stage-head">
+        <div class="stage-n">13</div>
+        <div class="stage-titles">
+          <h2>Seu primeiro PR</h2>
+          <p class="stage-obj">Fechar o ciclo: da branch ao merge, do jeito que se espera aqui.</p>
+        </div>
+      </div>
+
+      <ul class="checklist" data-ck="pr">
+        <li><label><input type="checkbox"><span>Conferi o <code>PROJECT_ID</code> do <code>.env.local</code> — é o de <strong>teste</strong></span></label></li>
+        <li><label><input type="checkbox"><span>Parti de <code>dev</code> atualizada, em branch <code>feat/erick-*</code></span></label></li>
+        <li><label><input type="checkbox"><span>Expliquei o bloco antes de começar e recebi o OK</span></label></li>
+        <li><label><input type="checkbox"><span>Escopo pequeno — um assunto por PR</span></label></li>
+        <li><label><input type="checkbox"><span>Usei a função existente em <code>lib/</code> em vez de reimplementar a regra</span></label></li>
+        <li><label><input type="checkbox"><span>Rota nova valida sessão no servidor e entrada com Zod</span></label></li>
+        <li><label><input type="checkbox"><span>Nenhuma query nova que cresça com o histórico dentro de polling</span></label></li>
+        <li><label><input type="checkbox"><span>Feedback de carregando, sucesso e erro nas três pontas</span></label></li>
+        <li><label><input type="checkbox"><span><code>npm run build</code> exit 0, testado no emulador</span></label></li>
+        <li><label><input type="checkbox"><span>Sincronizei <code>dev</code> na minha branch e resolvi conflito antes do PR</span></label></li>
+        <li><label><input type="checkbox"><span>Descrição do PR tem <strong>roteiro de teste</strong> e lista o que precisa de atenção no deploy</span></label></li>
+        <li><label><input type="checkbox"><span>Não dei push em <code>dev</code>/<code>main</code>, não usei <code>--force</code>, não deployei</span></label></li>
+      </ul>
+
+      <div class="block good">
+        <span class="tag">Como você vira "um dos nossos"</span>
+        <p>Não é escrevendo mais código — é entregando trabalho que <strong>outra pessoa consegue validar sem medo</strong>. Um PR pequeno, com roteiro de teste, que respeita a fonte da verdade, que não cria query cara e que diz honestamente o que ficou pendente vale mais que uma feature inteira que ninguém tem coragem de subir numa terça de manhã.</p>
+        <p>A autonomia aqui cresce com previsibilidade, e a hierarquia é sobre <strong>quem responde pelo cliente</strong>, não sobre quem sabe mais.</p>
+      </div>
+
+      <div class="foot">
+        MANUAL DO COLABORADOR · TECNOSUP<br>
+        Compilado a partir da memória de trabalho de 8 repositórios — Ortega, NYX, Século XXI, Doce Vale, pasta-base, painel interno e site institucional.<br>
+        Nenhuma credencial, chave, token ou senha aparece neste documento, por princípio.<br>
+        Revisão: 27/07/2026 · Progresso salvo apenas neste navegador.
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var KEY = "tecnosup-guia-v2";
+  var stages = Array.prototype.slice.call(document.querySelectorAll(".stage"));
+  var rail = document.getElementById("raillist");
+
+  var state;
+  try { state = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { state = {}; }
+  if (!state.done) state.done = {};
+  if (!state.checks) state.checks = {};
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+
+  /* ---------- trilho ---------- */
+  stages.forEach(function (s) {
+    var li = document.createElement("li");
+    li.className = "rail-item";
+    li.dataset.target = s.id;
+    var a = document.createElement("a");
+    a.href = "#" + s.id;
+    a.title = s.dataset.n + " · " + s.dataset.title;
+    a.innerHTML = '<span class="rail-n">' + s.dataset.n + '</span>' +
+                  '<span class="rail-t">' + s.dataset.title + '</span>' +
+                  '<span class="rail-check" aria-hidden="true">✓</span>';
+    li.appendChild(a);
+    rail.appendChild(li);
+  });
+
+  /* ---------- concluir etapa ---------- */
+  stages.forEach(function (s) {
+    var btn = document.createElement("button");
+    btn.className = "mark-done";
+    btn.type = "button";
+    btn.setAttribute("aria-pressed", state.done[s.id] ? "true" : "false");
+    btn.innerHTML = '<span class="box"></span><span class="lbl"></span>';
+    s.querySelector(".stage-head").appendChild(btn);
+    btn.addEventListener("click", function () {
+      state.done[s.id] = !state.done[s.id];
+      btn.setAttribute("aria-pressed", state.done[s.id] ? "true" : "false");
+      save(); render();
+    });
+  });
+
+  var ring = document.getElementById("ring");
+  var CIRC = 2 * Math.PI * 18;
+  ring.setAttribute("stroke-dasharray", CIRC.toFixed(1));
+  document.getElementById("ptotal").textContent = stages.length;
+
+  function render() {
+    var n = 0;
+    stages.forEach(function (s) {
+      var d = !!state.done[s.id];
+      if (d) n++;
+      var link = rail.querySelector('[data-target="' + s.id + '"] a');
+      if (link) link.classList.toggle("done", d);
+      s.querySelector(".mark-done .lbl").textContent = d ? "concluída" : "marcar concluída";
+    });
+    document.getElementById("pdone").textContent = n;
+    ring.style.strokeDashoffset = (CIRC - (n / stages.length) * CIRC).toFixed(1);
+  }
+
+  /* ---------- checklists ---------- */
+  document.querySelectorAll(".checklist").forEach(function (ul) {
+    var group = ul.dataset.ck;
+    ul.querySelectorAll('input[type="checkbox"]').forEach(function (cb, i) {
+      var k = group + ":" + i;
+      cb.checked = !!state.checks[k];
+      cb.addEventListener("change", function () { state.checks[k] = cb.checked; save(); });
+    });
+  });
+
+  /* ---------- colapsar trilho ---------- */
+  var toggle = document.getElementById("railtoggle");
+  function applyRail() {
+    var c = !!state.railCollapsed;
+    document.body.classList.toggle("rail-collapsed", c);
+    toggle.setAttribute("aria-expanded", c ? "false" : "true");
+  }
+  toggle.addEventListener("click", function () {
+    state.railCollapsed = !state.railCollapsed;
+    save(); applyRail();
+  });
+  applyRail();
+
+  /* ---------- scrollspy ---------- */
+  var current = null;
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (en.isIntersecting) {
+        if (current) current.classList.remove("current");
+        var link = rail.querySelector('[data-target="' + en.target.id + '"] a');
+        if (link) { link.classList.add("current"); current = link; }
+      }
+    });
+  }, { rootMargin: "-70px 0px -65% 0px", threshold: 0 });
+  stages.forEach(function (s) { obs.observe(s); });
+
+  /* ---------- copiar código ---------- */
+  document.querySelectorAll(".copy").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var pre = btn.parentElement.querySelector("pre");
+      var txt = pre ? pre.innerText : "";
+      var done = function () {
+        btn.textContent = "copiado";
+        setTimeout(function () { btn.textContent = "copiar"; }, 1400);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(txt).then(done, function () { btn.textContent = "erro"; });
+      } else {
+        var ta = document.createElement("textarea");
+        ta.value = txt; document.body.appendChild(ta); ta.select();
+        try { document.execCommand("copy"); done(); } catch (e) { btn.textContent = "erro"; }
+        document.body.removeChild(ta);
+      }
+    });
+  });
+
+  /* ---------- gráfico de cota ---------- */
+  (function chart() {
+    var svg = document.getElementById("chartsvg");
+    var tip = document.getElementById("charttip");
+    if (!svg) return;
+
+    var data = [
+      { d: "20/jul", v: 22000, over: false, note: "reconstituído da janela de 7 dias" },
+      { d: "21/jul", v: 29000, over: false, note: "reconstituído da janela de 7 dias" },
+      { d: "22/jul", v: 51000, over: true,  note: "site fora do ar · RESOURCE_EXHAUSTED" },
+      { d: "23/jul", v: 55000, over: true,  note: "pico medido no console" },
+      { d: "24/jul", v: 30000, over: false, note: "entrada das correções · caiu de novo por billing" },
+      { d: "25/jul", v: 25000, over: false, note: "5 frentes de otimização em produção" },
+      { d: "26/jul", v: 7300,  over: false, note: "domingo · 24h corridas" }
+    ];
+
+    var W = 640, H = 250, ML = 52, MR = 14, MT = 16, MB = 34;
+    var iw = W - ML - MR, ih = H - MT - MB;
+    var max = 60000, LIMIT = 50000;
+    var y = function (v) { return MT + ih - (v / max) * ih; };
+    var bw = iw / data.length;
+    var pad = bw * 0.24;
+    var ns = "http://www.w3.org/2000/svg";
+    function el(t, a) { var e = document.createElementNS(ns, t); for (var k in a) e.setAttribute(k, a[k]); return e; }
+
+    [0, 20000, 40000, 60000].forEach(function (g) {
+      svg.appendChild(el("line", { class: "grid", x1: ML, x2: W - MR, y1: y(g), y2: y(g) }));
+      var t = el("text", { class: "ax", x: ML - 9, y: y(g) + 3.5, "text-anchor": "end" });
+      t.textContent = g === 0 ? "0" : (g / 1000) + "k";
+      svg.appendChild(t);
+    });
+
+    data.forEach(function (row, i) {
+      var x = ML + i * bw + pad;
+      var w = bw - pad * 2;
+      var h = Math.max(2, MT + ih - y(row.v));
+      var g = el("g", { class: "bg" });
+
+      g.appendChild(el("rect", { x: ML + i * bw, y: MT, width: bw, height: ih, fill: "transparent" }));
+      g.appendChild(el("rect", {
+        class: "bar", x: x, y: y(row.v), width: w, height: h, rx: 4,
+        fill: row.over ? "var(--chart-crit)" : "var(--chart-1)"
+      }));
+      var sq = el("rect", { x: x, y: y(row.v) + h - 4, width: w, height: 4,
+        fill: row.over ? "var(--chart-crit)" : "var(--chart-1)" });
+      g.appendChild(sq);
+
+      var vl = el("text", { class: "val", x: x + w / 2, y: y(row.v) - 7, "text-anchor": "middle" });
+      vl.textContent = row.v >= 1000 ? (row.v / 1000).toFixed(row.v < 10000 ? 1 : 0).replace(".", ",") + "k" : row.v;
+      g.appendChild(vl);
+
+      var dl = el("text", { class: "ax", x: x + w / 2, y: H - 12, "text-anchor": "middle" });
+      dl.textContent = row.d;
+      g.appendChild(dl);
+
+      g.addEventListener("mouseenter", function (e) { show(row, e); });
+      g.addEventListener("mousemove", function (e) { show(row, e); });
+      g.addEventListener("mouseleave", hide);
+      svg.appendChild(g);
+    });
+
+    svg.appendChild(el("line", { class: "thr", x1: ML, x2: W - MR, y1: y(LIMIT), y2: y(LIMIT) }));
+    var tl = el("text", { class: "thr-lbl", x: W - MR, y: y(LIMIT) - 7, "text-anchor": "end" });
+    tl.textContent = "limite 50k/dia";
+    svg.appendChild(tl);
+
+    function show(row, e) {
+      var host = svg.closest(".fig-frame");
+      var r = host.getBoundingClientRect();
+      tip.innerHTML = "<b>" + row.d + "</b>" +
+        row.v.toLocaleString("pt-BR") + " leituras<em>" + row.note + "</em>";
+      tip.style.opacity = "1";
+      var x = e.clientX - r.left + 14;
+      var y2 = e.clientY - r.top - 12;
+      if (x + 240 > r.width) x = e.clientX - r.left - 240;
+      tip.style.left = Math.max(4, x) + "px";
+      tip.style.top = Math.max(4, y2) + "px";
+    }
+    function hide() { tip.style.opacity = "0"; }
+  })();
+
+  /* ---------- busca ---------- */
+  var q = document.getElementById("q");
+  var nores = document.getElementById("nores");
+  q.addEventListener("input", function () {
+    var term = q.value.trim().toLowerCase();
+    document.body.classList.toggle("searching", term.length > 0);
+    if (!term) {
+      stages.forEach(function (s) { s.classList.remove("hidden"); });
+      rail.querySelectorAll(".rail-item").forEach(function (li) { li.classList.remove("hidden"); });
+      nores.classList.remove("show");
+      return;
+    }
+    var hits = 0;
+    stages.forEach(function (s) {
+      var hit = s.innerText.toLowerCase().indexOf(term) !== -1;
+      s.classList.toggle("hidden", !hit);
+      var li = rail.querySelector('[data-target="' + s.id + '"]');
+      if (li) li.classList.toggle("hidden", !hit);
+      if (hit) hits++;
+    });
+    nores.classList.toggle("show", hits === 0);
+  });
+
+  /* ---------- tema ---------- */
+  var root = document.documentElement;
+  document.getElementById("theme").addEventListener("click", function () {
+    var dark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    var cur = root.getAttribute("data-theme") || (dark ? "dark" : "light");
+    root.setAttribute("data-theme", cur === "dark" ? "light" : "dark");
+  });
+
+  /* ---------- zerar ---------- */
+  document.getElementById("reset").addEventListener("click", function () {
+    var col = state.railCollapsed;
+    state = { done: {}, checks: {}, railCollapsed: col };
+    save();
+    document.querySelectorAll(".checklist input").forEach(function (cb) { cb.checked = false; });
+    stages.forEach(function (s) { s.querySelector(".mark-done").setAttribute("aria-pressed", "false"); });
+    render();
+  });
+
+  render();
+})();
+</script>
+
+</body>
+</html>
