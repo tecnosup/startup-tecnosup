@@ -5,7 +5,7 @@ Cruzeiro/SP e região — atendimento domiciliar.
 Fundadores: Cardoso (Abraão) e Vitor
 
 Instagram: https://www.instagram.com/tecnosuporte/
-Site atual: https://tecnosup-site.web.app/
+Site atual: https://tecnosup.vercel.app/
 WhatsApp: (12) 99103-7897 / (12) 99808-5873
 
 ---
